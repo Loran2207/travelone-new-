@@ -1,6 +1,6 @@
 // TRAVEL1 — detail screens: List detail, My Spots, City, Trip timeline
 import { Fragment } from "react";
-import { CATS, DAY_COLORS, IMG, catMeta, groupByCountry, placeMeta, prefEmoji } from "../data/data";
+import { CATS, DAY_COLORS, catMeta, groupByCountry, placeMeta, prefEmoji } from "../data/data";
 import type { Day, ListDef, Spot, Stop, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 import { SpotRow } from "./Sheets";
@@ -21,24 +21,14 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
   if (placeFilter !== "all") rows = rows.filter((s) => s.place === placeFilter);
   if (catFilter !== "All") rows = rows.filter((s) => s.cat === catFilter);
 
-  void onCreateTrip;
+  void onCreateTrip; void onShare; void onToggleManage;
   return (
     <Fragment>
       <div className="ld-head">
         <div className="ld-cover" style={{ backgroundImage: `url(${list.cover})` }}></div>
         <div className="ld-mid">
           <div className="ld-title">{list.name}</div>
-          <div className="ld-collab">
-            <div className="ava-star">
-              <div className="ava" style={{ backgroundImage: `url(${IMG}${list.collab ? "avatar-fig.png" : "avatar.png"})` }}></div>
-              <span className="star"><iconify-icon icon="solar:star-bold"></iconify-icon></span>
-            </div>
-            <span className="who">{list.collab ? list.note || "Shared list" : "Your list"}</span>
-          </div>
-        </div>
-        <div className="ld-right">
-          <button className="ld-share" onClick={onShare} aria-label="Share list"><iconify-icon icon="solar:upload-minimalistic-bold"></iconify-icon></button>
-          <div className="ld-spots">{all.length} {all.length === 1 ? "spot" : "spots"}</div>
+          <div className="ld-spots-sub">{all.length} {all.length === 1 ? "spot" : "spots"}</div>
         </div>
       </div>
 
@@ -65,9 +55,6 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
 
       <div className="meta-line" style={{ paddingTop: 0 }}>
         <div className="m">{rows.length} {rows.length === 1 ? "spot" : "spots"}{placeFilter !== "all" || catFilter !== "All" ? " · filtered" : ""}</div>
-        <button className="sort-btn" onClick={onToggleManage} style={manage ? { background: "var(--t1-ink)", color: "#fff" } : {}}>
-          {manage ? "Done" : <Fragment><iconify-icon icon="solar:pen-2-bold"></iconify-icon> Manage</Fragment>}
-        </button>
       </div>
 
       {rows.map((s) => (

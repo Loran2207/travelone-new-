@@ -471,3 +471,5 @@ iconify-icon, .iconify { display: inline-block; }
 
 /* Trips-near-you: full-width trip cards become fixed-width carousel items in a rail */
 .rail .tripcard { flex: none; width: 262px; margin: 0; }
+
+.ld-spots-sub { font-weight: 600; font-size: 14px; color: var(--t1-fg-muted); margin-top: 4px; }

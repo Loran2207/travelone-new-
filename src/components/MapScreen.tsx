@@ -235,10 +235,10 @@ export function MapScreen({ shared }: { shared: Shared }) {
           </button>
           <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
             {view === "list" && list && (
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <button className="glassbtn" onClick={() => listMenu(list.id)} aria-label="List options">
-                  <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
-                </button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <button className="glassbtn sm" onClick={() => startPlacing()} aria-label="Add spot"><iconify-icon icon="hugeicons:add-01"></iconify-icon></button>
+                <button className={"glassbtn sm" + (manage ? " active" : "")} onClick={() => setManage(!manage)} aria-label="Manage"><iconify-icon icon="solar:pen-2-bold"></iconify-icon></button>
+                <button className="glassbtn sm" onClick={() => listMenu(list.id)} aria-label="More"><iconify-icon icon="solar:menu-dots-bold"></iconify-icon></button>
                 <button className="chrome-mytrips" onClick={() => setBuilderList(list)}>
                   <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create trip
                 </button>
