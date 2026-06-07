@@ -125,7 +125,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
       </div>
 
       <div className="filterrow">
-        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Spots"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
+        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Spots"><iconify-icon icon="solar:magnifer-bold"></iconify-icon></button>
         <button className={"fchip" + (countryFilter === "all" ? " on" : "")} onClick={() => onCountryFilter("all")}>All</button>
         {countries.map((c) => (
           <button key={c} className={"fchip" + (countryFilter === c ? " on" : "")} onClick={() => onCountryFilter(countryFilter === c ? "all" : c)}>
@@ -187,7 +187,7 @@ export function CityDetail({ place, spots, catFilter, onCatFilter, onSearch, onO
           </div>
         </div>
         <div className="ld-right">
-          <button className="ld-share" onClick={onSearch} aria-label="Search city"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
+          <button className="ld-share" onClick={onSearch} aria-label="Search city"><iconify-icon icon="solar:magnifer-bold"></iconify-icon></button>
           <div className="ld-spots">{spots.length} {spots.length === 1 ? "spot" : "spots"}</div>
         </div>
       </div>

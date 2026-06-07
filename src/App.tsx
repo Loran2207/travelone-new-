@@ -122,7 +122,7 @@ export function App() {
         {showChrome && (tab === "saved" || tab === "trips") && (
           <button className="glassbtn sm" style={{ position: "absolute", right: 20, top: 70, zIndex: 40 }}
             onClick={() => { const nx = (listSort + 1) % LIST_SORTS.length; setListSort(nx); showToast("Sorted by " + LIST_SORTS[nx].label); }} aria-label="Sort">
-            <iconify-icon icon="solar:tuning-2-linear"></iconify-icon>
+            <iconify-icon icon="solar:tuning-2-bold"></iconify-icon>
           </button>
         )}
 

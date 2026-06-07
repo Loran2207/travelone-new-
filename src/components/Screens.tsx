@@ -58,7 +58,7 @@ export function ExploreScreen({ onSearch, onOpenCity }: {
           <div className="hero-eyebrow">TRAVEL1</div>
           <h1 className="hero-title">Travel guides for every city on earth</h1>
           <button className="hero-search" onClick={onSearch}>
-            <iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides
+            <iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides
           </button>
         </div>
       </div>
@@ -114,7 +114,7 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
         <div className="emptystate">
           <div className="es-title">Nothing saved yet</div>
           <div className="es-sub">Tap <iconify-icon icon="solar:heart-linear"></iconify-icon> on any guide to save it for later</div>
-          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
+          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides</button>
         </div>
       ) : (
         <Fragment>
@@ -146,7 +146,7 @@ export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onF
         <div className="emptystate">
           <div className="es-title">No trips planned yet</div>
           <div className="es-sub">Open any guide and tap “+ My Trips”, or build one from a list on the map</div>
-          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
+          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides</button>
         </div>
       ) : (
         <Fragment>
@@ -185,11 +185,11 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
           <div className="where">{pm.city || "Anywhere"} <Flag e={pm.flag} size={15} /></div>
           <div className="when">{query.duration || "Flexible"}</div>
         </div>
-        <button className="glassbtn sm" onClick={onFilters} aria-label="Filters"><iconify-icon icon="solar:tuning-2-linear"></iconify-icon></button>
+        <button className="glassbtn sm" onClick={onFilters} aria-label="Filters"><iconify-icon icon="solar:tuning-2-bold"></iconify-icon></button>
       </div>
       <div className="rh-sort">
         <div className="cnt">{guides.length} {guides.length === 1 ? "guide" : "guides"}</div>
-        <button className="sort" onClick={() => setSi((si + 1) % SORTS.length)}>{SORTS[si].l} <iconify-icon icon="solar:sort-vertical-linear"></iconify-icon></button>
+        <button className="sort" onClick={() => setSi((si + 1) % SORTS.length)}>{SORTS[si].l} <iconify-icon icon="solar:sort-vertical-bold"></iconify-icon></button>
       </div>
       {guides.map((t) => <GuideCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
     </div>

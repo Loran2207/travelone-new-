@@ -139,7 +139,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
       title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " spots" },
       actions: [
         { label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) },
-        { label: "Rename list", icon: "hugeicons:text-font", onClick: () => showToast("Rename “" + l.name + "”") },
+        { label: "Rename list", icon: "solar:text-bold", onClick: () => showToast("Rename “" + l.name + "”") },
         { label: "Share list", icon: "solar:share-bold", onClick: () => { try { navigator.clipboard && navigator.clipboard.writeText("https://travel1.app/list/" + l.id); } catch { /* ignore */ } showToast("Link copied"); } },
         { label: "Delete list", icon: "solar:trash-bin-trash-bold", destructive: true, onClick: () => showToast("List deleted") },
       ],

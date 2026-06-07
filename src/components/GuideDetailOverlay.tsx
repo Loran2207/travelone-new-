@@ -129,7 +129,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
 
       {manage ? (
         <div className="td-chrome">
-          <button className="glassbtn" onClick={exitManage} aria-label="Undo"><iconify-icon icon="hugeicons:arrow-turn-backward"></iconify-icon></button>
+          <button className="glassbtn" onClick={exitManage} aria-label="Undo"><iconify-icon icon="solar:undo-left-bold"></iconify-icon></button>
           <button className="chrome-check" onClick={exitManage} aria-label="Done"><iconify-icon icon="hugeicons:tick-02"></iconify-icon></button>
         </div>
       ) : (
