@@ -4,13 +4,13 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { DAY_COLORS, SPOTS, catMeta } from "../data/data";
 import { boundsOf, stopLatLng, type LatLng } from "../data/geo";
-import type { Spot, Stop, Trip } from "../data/types";
+import type { Day, Spot, Stop, Trip } from "../data/types";
 import { G_DETENTS, G_MID, useSheet } from "../lib/sheet";
 import type { Shared } from "../lib/shared";
 import { BottomNav, type TabId } from "./chrome";
 import { TripDetail } from "./Details";
 import { ActionSheet, SpotModal, type ActionSheetSpec } from "./Modals";
-import { AddPlaceSheet } from "./Screens";
+import { AddPlaceSheet, matchPlace } from "./Screens";
 import { RealMap, routeLabelHtml, routeNodeHtml, type MapMarker, type MapRoute } from "./RealMap";
 
 type DaySel = number | "all";
@@ -31,6 +31,29 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
   const saved = shared.savedTrips.has(trip.id);
   const inMyTrips = shared.myTrips.has(trip.id);
   const openStop = (st: Stop) => { const s = SPOTS.find((x) => x.id === st.id) || st; setSpot(s); };
+
+  // ---- editable days: append new days + spots locally ----
+  const [extraDays, setExtraDays] = useState<number[]>([]);
+  const [addedStops, setAddedStops] = useState<Record<number, Stop[]>>({});
+  const effDays: Day[] = useMemo(() => {
+    const base = trip.days.map((d) => (addedStops[d.n] ? { ...d, stops: [...d.stops, ...addedStops[d.n]] } : d));
+    const extra = extraDays.map((nn) => ({ n: nn, km: 0, stops: addedStops[nn] || [] }));
+    return [...base, ...extra];
+  }, [trip, extraDays, addedStops]);
+  const trip2 = useMemo(() => ({ ...trip, days: effDays }), [trip, effDays]);
+  const addDay = () => {
+    const nn = trip.days.length + extraDays.length + 1;
+    setExtraDays((e) => [...e, nn]); setActiveDay(nn); setEditMenu(false);
+    shared.showToast("Day " + nn + " added");
+  };
+  const addPlace = (name: string) => {
+    const m = matchPlace(name) || { name, img: SPOTS[0].img, cat: "Landmark" };
+    const targetN = typeof activeDay === "number" ? activeDay : (effDays[effDays.length - 1] ? effDays[effDays.length - 1].n : 1);
+    const stop: Stop = { id: "add-" + Date.now(), name: m.name, cat: m.cat, img: m.img, note: "", x: 50, y: 50, toNext: null };
+    setAddedStops((prev) => ({ ...prev, [targetN]: [...(prev[targetN] || []), stop] }));
+    setAddOpen(false);
+    shared.showToast("“" + m.name + "” added to Day " + targetN);
+  };
 
   const toggleSelect = (key: string) => setSelected((prev) => { const n = new Set(prev); n.has(key) ? n.delete(key) : n.add(key); return n; });
   const exitManage = () => { setManage(false); setSelected(new Set()); };
@@ -53,7 +76,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
   const openMenu = () => setEditMenu(true);
   const menuAction = (act: string) => {
     setEditMenu(false);
-    if (act === "addday") shared.showToast("Day " + (trip.days.length + 1) + " added to guide");
+    if (act === "addday") addDay();
     else if (act === "addplace") setAddOpen(true);
     else if (act === "sequence") setManage(true);
     else if (act === "delete") setDelConfirm(true);
@@ -68,7 +91,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
   // ---- route map (real Leaflet) ----
   const padBottom = Math.max(140, Math.min(560, 874 - sheet.top));
   const { routes, markers, focus } = useMemo(() => {
-    const days = activeDay === "all" ? trip.days : trip.days.filter((d) => d.n === activeDay);
+    const days = activeDay === "all" ? effDays : effDays.filter((d) => d.n === activeDay);
     const routes: MapRoute[] = [];
     const markers: MapMarker[] = [];
     const all: LatLng[] = [];
@@ -94,7 +117,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
     });
     return { routes, markers, focus: { bounds: boundsOf(all), _n: sheet.top } };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeDay, trip.id]);
+  }, [activeDay, trip.id, effDays]);
 
   return (
     <div className="guide-overlay" style={{ position: "absolute", inset: 0, zIndex: 36, background: "#fff", overflow: "hidden" }}>
@@ -145,9 +168,9 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
           <div className="grabber"></div>
         </div>
         <div className="sheet-scroll">
-          <TripDetail trip={trip} activeDay={activeDay} onDay={setActiveDay}
+          <TripDetail trip={trip2} activeDay={activeDay} onDay={setActiveDay}
             onDirections={(s) => shared.showToast("Directions to " + s.name)} onOpenStop={openStop}
-            manage={manage} onMenu={() => openMenu()} editable={inMyTrips} dateLabel={trip.dateLabel}
+            manage={manage} onMenu={() => openMenu()} onAddDay={addDay} onAddPlace={() => setAddOpen(true)} editable={inMyTrips} dateLabel={trip.dateLabel}
             selected={selected} onToggleSelect={toggleSelect} removed={removed} />
         </div>
       </div>
@@ -164,8 +187,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
         onSave={() => { setSpot(null); shared.showToast("Saved to My Spots"); }}
         onDirections={() => shared.showToast("Opening directions to " + spot.name)} />}
 
-      {addOpen && <AddPlaceSheet open={addOpen} onClose={() => setAddOpen(false)}
-        onAdd={(name) => { setAddOpen(false); shared.showToast("“" + name + "” added to the guide"); }} />}
+      {addOpen && <AddPlaceSheet open={addOpen} onClose={() => setAddOpen(false)} onAdd={addPlace} />}
 
       <ActionSheet sheet={confirm ? {
         title: "Remove " + selCount + " " + unit + (selCount === 1 ? "" : "s") + " from guide",

@@ -1,8 +1,8 @@
 // TRAVEL1 — detail screens: List detail, My Spots, City, Trip timeline
 import { Fragment } from "react";
-import { CATS, DAY_COLORS, IMG, catMeta, groupByCountry, placeMeta } from "../data/data";
+import { CATS, DAY_COLORS, IMG, catMeta, groupByCountry, placeMeta, prefEmoji } from "../data/data";
 import type { Day, ListDef, Spot, Stop, Trip } from "../data/types";
-import { Flag } from "./chrome";
+import { Emoji, Flag } from "./chrome";
 import { SpotRow } from "./Sheets";
 
 type DaySel = number | "all";
@@ -219,9 +219,9 @@ export function CityDetail({ place, spots, catFilter, onCatFilter, onSearch, onO
 
 // ---- TRIP DETAIL (all-days cards · single-day timeline) ----
 export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
-  manage, onMenu, editable, dateLabel, selected, onToggleSelect, removed }: {
+  manage, onMenu, onAddDay, onAddPlace, editable, dateLabel, selected, onToggleSelect, removed }: {
   trip: Trip; activeDay: DaySel; onDay: (d: DaySel) => void; onDirections: (s: Stop) => void; onOpenStop: (s: Stop) => void;
-  manage: boolean; onToggleManage?: () => void; onMenu?: (act?: string) => void; editable?: boolean; dateLabel?: string;
+  manage: boolean; onToggleManage?: () => void; onMenu?: (act?: string) => void; onAddDay?: () => void; onAddPlace?: () => void; editable?: boolean; dateLabel?: string;
   selected?: Set<string>; onToggleSelect?: (key: string) => void; removed?: Set<string>;
 }) {
   const rmv = removed || new Set<string>();
@@ -255,7 +255,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
 
       <div className="dayrow">
         {editable && (
-          <button className="daychip add" onClick={(e) => { e.stopPropagation(); onMenu && onMenu("plus"); }} aria-label="Add">
+          <button className="daychip add" onClick={(e) => { e.stopPropagation(); onAddDay && onAddDay(); }} aria-label="Add">
             <iconify-icon icon="hugeicons:add-01"></iconify-icon>
           </button>
         )}
@@ -290,7 +290,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                     {stops.length > 3 && <div className="dcard-thumb more">+{stops.length - 3}</div>}
                   </div>
                   <div className="dcard-cats">
-                    {cats.slice(0, 2).map((c) => <span key={c} className="tl-badge"><iconify-icon icon={(CATS[c] || {}).icon || "hugeicons:location-01"} style={{ color: (CATS[c] || {}).color }}></iconify-icon>{catMeta(c).type}</span>)}
+                    {cats.slice(0, 2).map((c) => <span key={c} className="tl-badge"><Emoji e={prefEmoji(c)} size={14} />{catMeta(c).type}</span>)}
                   </div>
                 </div>
                 {manage && (
@@ -335,7 +335,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                           <div className="tl-info">
                             <div className="tl-type">{cm.type}</div>
                             <div className="tl-name">{s.name}</div>
-                            <span className="tl-badge"><iconify-icon icon={(CATS[s.cat] || {}).icon || "hugeicons:location-01"} style={{ color: (CATS[s.cat] || {}).color }}></iconify-icon>{s.cat}</span>
+                            <span className="tl-badge"><Emoji e={prefEmoji(s.cat)} size={14} />{s.cat}</span>
                           </div>
                           {manage && (
                             <button className={"tl-select" + (on ? " on" : "")} onClick={(e) => { e.stopPropagation(); toggle(key); }} aria-label="Select">
@@ -361,6 +361,14 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                   );
                 })}
               </div>
+              {stops.length === 0 && editable && (
+                <button className="day-empty-add" onClick={() => onAddPlace && onAddPlace()}>
+                  <iconify-icon icon="hugeicons:add-01"></iconify-icon> Add a place to this day
+                </button>
+              )}
+              {stops.length === 0 && !editable && (
+                <div className="empty-hint" style={{ paddingTop: 24 }}>No places yet.</div>
+              )}
             </Fragment>
           );
         })()

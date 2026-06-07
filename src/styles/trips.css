@@ -297,3 +297,11 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 .genwrap .msg { font-weight: 700; font-size: 18px; color: var(--t1-ink); }
 .genwrap .sub { font-weight: 500; font-size: 14px; color: var(--t1-fg-muted); margin-top: -12px; }
+
+/* empty-day "add a place" CTA */
+.day-empty-add { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  margin: 10px 0 4px; height: 52px; padding: 0 20px; border-radius: 16px; border: 1.5px dashed var(--t1-border);
+  background: var(--t1-fill); color: var(--t1-ink); font-family: var(--t1-font); font-weight: 600; font-size: 15px;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.day-empty-add:active { transform: scale(.99); }
+.day-empty-add iconify-icon { font-size: 19px; }
