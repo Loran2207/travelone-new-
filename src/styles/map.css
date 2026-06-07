@@ -303,8 +303,8 @@ iconify-icon, .iconify { display: inline-block; }
 .nl-covers .cv { width: 44px; height: 44px; border-radius: 11px; background-size: cover; background-position: center;
   cursor: pointer; border: 2px solid transparent; -webkit-tap-highlight-color: transparent; }
 .nl-covers .cv.on { border-color: var(--t1-ink); }
-.nl-name { width: 100%; height: 56px; margin-top: 18px; border-radius: 16px; background: #fff;
-  border: 1px solid var(--t1-border); box-shadow: 0 4px 16px rgba(0,0,0,.05); padding: 0 20px;
+.nl-name { width: 100%; height: 56px; margin-top: 18px; border-radius: 16px; background: var(--t1-fill);
+  border: none; box-shadow: none; padding: 0 20px;
   font-family: var(--t1-font); font-size: 17px; color: var(--t1-ink); letter-spacing: -.3px; outline: none; }
 .nl-name::placeholder { color: var(--t1-fg-faint); }
 .nl-create { width: calc(100% - 44px); height: 54px; margin: 22px 22px; border-radius: 999px; border: none;

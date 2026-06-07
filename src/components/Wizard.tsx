@@ -39,13 +39,13 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
   const [dest, setDest] = useState<Destination | null>(null);
   const [q, setQ] = useState("");
   const [mode, setMode] = useState("flex");
-  const [durIdx, setDurIdx] = useState(2);
+  const [durIdx, setDurIdx] = useState(-1);
   const [prefs, setPrefs] = useState<string[]>([]);
 
   useEffect(() => {
     if (open) {
       const c = initialCity ? CITIES.find((x) => x.id === initialCity.id) || (initialCity as Destination) : null;
-      setDest(c); setQ(""); setMode("flex"); setDurIdx(2); setPrefs([]);
+      setDest(c); setQ(""); setMode("flex"); setDurIdx(-1); setPrefs([]);
       setStep(c ? "howlong" : "where");
     }
   }, [open, initialCity]);
@@ -57,7 +57,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
   const summaryWhere = dest ? (
     <span className="r">{dest.city} <Flag e={dest.flag} size={15} /> {pm && pm.country && !dest.nearby ? pm.country : ""}</span>
   ) : <span className="r add">Add destination</span>;
-  const summaryHow = <span className="r">{DURATIONS[durIdx]}</span>;
+  const summaryHow = durIdx < 0 ? <span className="r add">Add period</span> : <span className="r">{DURATIONS[durIdx]}</span>;
   const summaryPref = prefs.length ? <span className="r">{prefs.length} selected</span> : <span className="r add">Add preferences</span>;
 
   const Row = (id: "where" | "howlong" | "prefs", label: string, summary: JSX.Element) => (
@@ -68,7 +68,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
 
   const goSearch = () => onSearch({
     place: dest && !dest.nearby ? dest.id : "Warsaw",
-    duration: DURATIONS[durIdx], mode, prefs,
+    duration: DURATIONS[durIdx < 0 ? 2 : durIdx], mode, prefs,
   });
 
   return (
@@ -81,13 +81,14 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
 
       <div className="wiz-scroll">
         {step === "where" ? (
-          <div className="wiz-open">
+          <div className="wiz-open expand">
             <div className="wo-title">Where?</div>
             <div className="wiz-field">
               <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search destinations…" />
             </div>
             <div className="wiz-suggest-h">Suggested destinations</div>
+            <div className="wiz-list">
             {dests.map((d) => (
               <div key={d.id} className={"dest-row" + (dest && dest.id === d.id ? " on" : "")} onClick={() => { setDest(d); setStep("howlong"); }}>
                 <DestThumb d={d} />
@@ -98,25 +99,26 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
                 <div className="pick"><iconify-icon icon="hugeicons:tick-02"></iconify-icon></div>
               </div>
             ))}
+            </div>
           </div>
         ) : Row("where", "Where", summaryWhere)}
 
         {step === "howlong" ? (
-          <div className="wiz-open">
+          <div className="wiz-open expand">
             <div className="wo-title">How long?</div>
             <div className="wiz-seg">
               <button className={mode === "flex" ? "on" : ""} onClick={() => setMode("flex")}>Flexible</button>
               <button className={mode === "exact" ? "on" : ""} onClick={() => setMode("exact")}>Exact date</button>
             </div>
-            <DurationWheel idx={durIdx} onIdx={setDurIdx} />
+            <DurationWheel idx={durIdx < 0 ? 2 : durIdx} onIdx={setDurIdx} />
           </div>
         ) : Row("howlong", "How long", summaryHow)}
 
         {step === "prefs" ? (
-          <div className="wiz-open">
+          <div className="wiz-open expand">
             <div className="wo-title">Preferences{prefs.length > 0 && <button className="clear" onClick={() => setPrefs([])}>Clear</button>}</div>
             <div className="wo-sub">Selected {prefs.length}</div>
-            <div className="wiz-prefs">
+            <div className="wiz-prefs scroll">
               {WIZARD_PREFS.map((p) => (
                 <button key={p} className={"wprefchip" + (prefs.includes(p) ? " on" : "")} onClick={() => togglePref(p)}>
                   <iconify-icon icon={prefIcon(p)}></iconify-icon>{p}
@@ -128,7 +130,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
       </div>
 
       <div className="wiz-foot">
-        <button className="clear-all" onClick={() => { setDest(null); setQ(""); setMode("flex"); setDurIdx(2); setPrefs([]); setStep("where"); }}>Clear all</button>
+        <button className="clear-all" onClick={() => { setDest(null); setQ(""); setMode("flex"); setDurIdx(-1); setPrefs([]); setStep("where"); }}>Clear all</button>
         {step === "prefs" ? (
           <button className="go search" onClick={goSearch}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Search guides</button>
         ) : (
