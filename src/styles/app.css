@@ -244,3 +244,15 @@
 .gc-tag .twemoji { width: 16px; height: 16px; }
 .wprefchip .twemoji { width: 19px; height: 19px; }
 .tl-badge .twemoji { width: 14px; height: 14px; }
+
+/* add-place: quick-pick suggestions */
+.ap-suggest { margin-top: 18px; }
+.ap-sug-h { font-weight: 600; font-size: 13px; color: var(--t1-fg-muted); margin-bottom: 2px; }
+.ap-sug-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 0; border: none; background: none;
+  cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+.ap-sug-row:active { opacity: .55; }
+.ap-sug-th { width: 46px; height: 46px; border-radius: 12px; background-size: cover; background-position: center; flex: none; }
+.ap-sug-body { flex: 1; min-width: 0; }
+.ap-sug-body .n { font-weight: 700; font-size: 15px; color: var(--t1-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ap-sug-body .t { font-weight: 500; font-size: 12.5px; color: var(--t1-fg-muted); }
+.ap-sug-row iconify-icon { font-size: 24px; color: var(--t1-orange); flex: none; }

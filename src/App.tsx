@@ -28,6 +28,8 @@ function useStageScale() {
   return ref;
 }
 
+const LIST_SORTS = [{ key: "recent", label: "Recent" }, { key: "name", label: "Name (A-Z)" }, { key: "places", label: "Most places" }];
+
 export function App() {
   const phoneRef = useStageScale();
 
@@ -44,6 +46,7 @@ export function App() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [savedFilter, setSavedFilter] = useState("all");
   const [tripsFilter, setTripsFilter] = useState("all");
+  const [listSort, setListSort] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
 
   const toastTimer = useRef<number | undefined>(undefined);
@@ -97,10 +100,10 @@ export function App() {
     screen = <ExploreScreen onSearch={() => openWizard()} onOpenCity={(c: City) => openWizard(c)}
       savedTrips={savedTrips} onOpenGuide={openGuide} onHeart={toggleSavedTrip} />;
   } else if (tab === "saved") {
-    screen = <SavedScreen allTrips={allTrips} savedTrips={savedTrips} filter={savedFilter} onFilter={setSavedFilter}
+    screen = <SavedScreen allTrips={allTrips} savedTrips={savedTrips} filter={savedFilter} onFilter={setSavedFilter} sort={LIST_SORTS[listSort].key}
       onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} />;
   } else {
-    screen = <MyTripsScreen allTrips={allTrips} myTrips={myTrips} savedTrips={savedTrips} filter={tripsFilter} onFilter={setTripsFilter}
+    screen = <MyTripsScreen allTrips={allTrips} myTrips={myTrips} savedTrips={savedTrips} filter={tripsFilter} onFilter={setTripsFilter} sort={LIST_SORTS[listSort].key}
       onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} />;
   }
 
@@ -118,7 +121,7 @@ export function App() {
         {/* saved / trips options button */}
         {showChrome && (tab === "saved" || tab === "trips") && (
           <button className="glassbtn sm" style={{ position: "absolute", right: 20, top: 70, zIndex: 40 }}
-            onClick={() => showToast("Sort & filter")} aria-label="Options">
+            onClick={() => { const nx = (listSort + 1) % LIST_SORTS.length; setListSort(nx); showToast("Sorted by " + LIST_SORTS[nx].label); }} aria-label="Sort">
             <iconify-icon icon="solar:tuning-2-linear"></iconify-icon>
           </button>
         )}

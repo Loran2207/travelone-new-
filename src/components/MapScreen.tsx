@@ -52,6 +52,16 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const [cityId, setCityId] = useState<string | null>(null);
   const [recenter, setRecenter] = useState(0);
   const [locateN, setLocateN] = useState(0);
+  const [userLoc, setUserLoc] = useState<LatLng | null>(null);
+  const locateMe = () => {
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => { setUserLoc([pos.coords.latitude, pos.coords.longitude]); setLocateN((x) => x + 1); showToast("Centering on your location"); },
+        () => { setLocateN((x) => x + 1); showToast("Location unavailable - showing Warsaw"); },
+        { enableHighAccuracy: true, timeout: 6000 },
+      );
+    } else { setLocateN((x) => x + 1); showToast("Centering on Warsaw"); }
+  };
 
   // ---- sheet drag ----
   const defaultTop = view === "myspots" ? FULL : MID;
@@ -130,7 +140,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
       actions: [
         { label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) },
         { label: "Rename list", icon: "hugeicons:text-font", onClick: () => showToast("Rename “" + l.name + "”") },
-        { label: "Share list", icon: "solar:share-bold", onClick: () => showToast("Sharing “" + l.name + "”") },
+        { label: "Share list", icon: "solar:share-bold", onClick: () => { try { navigator.clipboard && navigator.clipboard.writeText("https://travel1.app/list/" + l.id); } catch { /* ignore */ } showToast("Link copied"); } },
         { label: "Delete list", icon: "solar:trash-bin-trash-bold", destructive: true, onClick: () => showToast("List deleted") },
       ],
     });
@@ -144,14 +154,14 @@ export function MapScreen({ shared }: { shared: Shared }) {
     let focus: MapFocusTarget = { _n: recenter };
 
     if (view === "browse") {
-      meDot = CITY_CENTER.Warsaw;
+      meDot = userLoc || CITY_CENTER.Warsaw;
       const near = [SPOTS[1], SPOTS[3], SPOTS[5], SPOTS[7]];
       markers = near.map((s) => ({
         key: s.id, latlng: spotLatLng(s),
         html: pinHtml({ cat: s.cat, label: s.name, active: false }),
         onClick: () => setSpot(s),
       }));
-      focus = { center: CITY_CENTER.Warsaw, zoom: locateN > 0 ? 15 : 13, _n: recenter + locateN * 100 };
+      focus = { center: userLoc || CITY_CENTER.Warsaw, zoom: locateN > 0 ? 15 : 13, _n: recenter + locateN * 100 };
     } else if (view === "myspots") {
       markers = groupedCityPins.map((c) => ({
         key: c.place, latlng: CITY_CENTER[c.place] || CITY_CENTER.Warsaw,
@@ -170,14 +180,14 @@ export function MapScreen({ shared }: { shared: Shared }) {
     }
     return { markers, meDot, focus };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view, listId, cityId, removed, spot, recenter, locateN]);
+  }, [view, listId, cityId, removed, spot, recenter, locateN, userLoc]);
 
   // ---- sheet body ----
   let sheetBody: JSX.Element | null = null;
   let fixedTop: JSX.Element | null = null;
   if (view === "list" && list) {
     sheetBody = <ListDetail list={list} spots={listSpots} onOpenSpot={openSpotById}
-      onShare={() => showToast("Sharing “" + list.name + "”")} onEdit={() => showToast("Edit list details")}
+      onShare={() => { try { navigator.clipboard && navigator.clipboard.writeText("https://travel1.app/list/" + list.id); } catch { /* ignore */ } showToast("Link copied"); }} onEdit={() => showToast("Edit list details")}
       onCreateTrip={() => setBuilderList(list)} onAddSpot={startPlacing}
       manage={manage} onToggleManage={() => setManage(!manage)} onRemoveSpot={removeSpotFromList}
       catFilter={catFilter} onCatFilter={setCatFilter} placeFilter={placeFilter} onPlaceFilter={setPlaceFilter}
@@ -213,7 +223,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
           <button className="weather" style={{ position: "absolute", right: 20, top: 24, zIndex: 15 }} onClick={() => showToast("Warsaw · 16° · Cloudy")}>
             <iconify-icon icon="solar:cloud-bold"></iconify-icon>16°
           </button>
-          <button className="glassbtn" style={{ position: "absolute", right: 20, top: 78, zIndex: 15 }} onClick={() => { setLocateN((x) => x + 1); showToast("Centering on your location"); }} aria-label="My location">
+          <button className="glassbtn" style={{ position: "absolute", right: 20, top: 78, zIndex: 15 }} onClick={locateMe} aria-label="My location">
             <iconify-icon icon="solar:gps-bold"></iconify-icon>
           </button>
         </Fragment>

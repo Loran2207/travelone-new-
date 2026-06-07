@@ -95,10 +95,15 @@ export function CountryChips({ countries, value, onChange }: {
 }
 
 // ---- SAVED tab ----
-export function SavedScreen({ allTrips, savedTrips, filter, onFilter, onOpenGuide, onHeart, onExplore }: {
-  allTrips: Trip[]; savedTrips: Set<string>; filter: string; onFilter: (f: string) => void;
+export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore }: {
+  allTrips: Trip[]; savedTrips: Set<string>; filter: string; sort?: string; onFilter: (f: string) => void;
   onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void;
 }) {
+  const sortTrips = (arr: Trip[]) => {
+    if (sort === "name") return [...arr].sort((a, b) => a.name.localeCompare(b.name));
+    if (sort === "places") return [...arr].sort((a, b) => b.stats.places - a.stats.places);
+    return arr;
+  };
   const saved = allTrips.filter((t) => savedTrips.has(t.id));
   const countries = [...new Map(saved.map((t) => [placeMeta(t.place).country, { country: placeMeta(t.place).country, flag: placeMeta(t.place).flag }])).values()];
   const shown = filter === "all" ? saved : saved.filter((t) => placeMeta(t.place).country === filter);
@@ -114,7 +119,7 @@ export function SavedScreen({ allTrips, savedTrips, filter, onFilter, onOpenGuid
       ) : (
         <Fragment>
           <CountryChips countries={countries} value={filter} onChange={onFilter} />
-          {shown.map((t) => <GuideCard key={t.id} trip={t} saved onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
+          {sortTrips(shown).map((t) => <GuideCard key={t.id} trip={t} saved onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
         </Fragment>
       )}
     </div>
@@ -122,10 +127,15 @@ export function SavedScreen({ allTrips, savedTrips, filter, onFilter, onOpenGuid
 }
 
 // ---- MY TRIPS tab ----
-export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, onFilter, onOpenGuide, onHeart, onExplore }: {
-  allTrips: Trip[]; myTrips: Set<string>; savedTrips: Set<string>; filter: string; onFilter: (f: string) => void;
+export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore }: {
+  allTrips: Trip[]; myTrips: Set<string>; savedTrips: Set<string>; filter: string; sort?: string; onFilter: (f: string) => void;
   onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void;
 }) {
+  const sortTrips = (arr: Trip[]) => {
+    if (sort === "name") return [...arr].sort((a, b) => a.name.localeCompare(b.name));
+    if (sort === "places") return [...arr].sort((a, b) => b.stats.places - a.stats.places);
+    return arr;
+  };
   const mine = allTrips.filter((t) => myTrips.has(t.id));
   const countries = [...new Map(mine.map((t) => [placeMeta(t.place).country, { country: placeMeta(t.place).country, flag: placeMeta(t.place).flag }])).values()];
   const shown = filter === "all" ? mine : mine.filter((t) => placeMeta(t.place).country === filter);
@@ -141,7 +151,7 @@ export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, onFilter,
       ) : (
         <Fragment>
           <CountryChips countries={countries} value={filter} onChange={onFilter} />
-          {shown.map((t) => <GuideCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
+          {sortTrips(shown).map((t) => <GuideCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
         </Fragment>
       )}
     </div>
@@ -155,6 +165,8 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
   onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onFilters: () => void;
 }) {
   const pm = placeMeta(query.place);
+  const [si, setSi] = useState(0);
+  const SORTS = [{ k: "rec", l: "Recommended" }, { k: "places", l: "Most places" }, { k: "short", l: "Shortest" }];
   let guides = query.place ? allTrips.filter((t) => t.place === query.place) : allTrips.slice();
   if (guides.length === 0) guides = allTrips.slice();
   if (query.prefs && query.prefs.length) {
@@ -163,6 +175,8 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
       return score(b) - score(a);
     });
   }
+  if (SORTS[si].k === "places") guides = [...guides].sort((a, b) => b.stats.places - a.stats.places);
+  else if (SORTS[si].k === "short") guides = [...guides].sort((a, b) => parseFloat(String(a.stats.km)) - parseFloat(String(b.stats.km)));
   return (
     <div className="screen screen-pad">
       <div className="results-head">
@@ -175,7 +189,7 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
       </div>
       <div className="rh-sort">
         <div className="cnt">{guides.length} {guides.length === 1 ? "guide" : "guides"}</div>
-        <button className="sort">Recommended <iconify-icon icon="solar:sort-vertical-linear"></iconify-icon></button>
+        <button className="sort" onClick={() => setSi((si + 1) % SORTS.length)}>{SORTS[si].l} <iconify-icon icon="solar:sort-vertical-linear"></iconify-icon></button>
       </div>
       {guides.map((t) => <GuideCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenGuide(t.id)} onHeart={() => onHeart(t)} />)}
     </div>
@@ -226,6 +240,18 @@ export function AddPlaceSheet({ open, onClose, onAdd }: { open: boolean; onClose
         <input className="ap-input" value={val} onChange={(e) => setVal(e.target.value)}
           placeholder="Name or paste address…" autoFocus
           onKeyDown={(e) => { if (e.key === "Enter" && match) onAdd(match.name); }} />
+        {!val.trim() && (
+          <div className="ap-suggest">
+            <div className="ap-sug-h">Quick add</div>
+            {SPOTS.slice(0, 5).map((s) => (
+              <button key={s.id} className="ap-sug-row" onClick={() => onAdd(s.name)}>
+                <div className="ap-sug-th" style={{ backgroundImage: `url(${s.img})` }}></div>
+                <div className="ap-sug-body"><div className="n">{s.name}</div><div className="t">{catMeta(s.cat).type} · {placeMeta(s.place).city}</div></div>
+                <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
+              </button>
+            ))}
+          </div>
+        )}
         {match && cm && (
           <div className="tl-card ap-result">
             <div className="tl-thumb" style={{ backgroundImage: `url(${match.img})` }}></div>
