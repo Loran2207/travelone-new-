@@ -339,3 +339,13 @@ export function spotContact(s: Spot): { address: string; website: string; phone:
     phone: s.phone || `+48 ${pad(h, 2)} ${pad(h >> 5, 3)} ${pad(h >> 9, 2)} ${pad(h >> 13, 2)}`,
   };
 }
+
+
+// ---- lighten a hex colour toward white (for muted, badge-style fills) ----
+export function tint(hex: string, amt: number): string {
+  const h = hex.replace("#", "");
+  const num = parseInt(h, 16);
+  const r = (num >> 16) & 255, g = (num >> 8) & 255, b = num & 255;
+  const m = (c: number) => Math.round(c + (255 - c) * amt);
+  return "rgb(" + m(r) + ", " + m(g) + ", " + m(b) + ")";
+}

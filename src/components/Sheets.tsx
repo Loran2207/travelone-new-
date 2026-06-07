@@ -1,6 +1,6 @@
 // TRAVEL1 — bottom-sheet browse content: All · Lists · Trips · Nearby
 import { Fragment } from "react";
-import { CATS, LISTS, SPOTS, TRIPS, placeMeta, prefEmoji, spotsOf } from "../data/data";
+import { CATS, LISTS, SPOTS, TRIPS, placeMeta, prefEmoji, spotsOf, tint } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 
@@ -24,7 +24,8 @@ export function FilterRow({ tab, onTab, onSearch }: { tab: string; onTab: (id: s
 
 export function ListThumb({ list, cls = "lc-thumb" }: { list: ListDef; cls?: string }) {
   if (list.special) return <div className={cls + " pinbox"}><iconify-icon icon="solar:map-point-bold"></iconify-icon></div>;
-  if (!list.cover && list.icon) return <div className={cls + " iconthumb"} style={{ background: list.color || "#FE4A00" }}><iconify-icon icon={list.icon}></iconify-icon></div>;
+  if (!list.cover && list.emoji) return <div className={cls + " glyphthumb"} style={{ background: tint(list.color || "#FE4A00", 0.82) }}><Emoji e={list.emoji} size={22} /></div>;
+  if (!list.cover && list.icon) return <div className={cls + " glyphthumb"} style={{ background: tint(list.color || "#FE4A00", 0.82) }}><iconify-icon icon={list.icon} style={{ color: list.color || "#FE4A00" }}></iconify-icon></div>;
   return <div className={cls} style={{ backgroundImage: `url(${list.cover})` }}></div>;
 }
 

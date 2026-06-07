@@ -473,3 +473,14 @@ iconify-icon, .iconify { display: inline-block; }
 .rail .tripcard { flex: none; width: 262px; margin: 0; }
 
 .ld-spots-sub { font-weight: 600; font-size: 14px; color: var(--t1-fg-muted); margin-top: 4px; }
+
+/* new-list: emoji/icon glyph picker + glyph thumbnails */
+.nl-glyphs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; width: 100%; margin-top: 16px; }
+.nl-glyph { aspect-ratio: 1; border-radius: 14px; border: 1.5px solid var(--t1-border); background: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--t1-fg-soft);
+  -webkit-tap-highlight-color: transparent; transition: all .12s; }
+.nl-glyph.on { border-width: 2px; }
+.nl-glyph .twemoji { width: 22px; height: 22px; }
+.glyphthumb { display: flex; align-items: center; justify-content: center; }
+.glyphthumb iconify-icon { font-size: 24px; }
+.glyphthumb .twemoji { width: 24px; height: 24px; }

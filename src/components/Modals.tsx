@@ -1,7 +1,7 @@
 // TRAVEL1 — overlays: Search, New List, Spot detail, Add-to-list,
 // Action sheet, Trip builder, Create/Profile popovers.
 import { Fragment, useEffect, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
-import { CATS, I, IMG, LISTS, SPOTS, TRIPS, catMeta, galleryOf, placeMeta, placesOf, prefEmoji, spotContact, spotsOf } from "../data/data";
+import { CATS, I, IMG, LISTS, SPOTS, TRIPS, catMeta, galleryOf, placeMeta, placesOf, prefEmoji, spotContact, spotsOf, tint } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 import { ListThumb, SpotRow, TripRow } from "./Sheets";
@@ -68,8 +68,8 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
                   <div style={{ width: 140, height: 140, borderRadius: 16, overflow: "hidden", boxShadow: "var(--t1-shadow-card)", position: "relative" }}>
                     {l.special
                       ? <div style={{ width: "100%", height: "100%", background: "linear-gradient(150deg,#FF7A3D 0%,#FE4A00 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 46, color: "#fff" }}></iconify-icon></div>
-                      : (!l.cover && l.icon)
-                        ? <div style={{ width: "100%", height: "100%", background: l.color || "#FE4A00", display: "flex", alignItems: "center", justifyContent: "center" }}><iconify-icon icon={l.icon} style={{ color: "#fff", fontSize: 40 }}></iconify-icon></div>
+                      : (!l.cover && (l.emoji || l.icon))
+                        ? <div style={{ width: "100%", height: "100%", background: tint(l.color || "#FE4A00", 0.82), display: "flex", alignItems: "center", justifyContent: "center" }}>{l.emoji ? <Emoji e={l.emoji} size={46} /> : <iconify-icon icon={l.icon || "solar:map-point-bold"} style={{ color: l.color || "#FE4A00", fontSize: 42 }}></iconify-icon>}</div>
                         : <div style={{ width: "100%", height: "100%", backgroundImage: `url(${l.cover})`, backgroundSize: "cover", backgroundPosition: "center" }}></div>}
                     <div style={{ position: "absolute", left: 9, bottom: 9, right: 9 }}>
                       <div style={{ color: "#fff", fontWeight: 700, fontSize: 16, textShadow: "0 2px 8px rgba(0,0,0,.5)" }}>{l.name}</div>
@@ -105,27 +105,25 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
 }
 
 // ---- NEW LIST modal ----
-const NL_ICONS = [
-  "solar:bookmark-bold", "solar:map-point-bold", "hugeicons:heart-add", "solar:star-bold",
-  "hugeicons:restaurant-02", "hugeicons:coffee-02", "hugeicons:tree-06", "hugeicons:beach-02",
-  "solar:camera-bold", "hugeicons:building-06", "hugeicons:shopping-bag-02", "hugeicons:airplane-01",
-];
-const NL_COLORS = ["#FE4A00", "#2563EB", "#E8590C", "#7C3AED", "#2F9E44", "#0E7490", "#BE185D", "#111111"];
+const NL_EMOJIS = ["📍", "⭐", "🏖️", "🏛️", "🍽️", "☕", "🌳", "🎨", "🛍️", "🌃", "✈️", "🏔️"];
+const NL_ICONS = ["solar:map-point-bold", "solar:star-bold", "solar:bookmark-bold", "solar:heart-bold", "solar:cup-hot-bold", "solar:buildings-2-bold", "solar:leaf-bold", "solar:camera-bold", "solar:bag-4-bold", "solar:gallery-bold", "solar:bed-bold", "solar:routing-bold"];
+const NL_COLORS = ["#2563EB", "#E07A00", "#16A34A", "#E11D74", "#7C3AED", "#0D9488", "#E11D48", "#9A6B3F", "#57534E"];
 
 export function NewListModal({ open, onClose, onCreate }: {
   open: boolean; onClose: () => void;
-  onCreate: (data: { name: string; cover?: string; icon?: string; color?: string }) => void;
+  onCreate: (data: { name: string; cover?: string; icon?: string; emoji?: string; color?: string }) => void;
 }) {
   const presets = [I.castle, I.park, I.palace, I.air];
   const [name, setName] = useState("");
-  const [mode, setMode] = useState<"photo" | "icon">("photo");
-  const [photo, setPhoto] = useState(presets[0]);
+  const [mode, setMode] = useState<"emoji" | "icon" | "photo">("emoji");
+  const [emoji, setEmoji] = useState(NL_EMOJIS[0]);
   const [icon, setIcon] = useState(NL_ICONS[0]);
   const [color, setColor] = useState(NL_COLORS[0]);
+  const [photo, setPhoto] = useState(presets[0]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (open) { setName(""); setMode("photo"); setPhoto(presets[0]); setIcon(NL_ICONS[0]); setColor(NL_COLORS[0]); }
+    if (open) { setName(""); setMode("emoji"); setEmoji(NL_EMOJIS[0]); setIcon(NL_ICONS[0]); setColor(NL_COLORS[0]); setPhoto(presets[0]); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
@@ -137,30 +135,30 @@ export function NewListModal({ open, onClose, onCreate }: {
   const submit = () => {
     if (!ready) return;
     if (mode === "photo") onCreate({ name: name.trim(), cover: photo });
-    else onCreate({ name: name.trim(), icon, color });
+    else if (mode === "icon") onCreate({ name: name.trim(), icon, color });
+    else onCreate({ name: name.trim(), emoji, color });
   };
+  const previewStyle = mode === "photo"
+    ? { backgroundImage: `url(${photo})`, borderStyle: "solid", borderColor: "transparent" }
+    : { background: tint(color, 0.82), borderStyle: "solid", borderColor: "transparent", display: "flex", alignItems: "center", justifyContent: "center" };
 
   return (
-    <div className={"modal" + (open ? " open" : "")} style={{ minHeight: 580 }}>
+    <div className={"modal" + (open ? " open" : "")} style={{ minHeight: 600 }}>
       <div className="grab-zone"><div className="grabber"></div></div>
       <div className="nl-head">
         <div className="t">New list</div>
         <button className="x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
       </div>
       <div className="nl-body">
-        <div className="nl-photo" style={mode === "photo"
-          ? { backgroundImage: `url(${photo})`, borderStyle: "solid", borderColor: "transparent" }
-          : { background: color, borderStyle: "solid", borderColor: "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {mode === "icon" && <iconify-icon icon={icon} style={{ fontSize: 54, color: "#fff" }}></iconify-icon>}
+        <div className="nl-photo" style={previewStyle}>
+          {mode === "emoji" && <Emoji e={emoji} size={56} />}
+          {mode === "icon" && <iconify-icon icon={icon} style={{ fontSize: 54, color }}></iconify-icon>}
         </div>
 
         <div className="nl-seg">
-          <button className={mode === "photo" ? "on" : ""} onClick={() => setMode("photo")}>
-            <iconify-icon icon="hugeicons:image-02"></iconify-icon> Photo
-          </button>
-          <button className={mode === "icon" ? "on" : ""} onClick={() => setMode("icon")}>
-            <iconify-icon icon="solar:widget-bold"></iconify-icon> Icon
-          </button>
+          <button className={mode === "emoji" ? "on" : ""} onClick={() => setMode("emoji")}>Emoji</button>
+          <button className={mode === "icon" ? "on" : ""} onClick={() => setMode("icon")}>Icon</button>
+          <button className={mode === "photo" ? "on" : ""} onClick={() => setMode("photo")}>Photo</button>
         </div>
 
         {mode === "photo" ? (
@@ -168,25 +166,25 @@ export function NewListModal({ open, onClose, onCreate }: {
             <button className="cv up" onClick={() => fileRef.current && fileRef.current.click()} aria-label="Upload photo">
               <iconify-icon icon="hugeicons:add-01"></iconify-icon>
             </button>
-            {presets.map((c, i) => (
-              <div key={i} className={"cv" + (photo === c ? " on" : "")} style={{ backgroundImage: `url(${c})` }} onClick={() => setPhoto(c)}></div>
-            ))}
+            {presets.map((c, i) => <div key={i} className={"cv" + (photo === c ? " on" : "")} style={{ backgroundImage: `url(${c})` }} onClick={() => setPhoto(c)}></div>)}
             <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
           </div>
         ) : (
           <Fragment>
-            <div className="nl-iconrow">
-              {NL_ICONS.map((ic) => (
-                <button key={ic} className={"nl-ic" + (icon === ic ? " on" : "")}
-                  style={icon === ic ? { borderColor: color, color } : undefined} onClick={() => setIcon(ic)}>
-                  <iconify-icon icon={ic}></iconify-icon>
-                </button>
-              ))}
+            <div className="nl-glyphs">
+              {(mode === "emoji" ? NL_EMOJIS : NL_ICONS).map((g) => {
+                const on = mode === "emoji" ? emoji === g : icon === g;
+                return (
+                  <button key={g} className={"nl-glyph" + (on ? " on" : "")} style={on ? { borderColor: color, background: tint(color, 0.86) } : undefined}
+                    onClick={() => (mode === "emoji" ? setEmoji(g) : setIcon(g))}>
+                    {mode === "emoji" ? <Emoji e={g} size={22} /> : <iconify-icon icon={g} style={{ color }}></iconify-icon>}
+                  </button>
+                );
+              })}
             </div>
             <div className="nl-colors">
               {NL_COLORS.map((cl) => (
-                <button key={cl} className={"nl-col" + (color === cl ? " on" : "")}
-                  style={{ background: cl }} onClick={() => setColor(cl)} aria-label="Pick colour"></button>
+                <button key={cl} className={"nl-col" + (color === cl ? " on" : "")} style={{ background: tint(cl, 0.74) }} onClick={() => setColor(cl)} aria-label="Pick colour"></button>
               ))}
             </div>
           </Fragment>

@@ -51,6 +51,7 @@ export interface ListDef {
   pin?: boolean;
   cover?: string;
   icon?: string;
+  emoji?: string;
   color?: string;
   collab?: boolean;
   note?: string;
