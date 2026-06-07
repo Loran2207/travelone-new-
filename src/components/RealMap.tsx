@@ -18,7 +18,7 @@ export function pinHtml(opts: {
   const inner =
     opts.num != null
       ? `<div class="pin-num">${opts.num}</div>`
-      : `<div class="pin-cat"><iconify-icon icon="${cat.icon || "hugeicons:location-01"}"></iconify-icon></div>`;
+      : `<div class="pin-cat"><iconify-icon icon="${cat.icon || "solar:map-point-bold"}"></iconify-icon></div>`;
   const count = opts.count != null ? `<span class="pin-count">${opts.count}</span>` : "";
   const label = opts.label ? `<div class="pin-label">${opts.label}</div>` : "";
   return (

@@ -166,7 +166,7 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
   return (
     <div className="screen screen-pad">
       <div className="results-head">
-        <button className="glassbtn sm" onClick={onBack} aria-label="Back"><iconify-icon icon="hugeicons:arrow-left-01"></iconify-icon></button>
+        <button className="glassbtn sm" onClick={onBack} aria-label="Back"><iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon></button>
         <div className="rh-title">
           <div className="where">{pm.city || "Anywhere"} <Flag e={pm.flag} size={15} /></div>
           <div className="when">{query.duration || "Flexible"}</div>
@@ -232,7 +232,7 @@ export function AddPlaceSheet({ open, onClose, onAdd }: { open: boolean; onClose
             <div className="tl-info">
               <div className="tl-type">{cm.type}</div>
               <div className="tl-name">{match.name}</div>
-              <span className="tl-badge"><iconify-icon icon={CATS[match.cat]?.icon || "hugeicons:location-01"} style={{ color: CATS[match.cat]?.color }}></iconify-icon>{match.cat}</span>
+              <span className="tl-badge"><iconify-icon icon={CATS[match.cat]?.icon || "solar:map-point-bold"} style={{ color: CATS[match.cat]?.color }}></iconify-icon>{match.cat}</span>
             </div>
           </div>
         )}
@@ -240,7 +240,7 @@ export function AddPlaceSheet({ open, onClose, onAdd }: { open: boolean; onClose
       {match && (
         <div className="ap-foot">
           <button className="ap-add" onClick={() => onAdd(match.name)}>
-            Add place <iconify-icon icon="hugeicons:arrow-right-01"></iconify-icon>
+            Add place <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
           </button>
         </div>
       )}

@@ -137,7 +137,7 @@ export function App() {
         {/* bottom nav */}
         {showNav && <BottomNav tab={tab} onTab={goTab} />}
 
-        <div className={"toast" + (toast ? " show" : "")}><iconify-icon icon="hugeicons:checkmark-circle-02"></iconify-icon>{toast}</div>
+        <div className={"toast" + (toast ? " show" : "")}><iconify-icon icon="solar:check-circle-bold"></iconify-icon>{toast}</div>
       </div>
     </div>
   );

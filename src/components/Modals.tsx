@@ -21,7 +21,7 @@ export function Keyboard({ onKey, onBack, onSpace, onGo, suggest }: {
       <div className="kb-row">{KB_ROWS[0].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}</div>
       <div className="kb-row" style={{ padding: "0 16px" }}>{KB_ROWS[1].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}</div>
       <div className="kb-row">
-        <button className="key fn wide"><iconify-icon icon="hugeicons:arrow-up-01"></iconify-icon></button>
+        <button className="key fn wide"><iconify-icon icon="solar:alt-arrow-up-bold"></iconify-icon></button>
         {KB_ROWS[2].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}
         <button className="key fn wide" onClick={onBack}><iconify-icon icon="hugeicons:remove-square"></iconify-icon></button>
       </div>
@@ -31,7 +31,7 @@ export function Keyboard({ onKey, onBack, onSpace, onGo, suggest }: {
         <button className="key space" onClick={onSpace}>space</button>
         <button className="key go" onClick={onGo}>search</button>
       </div>
-      <div className="kb-bottom"><iconify-icon icon="hugeicons:globe-02"></iconify-icon><iconify-icon icon="hugeicons:mic-01"></iconify-icon></div>
+      <div className="kb-bottom"><iconify-icon icon="solar:global-bold"></iconify-icon><iconify-icon icon="hugeicons:mic-01"></iconify-icon></div>
     </div>
   );
 }
@@ -53,7 +53,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
       <div className="grab-zone"><div className="grabber"></div></div>
       <div className="search-top">
         <div className="search-field">
-          <iconify-icon icon="hugeicons:search-01"></iconify-icon>
+          <iconify-icon icon="solar:magnifer-bold"></iconify-icon>
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search spots, lists & trips" autoFocus />
         </div>
         <button className="search-x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
@@ -67,7 +67,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
                 <div key={l.id} style={{ flex: "none", width: 140, cursor: "pointer" }} onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
                   <div style={{ width: 140, height: 140, borderRadius: 16, overflow: "hidden", boxShadow: "var(--t1-shadow-card)", position: "relative" }}>
                     {l.special
-                      ? <div className="pinbox" style={{ width: "100%", height: "100%" }}><iconify-icon icon="hugeicons:location-01"></iconify-icon></div>
+                      ? <div style={{ width: "100%", height: "100%", background: "linear-gradient(150deg,#FF7A3D 0%,#FE4A00 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 46, color: "#fff" }}></iconify-icon></div>
                       : (!l.cover && l.icon)
                         ? <div style={{ width: "100%", height: "100%", background: l.color || "#FE4A00", display: "flex", alignItems: "center", justifyContent: "center" }}><iconify-icon icon={l.icon} style={{ color: "#fff", fontSize: 40 }}></iconify-icon></div>
                         : <div style={{ width: "100%", height: "100%", backgroundImage: `url(${l.cover})`, backgroundSize: "cover", backgroundPosition: "center" }}></div>}
@@ -92,7 +92,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
           <div key={l.id} className="atl-row" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
             <ListThumb list={l} cls="atl-thumb" />
             <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} spots</div></div>
-            <iconify-icon icon="hugeicons:arrow-right-01" style={{ fontSize: 19, color: "var(--t1-fg-faint)" }}></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-bold" style={{ fontSize: 19, color: "var(--t1-fg-faint)" }}></iconify-icon>
           </div>
         ))}</Fragment>}
         {ql && spots.length > 0 && <Fragment><div className="search-eyebrow">Spots</div>{spots.map((s) => <SpotRow key={s.id} spot={s} onClick={() => onOpenSpot(s.id)} />)}</Fragment>}
@@ -106,9 +106,9 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
 
 // ---- NEW LIST modal ----
 const NL_ICONS = [
-  "hugeicons:bookmark-02", "hugeicons:location-01", "hugeicons:heart-add", "hugeicons:star",
+  "solar:bookmark-bold", "solar:map-point-bold", "hugeicons:heart-add", "solar:star-bold",
   "hugeicons:restaurant-02", "hugeicons:coffee-02", "hugeicons:tree-06", "hugeicons:beach-02",
-  "hugeicons:camera-01", "hugeicons:building-06", "hugeicons:shopping-bag-02", "hugeicons:airplane-01",
+  "solar:camera-bold", "hugeicons:building-06", "hugeicons:shopping-bag-02", "hugeicons:airplane-01",
 ];
 const NL_COLORS = ["#FE4A00", "#2563EB", "#E8590C", "#7C3AED", "#2F9E44", "#0E7490", "#BE185D", "#111111"];
 
@@ -159,14 +159,14 @@ export function NewListModal({ open, onClose, onCreate }: {
             <iconify-icon icon="hugeicons:image-02"></iconify-icon> Photo
           </button>
           <button className={mode === "icon" ? "on" : ""} onClick={() => setMode("icon")}>
-            <iconify-icon icon="hugeicons:grid-view"></iconify-icon> Icon
+            <iconify-icon icon="solar:widget-bold"></iconify-icon> Icon
           </button>
         </div>
 
         {mode === "photo" ? (
           <div className="nl-covers">
             <button className="cv up" onClick={() => fileRef.current && fileRef.current.click()} aria-label="Upload photo">
-              <iconify-icon icon="hugeicons:add-01"></iconify-icon>
+              <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
             </button>
             {presets.map((c, i) => (
               <div key={i} className={"cv" + (photo === c ? " on" : "")} style={{ backgroundImage: `url(${c})` }} onClick={() => setPhoto(c)}></div>
@@ -196,7 +196,7 @@ export function NewListModal({ open, onClose, onCreate }: {
       </div>
       <div style={{ flex: 1 }}></div>
       <button className={"nl-create" + (ready ? " ready" : "")} onClick={submit}>
-        <iconify-icon icon="hugeicons:add-01"></iconify-icon> Create list
+        <iconify-icon icon="solar:add-circle-bold"></iconify-icon> Create list
       </button>
     </div>
   );
@@ -227,31 +227,31 @@ export function SpotModal({ spot, saved, onClose, onSave, onDirections }: {
         <div className="sd-desc">{spot.desc}</div>
         <div className="sd-info">
           <button className="sd-irow" onClick={onDirections}>
-            <span className="ic"><iconify-icon icon="hugeicons:clock-01"></iconify-icon></span>
+            <span className="ic"><iconify-icon icon="solar:clock-circle-bold"></iconify-icon></span>
             <span className="lbl">{spot.hours}</span>
-            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
           </button>
           <div className="sd-irow">
-            <span className="ic"><iconify-icon icon="hugeicons:location-01"></iconify-icon></span>
+            <span className="ic"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>
             <span className="lbl two"><span className="t">Location</span><span className="v">{c.address}</span></span>
-            <button className="copy" onClick={() => copy(c.address)} aria-label="Copy address"><iconify-icon icon="hugeicons:copy-01"></iconify-icon></button>
+            <button className="copy" onClick={() => copy(c.address)} aria-label="Copy address"><iconify-icon icon="solar:copy-bold"></iconify-icon></button>
           </div>
           <a className="sd-irow" href={`https://${c.website}`} target="_blank" rel="noreferrer">
-            <span className="ic"><iconify-icon icon="hugeicons:globe-02"></iconify-icon></span>
+            <span className="ic"><iconify-icon icon="solar:global-bold"></iconify-icon></span>
             <span className="lbl two"><span className="t">Website</span><span className="v">{c.website}</span></span>
-            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
           </a>
           <a className="sd-irow" href={`tel:${c.phone.replace(/\s/g, "")}`}>
-            <span className="ic"><iconify-icon icon="hugeicons:call-02"></iconify-icon></span>
+            <span className="ic"><iconify-icon icon="solar:phone-bold"></iconify-icon></span>
             <span className="lbl two"><span className="t">Phone</span><span className="v">{c.phone}</span></span>
-            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
           </a>
         </div>
       </div>
       <div className="sd-foot">
         <button className="sd-dir" onClick={onDirections}><iconify-icon icon="solar:compass-bold"></iconify-icon> Direction</button>
         <button className={"sd-save" + (saved ? " on" : "")} onClick={onSave}>
-          <iconify-icon icon={saved ? "hugeicons:bookmark-check-02" : "hugeicons:bookmark-add-02"}></iconify-icon>
+          <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-bold"}></iconify-icon>
           {saved ? "Saved · Edit" : "Add to list"}
         </button>
       </div>
@@ -284,7 +284,7 @@ export function AddToListSheet({ open, spot, selected, onToggle, onNewList, onCl
           );
         })}
         <div className="atl-new" onClick={onNewList}>
-          <div className="ic"><iconify-icon icon="hugeicons:add-01"></iconify-icon></div>
+          <div className="ic"><iconify-icon icon="solar:add-circle-bold"></iconify-icon></div>
           <div className="lbl">New list</div>
         </div>
       </div>
@@ -314,7 +314,7 @@ export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null;
               <div className="nm">{preview.name}</div>
               {preview.cat && (
                 <span className="cat-badge" style={{ background: CATS[preview.cat] ? CATS[preview.cat].soft : "var(--t1-fill)", color: CATS[preview.cat] ? CATS[preview.cat].color : "var(--t1-ink)" }}>
-                  <iconify-icon icon={CATS[preview.cat] ? CATS[preview.cat].icon : "hugeicons:location-01"}></iconify-icon>{preview.cat}
+                  <iconify-icon icon={CATS[preview.cat] ? CATS[preview.cat].icon : "solar:map-point-bold"}></iconify-icon>{preview.cat}
                 </span>
               )}
             </div>
@@ -364,7 +364,7 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       <div className="tb-scroll">
         <div className="tb-summary">
           <div className="l">From</div>
-          <div className="r"><iconify-icon icon="hugeicons:bookmark-02" style={{ color: "var(--t1-orange)" }}></iconify-icon>{list.name} · {spotsOf(list.id).length} spots</div>
+          <div className="r"><iconify-icon icon="solar:bookmark-bold" style={{ color: "var(--t1-orange)" }}></iconify-icon>{list.name} · {spotsOf(list.id).length} spots</div>
         </div>
         <div className="tb-summary">
           <div className="l">Where</div>
@@ -403,7 +403,7 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       <div className="tb-foot">
         <button className="clear" onClick={() => { setPrefs([]); setDays(2); }}>Clear</button>
         <button className="go" onClick={() => onGenerate({ list, days, prefs, mode })}>
-          <iconify-icon icon="hugeicons:magic-wand-01"></iconify-icon> Generate trip
+          <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Generate trip
         </button>
       </div>
     </div>
@@ -418,9 +418,9 @@ export function ProfilePopover({ style, onItem }: { style?: CSSProperties; onIte
         <div className="av" style={{ backgroundImage: `url(${IMG}avatar.png)` }}></div>
         <div><div className="nm">Alex Nowak</div><div className="em">alex@travel1.app</div></div>
       </div>
-      <button onClick={() => onItem("Profile & stats")}><iconify-icon icon="hugeicons:user-circle"></iconify-icon> Profile & stats</button>
-      <button onClick={() => onItem("Saved offline")}><iconify-icon icon="hugeicons:download-04"></iconify-icon> Offline maps</button>
-      <button onClick={() => onItem("Settings")}><iconify-icon icon="hugeicons:settings-02"></iconify-icon> Settings</button>
+      <button onClick={() => onItem("Profile & stats")}><iconify-icon icon="solar:user-circle-bold"></iconify-icon> Profile & stats</button>
+      <button onClick={() => onItem("Saved offline")}><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> Offline maps</button>
+      <button onClick={() => onItem("Settings")}><iconify-icon icon="solar:settings-bold"></iconify-icon> Settings</button>
     </div>
   );
 }

@@ -135,7 +135,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
           <button className="go search" onClick={goSearch}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Search guides</button>
         ) : (
           <button className="go" onClick={() => setStep(step === "where" ? "howlong" : "prefs")}>
-            Continue <iconify-icon icon="hugeicons:arrow-right-01"></iconify-icon>
+            Continue <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
           </button>
         )}
       </div>

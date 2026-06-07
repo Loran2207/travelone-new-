@@ -9,15 +9,15 @@ export const IMG = "/assets/images/";
 
 // ---- Spot categories → icon + accent color (badges & pins) ----
 export const CATS: Record<string, Cat> = {
-  Landmark:   { icon: "hugeicons:building-06",   color: "#2563EB", soft: "#E6EEFE" },
-  Museum:     { icon: "hugeicons:image-02",       color: "#B4690E", soft: "#F7ECD7" },
-  Restaurant: { icon: "hugeicons:restaurant-02",  color: "#E8590C", soft: "#FCEBDD" },
-  Cafe:       { icon: "hugeicons:coffee-02",      color: "#9A6B3F", soft: "#F3EADE" },
-  Bar:        { icon: "hugeicons:party",           color: "#7C3AED", soft: "#EEE7FC" },
-  Park:       { icon: "hugeicons:tree-06",         color: "#2F9E44", soft: "#E3F4E6" },
-  Viewpoint:  { icon: "hugeicons:mountain",        color: "#0E7490", soft: "#DEF1F4" },
-  Market:     { icon: "hugeicons:store-01",        color: "#BE185D", soft: "#FCE4EF" },
-  Hotel:      { icon: "hugeicons:hotel-01",        color: "#0FA3A3", soft: "#E2F5F4" },
+  Landmark:   { icon: "solar:buildings-2-bold",            color: "#2E7CF6", soft: "#E7F0FE" },
+  Museum:     { icon: "solar:gallery-bold",                color: "#8B5CF6", soft: "#EEE9FE" },
+  Restaurant: { icon: "solar:chef-hat-minimalistic-bold",  color: "#FB6514", soft: "#FEEADD" },
+  Cafe:       { icon: "solar:cup-hot-bold",                color: "#D97706", soft: "#FBEFD9" },
+  Bar:        { icon: "solar:wineglass-bold",              color: "#EC4899", soft: "#FCE7F1" },
+  Park:       { icon: "solar:leaf-bold",                   color: "#22C55E", soft: "#DCFCE7" },
+  Viewpoint:  { icon: "solar:camera-bold",                 color: "#06B6D4", soft: "#DBF5FA" },
+  Market:     { icon: "solar:shop-bold",                   color: "#EF4444", soft: "#FEE6E6" },
+  Hotel:      { icon: "solar:bed-bold",                    color: "#14B8A6", soft: "#DAF5F1" },
 };
 
 // ---- per-category "type" eyebrow + emoji badge ----
@@ -52,11 +52,11 @@ const PREF_ICONS: Record<string, string> = {
   shopping: "hugeicons:shopping-bag-02", cafe: "hugeicons:coffee-02", "café": "hugeicons:coffee-02",
   bar: "hugeicons:party", bars: "hugeicons:party", landmark: "hugeicons:building-06",
   landmarks: "hugeicons:building-06", "hidden gems": "hugeicons:diamond-02",
-  adventure: "hugeicons:compass-01", photography: "hugeicons:camera-01",
+  adventure: "hugeicons:compass-01", photography: "solar:camera-bold",
   beach: "hugeicons:beach-02", wellness: "hugeicons:flower",
 };
 export function prefIcon(label: string): string {
-  return PREF_ICONS[label.trim().toLowerCase()] || "hugeicons:tag-01";
+  return PREF_ICONS[label.trim().toLowerCase()] || "solar:tag-bold";
 }
 
 // ---- preference / category label → emoji (Figma uses colourful emoji) ----

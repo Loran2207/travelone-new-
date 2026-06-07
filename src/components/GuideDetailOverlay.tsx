@@ -124,7 +124,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       <RealMap routes={routes} markers={markers} focus={focus} padBottom={padBottom} center={[52.236, 21.009]} zoom={13} />
 
       <button className="glassbtn" style={{ position: "absolute", left: 20, top: 64, zIndex: 16 }} onClick={onClose} aria-label="Back">
-        <iconify-icon icon="hugeicons:arrow-left-01"></iconify-icon>
+        <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
       </button>
 
       {manage ? (
@@ -141,11 +141,11 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
           )}
           {inMyTrips ? (
             <button className={"glassbtn" + (editMenu ? " active" : "")} onClick={() => (editMenu ? setEditMenu(false) : openMenu())} aria-label="Edit">
-              <iconify-icon icon="hugeicons:pencil-edit-02"></iconify-icon>
+              <iconify-icon icon="solar:pen-2-bold"></iconify-icon>
             </button>
           ) : (
             <button className="chrome-mytrips" onClick={() => shared.addMyTrip(trip)}>
-              <iconify-icon icon="hugeicons:add-01"></iconify-icon> My Trips
+              <iconify-icon icon="solar:add-circle-bold"></iconify-icon> My Trips
             </button>
           )}
         </div>
@@ -155,8 +155,8 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
         <Fragment>
           <div style={{ position: "absolute", inset: 0, zIndex: 37 }} onClick={() => setEditMenu(false)}></div>
           <div className="edit-menu" style={{ right: 20, top: 112 }}>
-            <button className="em-row" onClick={() => menuAction("addday")}><iconify-icon icon="hugeicons:add-01"></iconify-icon> Add day to guide</button>
-            <button className="em-row" onClick={() => menuAction("addplace")}><iconify-icon icon="hugeicons:location-01"></iconify-icon> Add place to {menuDayLabel}</button>
+            <button className="em-row" onClick={() => menuAction("addday")}><iconify-icon icon="solar:add-circle-bold"></iconify-icon> Add day to guide</button>
+            <button className="em-row" onClick={() => menuAction("addplace")}><iconify-icon icon="solar:map-point-bold"></iconify-icon> Add place to {menuDayLabel}</button>
             <button className="em-row" onClick={() => menuAction("sequence")}><iconify-icon icon="hugeicons:route-02"></iconify-icon> Change sequence</button>
             <button className="em-row danger" onClick={() => menuAction("delete")}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon> Delete guide</button>
           </div>
@@ -192,13 +192,13 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       <ActionSheet sheet={confirm ? {
         title: "Remove " + selCount + " " + unit + (selCount === 1 ? "" : "s") + " from guide",
         preview: firstInfo ? { img: firstInfo.img, name: firstInfo.name, cat: firstInfo.cat, eyebrow: firstInfo.eyebrow } : null,
-        actions: [{ label: "Remove", destructive: true, icon: "hugeicons:delete-02", onClick: doRemove }],
+        actions: [{ label: "Remove", destructive: true, icon: "solar:trash-bin-trash-bold", onClick: doRemove }],
       } as ActionSheetSpec : null} onClose={() => setConfirm(false)} />
 
       <ActionSheet sheet={delConfirm ? {
         title: "Delete this guide?",
         preview: { img: trip.cover, name: trip.name, eyebrow: trip.stats.places + " places · " + trip.days.length + " days" },
-        actions: [{ label: "Delete guide", destructive: true, icon: "hugeicons:delete-02", onClick: () => { setDelConfirm(false); shared.showToast("Guide deleted"); onClose(); } }],
+        actions: [{ label: "Delete guide", destructive: true, icon: "solar:trash-bin-trash-bold", onClick: () => { setDelConfirm(false); shared.showToast("Guide deleted"); onClose(); } }],
       } as ActionSheetSpec : null} onClose={() => setDelConfirm(false)} />
 
       <div className={"scrim" + ((addOpen || confirm || spot || delConfirm) ? " open" : "")}

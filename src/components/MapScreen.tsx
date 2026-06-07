@@ -128,10 +128,10 @@ export function MapScreen({ shared }: { shared: Shared }) {
     setActionSheet({
       title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " spots" },
       actions: [
-        { label: "Create a trip", icon: "hugeicons:magic-wand-01", onClick: () => setBuilderList(l) },
+        { label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) },
         { label: "Rename list", icon: "hugeicons:text-font", onClick: () => showToast("Rename “" + l.name + "”") },
-        { label: "Share list", icon: "hugeicons:share-08", onClick: () => showToast("Sharing “" + l.name + "”") },
-        { label: "Delete list", icon: "hugeicons:delete-02", destructive: true, onClick: () => showToast("List deleted") },
+        { label: "Share list", icon: "solar:share-bold", onClick: () => showToast("Sharing “" + l.name + "”") },
+        { label: "Delete list", icon: "solar:trash-bin-trash-bold", destructive: true, onClick: () => showToast("List deleted") },
       ],
     });
   };
@@ -214,13 +214,13 @@ export function MapScreen({ shared }: { shared: Shared }) {
             <iconify-icon icon="solar:cloud-bold"></iconify-icon>16°
           </button>
           <button className="glassbtn" style={{ position: "absolute", right: 20, top: 78, zIndex: 15 }} onClick={() => { setLocateN((x) => x + 1); showToast("Centering on your location"); }} aria-label="My location">
-            <iconify-icon icon="hugeicons:location-user-04"></iconify-icon>
+            <iconify-icon icon="solar:gps-bold"></iconify-icon>
           </button>
         </Fragment>
       ) : (
         <Fragment>
           <button className="glassbtn" style={{ position: "absolute", left: 20, top: 24, zIndex: 16 }} onClick={goBack} aria-label="Back">
-            <iconify-icon icon="hugeicons:arrow-left-01"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
           </button>
           <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
             {view === "list" && (
@@ -229,7 +229,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
               </button>
             )}
             <button className="glassbtn" onClick={() => { setRecenter((n) => n + 1); showToast("Centering on these spots"); }} aria-label="Re-center">
-              <iconify-icon icon="hugeicons:location-01"></iconify-icon>
+              <iconify-icon icon="solar:map-point-bold"></iconify-icon>
             </button>
           </div>
         </Fragment>
@@ -244,13 +244,6 @@ export function MapScreen({ shared }: { shared: Shared }) {
           {fixedTop}
           <div className="sheet-scroll" key={view + listId + tab + cityId}>{sheetBody}</div>
         </div>
-      )}
-
-      {/* ---- add-spot FAB ---- */}
-      {!anyOverlay && (view === "list" || view === "myspots" || view === "city") && (
-        <button className="fab" style={{ bottom: 96 }} onClick={(e) => { e.stopPropagation(); startPlacing(); }} aria-label="Add a spot">
-          <iconify-icon icon="hugeicons:add-01"></iconify-icon>
-        </button>
       )}
 
       {/* ---- modals ---- */}

@@ -36,7 +36,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
           </div>
         </div>
         <div className="ld-right">
-          <button className="ld-share" onClick={onShare} aria-label="Share list"><iconify-icon icon="hugeicons:upload-04"></iconify-icon></button>
+          <button className="ld-share" onClick={onShare} aria-label="Share list"><iconify-icon icon="solar:upload-minimalistic-bold"></iconify-icon></button>
           <div className="ld-spots">{all.length} {all.length === 1 ? "spot" : "spots"}</div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
       )}
 
       <div className="filterrow" style={{ paddingTop: 2, paddingBottom: 8 }}>
-        <button className="fchip icon-only" onClick={onSearch}><iconify-icon icon="hugeicons:search-01"></iconify-icon></button>
+        <button className="fchip icon-only" onClick={onSearch}><iconify-icon icon="solar:magnifer-bold"></iconify-icon></button>
         <button className={"fchip" + (catFilter === "All" ? " on" : "")} onClick={() => onCatFilter("All")}>All</button>
         {cats.map((c) => (
           <button key={c} className={"fchip" + (catFilter === c ? " on" : "")} onClick={() => onCatFilter(c)}>
@@ -71,7 +71,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
       <div className="meta-line" style={{ paddingTop: 0 }}>
         <div className="m">{rows.length} {rows.length === 1 ? "spot" : "spots"}{placeFilter !== "all" || catFilter !== "All" ? " · filtered" : ""}</div>
         <button className="sort-btn" onClick={onToggleManage} style={manage ? { background: "var(--t1-ink)", color: "#fff" } : {}}>
-          {manage ? "Done" : <Fragment><iconify-icon icon="hugeicons:pencil-edit-02"></iconify-icon> Manage</Fragment>}
+          {manage ? "Done" : <Fragment><iconify-icon icon="solar:pen-2-bold"></iconify-icon> Manage</Fragment>}
         </button>
       </div>
 
@@ -88,8 +88,8 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
             </div>
             {!manage && <div className="sr-desc">{s.desc}</div>}
             <div className="sr-meta">
-              <span><iconify-icon icon="hugeicons:star" style={{ color: "#F5A623" }}></iconify-icon>{s.rating}</span>
-              <span><iconify-icon icon="hugeicons:location-01"></iconify-icon>{s.dist}</span>
+              <span><iconify-icon icon="solar:star-bold" style={{ color: "#F5A623" }}></iconify-icon>{s.rating}</span>
+              <span><iconify-icon icon="solar:map-point-bold"></iconify-icon>{s.dist}</span>
             </div>
           </div>
           {manage && (
@@ -141,7 +141,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
         return (
           <div key={country}>
             <div className="section-h">
-              <div className="h" onClick={() => onCountryFilter(country)}><Flag e={grouped[country].flag} size={15} /> {country} <iconify-icon icon="hugeicons:arrow-right-01"></iconify-icon></div>
+              <div className="h" onClick={() => onCountryFilter(country)}><Flag e={grouped[country].flag} size={15} /> {country} <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon></div>
               <div className="r">{cityKeys.length} {cityKeys.length === 1 ? "city" : "cities"} · {cnt} spots</div>
             </div>
             <div className="placegrid">
@@ -244,10 +244,10 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
       <div className="td-head">
         <div className="td-title">{trip.name}{trip.subtitle ? ": " + trip.subtitle : ""}</div>
         <div className="td-date" onClick={() => onMenu && editable && onMenu("date")}>
-          {dateLabel || "Apr 23 – 29"}{editable && <iconify-icon icon="hugeicons:pencil-edit-02"></iconify-icon>}
+          {dateLabel || "Apr 23 – 29"}{editable && <iconify-icon icon="solar:pen-2-bold"></iconify-icon>}
         </div>
         <div className="td-statcards">
-          <div className="td-sc"><div className="l">Places</div><div className="v"><iconify-icon icon="hugeicons:location-01"></iconify-icon>{trip.stats.places}</div></div>
+          <div className="td-sc"><div className="l">Places</div><div className="v"><iconify-icon icon="solar:map-point-bold"></iconify-icon>{trip.stats.places}</div></div>
           <div className="td-sc"><div className="l">Steps</div><div className="v"><iconify-icon icon="hugeicons:sandals"></iconify-icon>{trip.stats.steps}</div></div>
           <div className="td-sc"><div className="l">Distance</div><div className="v"><iconify-icon icon="hugeicons:route-02"></iconify-icon>{trip.stats.km} km</div></div>
         </div>
@@ -256,7 +256,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
       <div className="dayrow">
         {editable && (
           <button className="daychip add" onClick={(e) => { e.stopPropagation(); onAddDay && onAddDay(); }} aria-label="Add">
-            <iconify-icon icon="hugeicons:add-01"></iconify-icon>
+            <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
           </button>
         )}
         <button className={"daychip" + (activeDay === "all" ? " on" : "")} onClick={() => onDay("all")}>All</button>
@@ -280,7 +280,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                   <div className="dcard-top">
                     <span className="dc-badge" style={{ background: col }}>Day {d.n}</span>
                     <div className="dc-stats">
-                      <span className="dc-stat"><iconify-icon icon="hugeicons:location-01"></iconify-icon>{stops.length}</span>
+                      <span className="dc-stat"><iconify-icon icon="solar:map-point-bold"></iconify-icon>{stops.length}</span>
                       <span className="dc-stat"><iconify-icon icon="hugeicons:sandals"></iconify-icon>{fmtK(dayKm(d))}</span>
                       <span className="dc-stat"><iconify-icon icon="hugeicons:route-02"></iconify-icon>{km.toFixed(1)} km</span>
                     </div>
@@ -312,7 +312,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
               <div className="tl-sec">
                 <div className="tl-sec-name">{cityName}</div>
                 <div className="dc-stats">
-                  <span className="dc-stat"><iconify-icon icon="hugeicons:location-01"></iconify-icon>{stops.length}</span>
+                  <span className="dc-stat"><iconify-icon icon="solar:map-point-bold"></iconify-icon>{stops.length}</span>
                   <span className="dc-stat"><iconify-icon icon="hugeicons:sandals"></iconify-icon>{fmtK(dayKm(d))}</span>
                   <span className="dc-stat"><iconify-icon icon="hugeicons:route-02"></iconify-icon>{((dayKm(d) / 1000) || d.km).toFixed(1)} km</span>
                 </div>
@@ -348,11 +348,11 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                         <div className="tl-walk">
                           <button className="walk-pill" onClick={() => onDirections(s)}>
                             <iconify-icon icon="hugeicons:sandals"></iconify-icon>{fmtWalk(s.toNext || 600)}
-                            <iconify-icon icon="hugeicons:exchange-01" className="chev"></iconify-icon>
+                            <iconify-icon icon="solar:transfer-horizontal-bold" className="chev"></iconify-icon>
                           </button>
                           {!manage && (
                             <button className="tl-nav walk-dir" onClick={() => onDirections(s)} aria-label="Directions">
-                              <iconify-icon icon="hugeicons:navigation-03"></iconify-icon>
+                              <iconify-icon icon="solar:routing-2-bold"></iconify-icon>
                             </button>
                           )}
                         </div>
@@ -363,7 +363,7 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
               </div>
               {stops.length === 0 && editable && (
                 <button className="day-empty-add" onClick={() => onAddPlace && onAddPlace()}>
-                  <iconify-icon icon="hugeicons:add-01"></iconify-icon> Add a place to this day
+                  <iconify-icon icon="solar:add-circle-bold"></iconify-icon> Add a place to this day
                 </button>
               )}
               {stops.length === 0 && !editable && (
