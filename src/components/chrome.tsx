@@ -24,6 +24,14 @@ export function Flag({ e, size = 16, style }: { e?: string; size?: number; style
   );
 }
 
+export function Emoji({ e, size = 16, style }: { e?: string; size?: number; style?: CSSProperties }) {
+  if (!e) return null;
+  return (
+    <img className="twemoji" src={flagUrl(e) || undefined} alt="" draggable={false}
+      style={{ width: size, height: size, ...style }} />
+  );
+}
+
 export type TabId = "explore" | "saved" | "trips" | "map";
 
 const NAV_ITEMS: { id: TabId; label: string; icon: string; dot?: boolean }[] = [

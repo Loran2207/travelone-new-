@@ -59,6 +59,23 @@ export function prefIcon(label: string): string {
   return PREF_ICONS[label.trim().toLowerCase()] || "hugeicons:tag-01";
 }
 
+// ---- preference / category label → emoji (Figma uses colourful emoji) ----
+const PREF_EMOJI: Record<string, string> = {
+  history: "⚔️", art: "🎨", books: "📚", music: "🎵", nature: "🌿", games: "🎮",
+  hiking: "🥾", outdoor: "🚴", architecture: "🏛️", climbing: "🧗", camping: "⛺",
+  forest: "🌲", mountains: "🏔️", stargazing: "🌌", urban: "🏙️", desert: "🏜️",
+  ocean: "🌊", "water sports": "🏄", museums: "🖼️", museum: "🖼️", relax: "🏖️",
+  food: "🍽️", "food & drink": "🍽️", culture: "🎭", viewpoint: "🌄", viewpoints: "🌄",
+  market: "🛍️", markets: "🛍️", park: "🌳", parks: "🌳", nightlife: "🍸",
+  shopping: "🛍️", cafe: "☕", "café": "☕", bar: "🍸", bars: "🍸",
+  landmark: "🏛️", landmarks: "🏛️", "hidden gems": "💎", adventure: "🧭",
+  photography: "📷", beach: "🏖️", wellness: "🧘", archaeology: "🏺",
+  "ancient civilizations": "📜", attraction: "🏛️",
+};
+export function prefEmoji(label: string): string {
+  return PREF_EMOJI[label.trim().toLowerCase()] || "📍";
+}
+
 // ---- Places (cities) ----
 export const PLACES: Record<string, Place> = {
   Warsaw: { city: "Warsaw", country: "Poland", flag: "🇵🇱", cover: IMG + "warsaw-castle.jpg" },

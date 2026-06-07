@@ -1,8 +1,8 @@
 // TRAVEL1 — tab screens: Explore home, Saved, My Trips, Results + cards
 import { Fragment, useEffect, useState } from "react";
-import { CATS, EXPLORE_SECTIONS, I, IMG, SPOTS, catMeta, cityById, placeMeta, prefIcon } from "../data/data";
+import { CATS, EXPLORE_SECTIONS, I, IMG, SPOTS, catMeta, cityById, placeMeta, prefEmoji } from "../data/data";
 import type { City, Trip } from "../data/types";
-import { Flag } from "./chrome";
+import { Emoji, Flag } from "./chrome";
 
 // ---- city card (single card type used in every Explore rail) ----
 export function CityCard({ city, onClick }: { city: City; onClick: () => void }) {
@@ -30,6 +30,7 @@ export function GuideCard({ trip, saved, onOpen, onHeart }: {
           </button>
         )}
         <span className="gc-place"><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 14, color: "var(--t1-orange)" }}></iconify-icon>{pm.city} <Flag e={pm.flag} size={13} /></span>
+        <span className="gc-count"><iconify-icon icon="hugeicons:image-02"></iconify-icon>1/{trip.stats.places}</span>
       </div>
       <div className="gc-title">{trip.name}{trip.subtitle ? ": " + trip.subtitle : ""}</div>
       <div className="gc-meta">
@@ -38,7 +39,7 @@ export function GuideCard({ trip, saved, onOpen, onHeart }: {
         <span>{trip.stats.km} km</span>
       </div>
       <div className="gc-cats">
-        {trip.cats.map((c) => <span key={c} className="gc-tag"><iconify-icon icon={prefIcon(c)}></iconify-icon>{c}</span>)}
+        {trip.cats.map((c) => <span key={c} className="gc-tag"><Emoji e={prefEmoji(c)} size={16} />{c}</span>)}
       </div>
     </div>
   );

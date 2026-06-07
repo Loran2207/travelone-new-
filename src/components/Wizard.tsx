@@ -1,8 +1,8 @@
 // TRAVEL1 — Search-guides wizard: Where → How long → Preferences
 import { useEffect, useState } from "react";
-import { CITIES, DESTINATIONS, DURATIONS, IMG, WIZARD_PREFS, placeMeta, prefIcon } from "../data/data";
+import { CITIES, DESTINATIONS, DURATIONS, IMG, WIZARD_PREFS, placeMeta, prefEmoji } from "../data/data";
 import type { Destination } from "../data/types";
-import { Flag } from "./chrome";
+import { Emoji, Flag } from "./chrome";
 import type { ResultsQuery } from "./Screens";
 
 function DestThumb({ d }: { d: Destination }) {
@@ -121,7 +121,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
             <div className="wiz-prefs scroll">
               {WIZARD_PREFS.map((p) => (
                 <button key={p} className={"wprefchip" + (prefs.includes(p) ? " on" : "")} onClick={() => togglePref(p)}>
-                  <iconify-icon icon={prefIcon(p)}></iconify-icon>{p}
+                  <Emoji e={prefEmoji(p)} size={18} />{p}
                 </button>
               ))}
             </div>
