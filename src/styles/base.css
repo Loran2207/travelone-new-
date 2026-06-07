@@ -1,0 +1,46 @@
+/* ============================================================
+   TRAVEL1 — Shell / device frame (responsive)
+   Desktop: a centered 402×874 "device" on a dark stage.
+   Phone:   full-bleed, no frame, no fake iOS bars.
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: var(--t1-font);
+  background: #0c0c0d;
+  color: var(--t1-ink);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+#root { height: 100vh; height: 100dvh; }
+button { font-family: var(--t1-font); }
+
+/* ---- stage (desktop backdrop) --------------------------- */
+.stage {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(120% 100% at 50% 0%, #1b1c1f 0%, #0c0c0d 70%);
+}
+
+/* ---- device / phone ------------------------------------- */
+.phone {
+  position: relative; width: 402px; height: 874px; border-radius: 50px;
+  background: var(--t1-app-bg); overflow: hidden;
+  box-shadow: 0 0 0 11px #1c1c1e, 0 0 0 13px #2c2c2e, 0 40px 120px rgba(0,0,0,.6);
+  flex: none; transform-origin: center center;
+}
+
+/* On a real phone (or any small / touch-first screen) go full-bleed.
+   The browser's own status bar replaces the old fake one. */
+@media (max-width: 480px), (max-height: 600px) {
+  .stage { background: #000; }
+  .phone {
+    width: 100vw; width: 100dvw;
+    height: 100vh; height: 100dvh;
+    border-radius: 0; box-shadow: none;
+    transform: none !important;
+  }
+}
+
+/* the safe top inset that the old status bar used to occupy — now real */
+.app-topgap { height: env(safe-area-inset-top); }

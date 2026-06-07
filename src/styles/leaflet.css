@@ -1,0 +1,41 @@
+/* ============================================================
+   TRAVEL1 — Leaflet (real map) integration overrides
+   The map fills the device, sits below all chrome and the sheet,
+   and its markers reuse the prototype's .pin / .routenode styling.
+   ============================================================ */
+.t1-map {
+  position: absolute; inset: 0; z-index: 1;
+  background: #e7e5de;
+}
+.leaflet-container {
+  width: 100%; height: 100%;
+  background: #e7e5de;
+  font-family: var(--t1-font);
+  outline: none;
+}
+.leaflet-container a { color: var(--t1-fg-muted); }
+
+/* a touch warmer / softer than raw OSM, closer to the mock's palette */
+.leaflet-tile-pane { filter: saturate(0.86) brightness(1.03); }
+
+/* divIcon hosts must be invisible — only their inner markup shows.
+   The inner .pin / .routenode / .routelabel keep their own absolute
+   transform so they self-anchor over the marker's lat/lng origin. */
+.t1-pin-icon, .t1-route-icon, .t1-me-icon { background: none; border: none; overflow: visible; }
+.leaflet-marker-icon.t1-pin-icon,
+.leaflet-marker-icon.t1-route-icon,
+.leaflet-marker-icon.t1-me-icon { width: 0 !important; height: 0 !important; }
+
+/* keep attribution present (OSM requires it) but unobtrusive */
+.leaflet-control-attribution {
+  background: rgba(255,255,255,.7); backdrop-filter: blur(4px);
+  font-size: 9px; padding: 1px 6px; border-radius: 8px 0 0 0;
+  color: var(--t1-fg-faint);
+}
+.leaflet-control-attribution a { color: var(--t1-fg-muted); }
+
+/* hide default zoom buttons — the map is pan + pinch/scroll zoom */
+.leaflet-control-zoom { display: none; }
+
+/* the marker pane should never trap scrolls meant for the sheet */
+.leaflet-marker-icon { -webkit-tap-highlight-color: transparent; }
