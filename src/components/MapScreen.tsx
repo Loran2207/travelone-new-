@@ -51,6 +51,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const [countryFilter, setCountryFilter] = useState("all");
   const [cityId, setCityId] = useState<string | null>(null);
   const [recenter, setRecenter] = useState(0);
+  const [locateN, setLocateN] = useState(0);
 
   // ---- sheet drag ----
   const defaultTop = view === "myspots" ? FULL : MID;
@@ -150,7 +151,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
         html: pinHtml({ cat: s.cat, label: s.name, active: false }),
         onClick: () => setSpot(s),
       }));
-      focus = { center: CITY_CENTER.Warsaw, zoom: 13, _n: recenter };
+      focus = { center: CITY_CENTER.Warsaw, zoom: locateN > 0 ? 15 : 13, _n: recenter + locateN * 100 };
     } else if (view === "myspots") {
       markers = groupedCityPins.map((c) => ({
         key: c.place, latlng: CITY_CENTER[c.place] || CITY_CENTER.Warsaw,
@@ -169,7 +170,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
     }
     return { markers, meDot, focus };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view, listId, cityId, removed, spot, recenter]);
+  }, [view, listId, cityId, removed, spot, recenter, locateN]);
 
   // ---- sheet body ----
   let sheetBody: JSX.Element | null = null;
@@ -190,7 +191,8 @@ export function MapScreen({ shared }: { shared: Shared }) {
   } else {
     fixedTop = <FilterRow tab={tab} onTab={setTab} onSearch={() => setModal("search")} />;
     if (tab === "all") sheetBody = <AllContent onOpenList={openList} onOpenMySpots={openMySpots} onOpenSpot={openSpotById}
-      savedSpots={savedSpots} onSaveSpot={(s) => setAddSpot(s)} />;
+      savedSpots={savedSpots} onSaveSpot={(s) => setAddSpot(s)}
+      trips={shared.allTrips} savedTrips={savedTrips} onOpenTrip={shared.openGuide} onSaveTrip={(t) => shared.toggleSavedTrip(t)} />;
     else if (tab === "lists") sheetBody = <ListsContent onOpenList={openList} onOpenMySpots={openMySpots} onListMenu={listMenu} />;
     else if (tab === "trips") sheetBody = <TripsContent savedTrips={savedTrips} onOpenTrip={shared.openGuide}
       onFindTrips={() => shared.openWizard()} onOpenList={openList} />;
@@ -207,17 +209,20 @@ export function MapScreen({ shared }: { shared: Shared }) {
       {/* ---- top chrome ---- */}
       {!isDetail ? (
         <Fragment>
-          <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: 64, zIndex: 16, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
-          <button className="weather" style={{ position: "absolute", right: 20, top: 64, zIndex: 15 }} onClick={() => showToast("Warsaw · 16° · Cloudy")}>
+          <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: 24, zIndex: 16, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
+          <button className="weather" style={{ position: "absolute", right: 20, top: 24, zIndex: 15 }} onClick={() => showToast("Warsaw · 16° · Cloudy")}>
             <iconify-icon icon="solar:cloud-bold"></iconify-icon>16°
+          </button>
+          <button className="glassbtn" style={{ position: "absolute", right: 20, top: 78, zIndex: 15 }} onClick={() => { setLocateN((x) => x + 1); showToast("Centering on your location"); }} aria-label="My location">
+            <iconify-icon icon="hugeicons:location-user-04"></iconify-icon>
           </button>
         </Fragment>
       ) : (
         <Fragment>
-          <button className="glassbtn" style={{ position: "absolute", left: 20, top: 64, zIndex: 16 }} onClick={goBack} aria-label="Back">
+          <button className="glassbtn" style={{ position: "absolute", left: 20, top: 24, zIndex: 16 }} onClick={goBack} aria-label="Back">
             <iconify-icon icon="hugeicons:arrow-left-01"></iconify-icon>
           </button>
-          <div style={{ position: "absolute", right: 20, top: 64, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
+          <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
             {view === "list" && (
               <button className="glassbtn" onClick={() => showToast("Edit list details")} aria-label="Edit">
                 <iconify-icon icon="solar:pen-2-bold"></iconify-icon>

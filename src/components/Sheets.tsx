@@ -1,8 +1,8 @@
 // TRAVEL1 — bottom-sheet browse content: All · Lists · Trips · Nearby
 import { Fragment } from "react";
-import { CATS, LISTS, SPOTS, TRIPS, placeMeta, spotsOf } from "../data/data";
+import { CATS, LISTS, SPOTS, TRIPS, placeMeta, prefEmoji, spotsOf } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
-import { Flag } from "./chrome";
+import { Emoji, Flag } from "./chrome";
 
 export function FilterRow({ tab, onTab, onSearch }: { tab: string; onTab: (id: string) => void; onSearch: () => void }) {
   const T = (id: string, icon: string | null, label: string) => (
@@ -16,25 +16,27 @@ export function FilterRow({ tab, onTab, onSearch }: { tab: string; onTab: (id: s
       <button className="fchip icon-only" onClick={onSearch} aria-label="Search"><iconify-icon icon="hugeicons:search-01"></iconify-icon></button>
       {T("all", null, "All")}
       {T("lists", "solar:clipboard-list-bold", "Lists")}
-      {T("trips", "solar:routing-bold", "Trips")}
+      {T("trips", "solar:suitcase-lines-bold", "Trips")}
       {T("nearby", "solar:map-point-bold", "Nearby")}
     </div>
   );
 }
 
 export function ListThumb({ list, cls = "lc-thumb" }: { list: ListDef; cls?: string }) {
-  if (list.special) return <div className={cls + " pinbox"}><iconify-icon icon="hugeicons:location-01"></iconify-icon></div>;
+  if (list.special) return <div className={cls + " pinbox"}><iconify-icon icon="solar:map-point-bold"></iconify-icon></div>;
   if (!list.cover && list.icon) return <div className={cls + " iconthumb"} style={{ background: list.color || "#FE4A00" }}><iconify-icon icon={list.icon}></iconify-icon></div>;
   return <div className={cls} style={{ backgroundImage: `url(${list.cover})` }}></div>;
 }
 
 // ---- ALL tab : overview (collections rail + near you) ----
-export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, onSaveSpot }: {
+export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, onSaveSpot, trips, savedTrips, onOpenTrip, onSaveTrip }: {
   onOpenList: (id: string) => void; onOpenMySpots: () => void; onOpenSpot: (id: string) => void;
   savedSpots: Set<string>; onSaveSpot: (s: Spot) => void;
+  trips: Trip[]; savedTrips: Set<string>; onOpenTrip: (id: string) => void; onSaveTrip: (t: Trip) => void;
 }) {
   const cards = LISTS.map((l) => ({ ...l, count: spotsOf(l.id).length }));
   const near = [SPOTS[1], SPOTS[3], SPOTS[5], SPOTS[7]];
+  const nearTrips = trips.slice(0, 6);
   return (
     <Fragment>
       <div className="rail" style={{ paddingTop: 2, paddingBottom: 4 }}>
@@ -58,6 +60,17 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
       <div className="rail" style={{ paddingBottom: 10 }}>
         {near.map((s) => <NearTile key={s.id} spot={s} onClick={() => onOpenSpot(s.id)} saved={savedSpots.has(s.id)} onSave={() => onSaveSpot(s)} />)}
       </div>
+      {nearTrips.length > 0 && (
+        <Fragment>
+          <div className="section-h">
+            <div className="h">Trips near you <iconify-icon icon="hugeicons:arrow-right-01"></iconify-icon></div>
+            <div className="r">ready guides</div>
+          </div>
+          <div className="rail" style={{ paddingBottom: 12 }}>
+            {nearTrips.map((t) => <TripCard key={t.id} trip={t} onOpen={() => onOpenTrip(t.id)} saved={savedTrips.has(t.id)} onSave={() => onSaveTrip(t)} />)}
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 }
@@ -215,7 +228,6 @@ export function NearTile({ spot, onClick, saved, onSave }: {
   return (
     <div className="ntile" onClick={onClick}>
       <div className="img" style={{ backgroundImage: `url(${spot.img})` }}>
-        <span className="badge" style={{ color: cat.color }}><iconify-icon icon={cat.icon}></iconify-icon>{spot.cat}</span>
         {onSave && (
           <button className={"save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
             <iconify-icon icon={saved ? "hugeicons:bookmark-check-02" : "hugeicons:add-01"}></iconify-icon>
@@ -223,6 +235,7 @@ export function NearTile({ spot, onClick, saved, onSave }: {
         )}
       </div>
       <div className="nm">{spot.name}</div>
+      <div className="nt-cat" style={{ color: cat.color }}><Emoji e={prefEmoji(spot.cat)} size={12} />{spot.cat}</div>
       <div className="mt">{placeMeta(spot.place).city} · {spot.dist}</div>
     </div>
   );

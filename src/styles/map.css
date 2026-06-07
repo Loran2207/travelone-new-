@@ -142,12 +142,9 @@ iconify-icon, .iconify { display: inline-block; }
   display: flex; align-items: center; gap: 4px; }
 
 /* My Spots pin-in-box thumbnail */
-.pinbox { position: relative; background: linear-gradient(160deg,#DCEBFB,#BFD8F5);
-  display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-.pinbox::before { content:""; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
-  width: 34px; height: 13px; border-radius: 4px 4px 6px 6px; background: linear-gradient(#7FB3F2,#5E97DC); }
-.pinbox iconify-icon { position: relative; z-index: 1; color: #FE4A00; font-size: 26px;
-  margin-bottom: 10px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+.pinbox { position: relative; background: #F3F1EC;
+  display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.pinbox iconify-icon { color: var(--t1-orange); font-size: 25px; }
 
 /* near-you spot tile */
 .ntile { flex: none; width: 142px; cursor: pointer; }
@@ -466,3 +463,11 @@ iconify-icon, .iconify { display: inline-block; }
 .sd-save.on { background: var(--t1-orange); }
 .sd-dir iconify-icon, .sd-save iconify-icon { font-size: 20px; }
 .sd-cat .twemoji { width: 15px; height: 15px; }
+
+/* near-you: category caption under the title (no more white badge on the photo) */
+.ntile .nt-cat { margin-top: 4px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-size: 12px; letter-spacing: -.1px; }
+.ntile .nt-cat .twemoji { width: 13px; height: 13px; }
+.ntile .mt { margin-top: 2px; }
+
+/* Trips-near-you: full-width trip cards become fixed-width carousel items in a rail */
+.rail .tripcard { flex: none; width: 262px; margin: 0; }
