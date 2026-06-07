@@ -332,28 +332,45 @@ export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null;
 }
 
 // ---- TRIP BUILDER ----
-const PREFS: [string, string][] = [
-  ["History", "hugeicons:building-06"], ["Food & Drink", "hugeicons:restaurant-02"], ["Nature", "hugeicons:tree-06"],
-  ["Architecture", "hugeicons:building-04"], ["Art", "hugeicons:paint-board"], ["Nightlife", "hugeicons:party"],
-  ["Hidden gems", "hugeicons:diamond-02"], ["Relax", "hugeicons:beach"], ["Shopping", "hugeicons:shopping-bag-02"],
-];
+// ---- TRIP BUILDER (plan a trip from a list) ----
 export function TripBuilder({ open, list, onClose, onGenerate }: {
   open: boolean; list: ListDef | null; onClose: () => void;
-  onGenerate: (opts: { list: ListDef; days: number; prefs: string[]; mode: string }) => void;
+  onGenerate: (opts: { list: ListDef; days: number; mode: string; assign?: Record<string, number>; dateLabel?: string }) => void;
 }) {
+  const spots = list ? spotsOf(list.id) : [];
   const [mode, setMode] = useState("flex");
   const [days, setDays] = useState(3);
-  const [prefs, setPrefs] = useState<string[]>(["History", "Food & Drink"]);
+  const [plan, setPlan] = useState<"auto" | "manual">("auto");
+  const [assign, setAssign] = useState<Record<string, number>>({});
+  const [start, setStart] = useState("");
   useEffect(() => {
-    if (open) {
-      setMode("flex");
-      setDays(Math.min(3, Math.max(1, (list ? placesOf(list.id).length : 1) + 1)));
-      setPrefs(["History", "Food & Drink"]);
+    if (open && list) {
+      setMode("flex"); setPlan("auto"); setStart("");
+      setDays(Math.min(3, Math.max(1, Math.ceil(spotsOf(list.id).length / 3))));
     }
   }, [open, list]);
+  // default round-robin assignment whenever days / list change
+  useEffect(() => {
+    if (!list) return;
+    const a: Record<string, number> = {};
+    spotsOf(list.id).forEach((s, i) => { a[s.id] = (i % days) + 1; });
+    setAssign(a);
+  }, [days, list, open]);
   if (!list) return null;
-  const togglePref = (p: string) => setPrefs(prefs.includes(p) ? prefs.filter((x) => x !== p) : [...prefs, p]);
   const city = placeMeta(placesOf(list.id)[0] || "Warsaw");
+  const setSpotDay = (id: string, d: number) => setAssign((p) => ({ ...p, [id]: d }));
+
+  const dateLabel = (() => {
+    if (mode !== "exact" || !start) return undefined;
+    const s = new Date(start + "T00:00:00");
+    if (isNaN(s.getTime())) return undefined;
+    const e = new Date(s); e.setDate(e.getDate() + Math.max(0, days - 1));
+    const M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return s.getMonth() === e.getMonth()
+      ? `${M[s.getMonth()]} ${s.getDate()} – ${e.getDate()}`
+      : `${M[s.getMonth()]} ${s.getDate()} – ${M[e.getMonth()]} ${e.getDate()}`;
+  })();
+
   return (
     <div className={"modal" + (open ? " open" : "")} style={{ top: 60, height: "calc(100% - 60px)" }}>
       <div className="tb-head">
@@ -364,7 +381,7 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       <div className="tb-scroll">
         <div className="tb-summary">
           <div className="l">From</div>
-          <div className="r"><iconify-icon icon="solar:bookmark-bold" style={{ color: "var(--t1-orange)" }}></iconify-icon>{list.name} · {spotsOf(list.id).length} spots</div>
+          <div className="r"><iconify-icon icon="solar:bookmark-bold" style={{ color: "var(--t1-orange)" }}></iconify-icon>{list.name} · {spots.length} spots</div>
         </div>
         <div className="tb-summary">
           <div className="l">Where</div>
@@ -373,11 +390,16 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
 
         <div className="tb-sec">
           <div className="h">How long?</div>
-          <div className="sub">We'll spread your spots across the days.</div>
           <div className="seg">
             <button className={mode === "flex" ? "on" : ""} onClick={() => setMode("flex")}>Flexible</button>
             <button className={mode === "exact" ? "on" : ""} onClick={() => setMode("exact")}>Exact dates</button>
           </div>
+          {mode === "exact" && (
+            <label className="tb-date">
+              <span>Start date{dateLabel ? " · " + dateLabel : ""}</span>
+              <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+            </label>
+          )}
           <div className="daypick">
             {[1, 2, 3, 4, 5].map((d) => (
               <button key={d} className={days === d ? "on" : ""} onClick={() => setDays(d)}>
@@ -388,22 +410,35 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
         </div>
 
         <div className="tb-sec" style={{ paddingTop: 0 }}>
-          <div className="h">Preferences</div>
-          <div className="sub">Selected {prefs.length} · we'll prioritise these.</div>
-          <div className="prefgrid">
-            {PREFS.map(([p, ic]) => (
-              <button key={p} className={"prefchip" + (prefs.includes(p) ? " on" : "")} onClick={() => togglePref(p)}>
-                <iconify-icon icon={ic}></iconify-icon>{p}
-              </button>
-            ))}
+          <div className="h">Plan the days</div>
+          <div className="seg">
+            <button className={plan === "auto" ? "on" : ""} onClick={() => setPlan("auto")}>Auto-plan</button>
+            <button className={plan === "manual" ? "on" : ""} onClick={() => setPlan("manual")}>Arrange myself</button>
           </div>
+          {plan === "auto" ? (
+            <div className="sub" style={{ marginTop: 12 }}>We'll spread your {spots.length} spots evenly across {days} {days === 1 ? "day" : "days"}.</div>
+          ) : (
+            <div className="tb-assign">
+              {spots.map((s) => (
+                <div key={s.id} className="tb-arow">
+                  <div className="tb-athumb" style={{ backgroundImage: `url(${s.img})` }}></div>
+                  <div className="tb-aname">{s.name}</div>
+                  <div className="tb-adays">
+                    {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
+                      <button key={d} className={"tb-dchip" + (assign[s.id] === d ? " on" : "")} onClick={() => setSpotDay(s.id, d)}>{d}</button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        <div style={{ height: 12 }}></div>
+        <div style={{ height: 16 }}></div>
       </div>
       <div className="tb-foot">
-        <button className="clear" onClick={() => { setPrefs([]); setDays(2); }}>Clear</button>
-        <button className="go" onClick={() => onGenerate({ list, days, prefs, mode })}>
-          <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Generate trip
+        <button className="clear" onClick={() => { setDays(2); setPlan("auto"); }}>Reset</button>
+        <button className="go" onClick={() => onGenerate({ list, days, mode, assign: plan === "manual" ? assign : undefined, dateLabel })}>
+          <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create trip
         </button>
       </div>
     </div>

@@ -89,15 +89,16 @@ export function MapScreen({ shared }: { shared: Shared }) {
   };
 
   // ---- trips ----
-  const generate = ({ list, days, prefs }: { list: ListDef; days: number; prefs: string[] }) => {
+  const generate = ({ list, days, assign, dateLabel }: { list: ListDef; days: number; mode?: string; assign?: Record<string, number>; dateLabel?: string }) => {
     setBuilderList(null); setGenerating(true);
     setTimeout(() => {
-      const t = buildTrip(list, days, prefs);
+      const t = buildTrip(list, days, [], assign);
+      if (dateLabel) t.dateLabel = dateLabel;
       shared.addGenTrip(t); shared.addMyTrip(t);
       setGenerating(false);
       shared.openGuide(t.id);
-      showToast("Trip created · " + t.days.length + " days planned");
-    }, 1600);
+      showToast("Trip created · " + t.days.length + (t.days.length === 1 ? " day" : " days"));
+    }, assign ? 600 : 1500);
   };
 
   // ---- list management ----
