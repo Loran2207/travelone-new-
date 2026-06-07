@@ -21,7 +21,7 @@ export function DurationWheel({ idx, onIdx }: { idx: number; onIdx: (i: number) 
   return (
     <div className="wheel">
       <div className="wheel-fade-t"></div>
-      <div className="wheel-sel"><iconify-icon icon="solar:alt-arrow-up-bold"></iconify-icon><iconify-icon icon="solar:alt-arrow-down-bold"></iconify-icon></div>
+      <div className="wheel-sel"><iconify-icon icon="solar:alt-arrow-up-linear"></iconify-icon><iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></div>
       <div className="wheel-track" style={{ transform: `translateY(${(2 - sel) * 60}px)` }}>
         {items.map((d, i) => (
           <div key={i} className={"wheel-item" + (i === sel ? " sel" : "")} onClick={() => d && onIdx(i - pad)}>{d}</div>
@@ -84,7 +84,7 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
           <div className="wiz-open expand">
             <div className="wo-title">Where?</div>
             <div className="wiz-field">
-              <iconify-icon icon="solar:magnifer-bold"></iconify-icon>
+              <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search destinations…" />
             </div>
             <div className="wiz-suggest-h">Suggested destinations</div>
@@ -132,10 +132,10 @@ export function SearchGuidesWizard({ open, initialCity, onClose, onSearch }: {
       <div className="wiz-foot">
         <button className="clear-all" onClick={() => { setDest(null); setQ(""); setMode("flex"); setDurIdx(-1); setPrefs([]); setStep("where"); }}>Clear all</button>
         {step === "prefs" ? (
-          <button className="go search" onClick={goSearch}><iconify-icon icon="solar:magnifer-bold"></iconify-icon> Search guides</button>
+          <button className="go search" onClick={goSearch}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Search guides</button>
         ) : (
           <button className="go" onClick={() => setStep(step === "where" ? "howlong" : "prefs")}>
-            Continue <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
+            Continue <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
           </button>
         )}
       </div>

@@ -58,7 +58,7 @@ export function ExploreScreen({ onSearch, onOpenCity }: {
           <div className="hero-eyebrow">TRAVEL1</div>
           <h1 className="hero-title">Travel guides for every city on earth</h1>
           <button className="hero-search" onClick={onSearch}>
-            <iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides
+            <iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides
           </button>
         </div>
       </div>
@@ -114,7 +114,7 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
         <div className="emptystate">
           <div className="es-title">Nothing saved yet</div>
           <div className="es-sub">Tap <iconify-icon icon="solar:heart-linear"></iconify-icon> on any guide to save it for later</div>
-          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides</button>
+          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
         </div>
       ) : (
         <Fragment>
@@ -146,7 +146,7 @@ export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onF
         <div className="emptystate">
           <div className="es-title">No trips planned yet</div>
           <div className="es-sub">Open any guide and tap “+ My Trips”, or build one from a list on the map</div>
-          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-bold"></iconify-icon> Explore guides</button>
+          <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
         </div>
       ) : (
         <Fragment>
@@ -180,7 +180,7 @@ export function ResultsScreen({ query, onBack, allTrips, savedTrips, onOpenGuide
   return (
     <div className="screen screen-pad">
       <div className="results-head">
-        <button className="glassbtn sm" onClick={onBack} aria-label="Back"><iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon></button>
+        <button className="glassbtn sm" onClick={onBack} aria-label="Back"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button>
         <div className="rh-title">
           <div className="where">{pm.city || "Anywhere"} <Flag e={pm.flag} size={15} /></div>
           <div className="when">{query.duration || "Flexible"}</div>
@@ -247,7 +247,7 @@ export function AddPlaceSheet({ open, onClose, onAdd }: { open: boolean; onClose
               <button key={s.id} className="ap-sug-row" onClick={() => onAdd(s.name)}>
                 <div className="ap-sug-th" style={{ backgroundImage: `url(${s.img})` }}></div>
                 <div className="ap-sug-body"><div className="n">{s.name}</div><div className="t">{catMeta(s.cat).type} · {placeMeta(s.place).city}</div></div>
-                <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
+                <iconify-icon icon="hugeicons:add-01"></iconify-icon>
               </button>
             ))}
           </div>
@@ -266,7 +266,7 @@ export function AddPlaceSheet({ open, onClose, onAdd }: { open: boolean; onClose
       {match && (
         <div className="ap-foot">
           <button className="ap-add" onClick={() => onAdd(match.name)}>
-            Add place <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
+            Add place <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
           </button>
         </div>
       )}

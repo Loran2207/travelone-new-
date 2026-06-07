@@ -9,15 +9,15 @@ export const IMG = "/assets/images/";
 
 // ---- Spot categories → icon + accent color (badges & pins) ----
 export const CATS: Record<string, Cat> = {
-  Landmark:   { icon: "solar:buildings-2-bold",            color: "#2E7CF6", soft: "#E7F0FE" },
-  Museum:     { icon: "solar:gallery-bold",                color: "#8B5CF6", soft: "#EEE9FE" },
-  Restaurant: { icon: "solar:chef-hat-minimalistic-bold",  color: "#FB6514", soft: "#FEEADD" },
-  Cafe:       { icon: "solar:cup-hot-bold",                color: "#D97706", soft: "#FBEFD9" },
-  Bar:        { icon: "solar:wineglass-bold",              color: "#EC4899", soft: "#FCE7F1" },
-  Park:       { icon: "solar:leaf-bold",                   color: "#22C55E", soft: "#DCFCE7" },
-  Viewpoint:  { icon: "solar:camera-bold",                 color: "#06B6D4", soft: "#DBF5FA" },
-  Market:     { icon: "solar:shop-bold",                   color: "#EF4444", soft: "#FEE6E6" },
-  Hotel:      { icon: "solar:bed-bold",                    color: "#14B8A6", soft: "#DAF5F1" },
+  Landmark:   { icon: "solar:buildings-2-bold",            color: "#2563EB", soft: "#E6EEFE" },
+  Museum:     { icon: "solar:gallery-bold",                color: "#7C3AED", soft: "#EDE7FD" },
+  Restaurant: { icon: "solar:chef-hat-minimalistic-bold",  color: "#F2540A", soft: "#FEE9DC" },
+  Cafe:       { icon: "solar:cup-hot-bold",                color: "#E07A00", soft: "#FBEFD8" },
+  Bar:        { icon: "solar:wineglass-bold",              color: "#E11D74", soft: "#FCE4EF" },
+  Park:       { icon: "solar:leaf-bold",                   color: "#16A34A", soft: "#DCFCE6" },
+  Viewpoint:  { icon: "solar:camera-bold",                 color: "#0891B2", soft: "#D9F3F9" },
+  Market:     { icon: "solar:shop-bold",                   color: "#E11D48", soft: "#FEE4E8" },
+  Hotel:      { icon: "solar:bed-bold",                    color: "#0D9488", soft: "#D7F3EE" },
 };
 
 // ---- per-category "type" eyebrow + emoji badge ----
@@ -40,7 +40,7 @@ export function catMeta(c: string): CatMetaEntry {
 const PREF_ICONS: Record<string, string> = {
   history: "hugeicons:castle-02", art: "hugeicons:paint-board", books: "hugeicons:book-02",
   music: "hugeicons:music-note-01", nature: "hugeicons:tree-06", games: "hugeicons:game-controller-01",
-  hiking: "hugeicons:route-02", outdoor: "hugeicons:sun-03", architecture: "hugeicons:building-04",
+  hiking: "solar:routing-bold", outdoor: "hugeicons:sun-03", architecture: "hugeicons:building-04",
   climbing: "hugeicons:mountain", camping: "hugeicons:fire-02", forest: "hugeicons:tree-07",
   mountains: "hugeicons:mountain", stargazing: "hugeicons:moon-02", urban: "hugeicons:city-01",
   desert: "hugeicons:desert", ocean: "hugeicons:sailboat-coastal", "water sports": "hugeicons:swimming",

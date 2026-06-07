@@ -21,7 +21,7 @@ export function Keyboard({ onKey, onBack, onSpace, onGo, suggest }: {
       <div className="kb-row">{KB_ROWS[0].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}</div>
       <div className="kb-row" style={{ padding: "0 16px" }}>{KB_ROWS[1].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}</div>
       <div className="kb-row">
-        <button className="key fn wide"><iconify-icon icon="solar:alt-arrow-up-bold"></iconify-icon></button>
+        <button className="key fn wide"><iconify-icon icon="solar:alt-arrow-up-linear"></iconify-icon></button>
         {KB_ROWS[2].map((k) => <button key={k} className="key" onClick={() => onKey(k)}>{k}</button>)}
         <button className="key fn wide" onClick={onBack}><iconify-icon icon="hugeicons:remove-square"></iconify-icon></button>
       </div>
@@ -53,7 +53,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
       <div className="grab-zone"><div className="grabber"></div></div>
       <div className="search-top">
         <div className="search-field">
-          <iconify-icon icon="solar:magnifer-bold"></iconify-icon>
+          <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search spots, lists & trips" autoFocus />
         </div>
         <button className="search-x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
@@ -92,7 +92,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
           <div key={l.id} className="atl-row" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
             <ListThumb list={l} cls="atl-thumb" />
             <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} spots</div></div>
-            <iconify-icon icon="solar:alt-arrow-right-bold" style={{ fontSize: 19, color: "var(--t1-fg-faint)" }}></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-linear" style={{ fontSize: 19, color: "var(--t1-fg-faint)" }}></iconify-icon>
           </div>
         ))}</Fragment>}
         {ql && spots.length > 0 && <Fragment><div className="search-eyebrow">Spots</div>{spots.map((s) => <SpotRow key={s.id} spot={s} onClick={() => onOpenSpot(s.id)} />)}</Fragment>}
@@ -166,7 +166,7 @@ export function NewListModal({ open, onClose, onCreate }: {
         {mode === "photo" ? (
           <div className="nl-covers">
             <button className="cv up" onClick={() => fileRef.current && fileRef.current.click()} aria-label="Upload photo">
-              <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
+              <iconify-icon icon="hugeicons:add-01"></iconify-icon>
             </button>
             {presets.map((c, i) => (
               <div key={i} className={"cv" + (photo === c ? " on" : "")} style={{ backgroundImage: `url(${c})` }} onClick={() => setPhoto(c)}></div>
@@ -196,7 +196,7 @@ export function NewListModal({ open, onClose, onCreate }: {
       </div>
       <div style={{ flex: 1 }}></div>
       <button className={"nl-create" + (ready ? " ready" : "")} onClick={submit}>
-        <iconify-icon icon="solar:add-circle-bold"></iconify-icon> Create list
+        <iconify-icon icon="hugeicons:add-01"></iconify-icon> Create list
       </button>
     </div>
   );
@@ -229,7 +229,7 @@ export function SpotModal({ spot, saved, onClose, onSave, onDirections }: {
           <button className="sd-irow" onClick={onDirections}>
             <span className="ic"><iconify-icon icon="solar:clock-circle-bold"></iconify-icon></span>
             <span className="lbl">{spot.hours}</span>
-            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-linear" className="chev"></iconify-icon>
           </button>
           <div className="sd-irow">
             <span className="ic"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>
@@ -239,12 +239,12 @@ export function SpotModal({ spot, saved, onClose, onSave, onDirections }: {
           <a className="sd-irow" href={`https://${c.website}`} target="_blank" rel="noreferrer">
             <span className="ic"><iconify-icon icon="solar:global-bold"></iconify-icon></span>
             <span className="lbl two"><span className="t">Website</span><span className="v">{c.website}</span></span>
-            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-linear" className="chev"></iconify-icon>
           </a>
           <a className="sd-irow" href={`tel:${c.phone.replace(/\s/g, "")}`}>
             <span className="ic"><iconify-icon icon="solar:phone-bold"></iconify-icon></span>
             <span className="lbl two"><span className="t">Phone</span><span className="v">{c.phone}</span></span>
-            <iconify-icon icon="solar:alt-arrow-right-bold" className="chev"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-right-linear" className="chev"></iconify-icon>
           </a>
         </div>
       </div>
@@ -284,7 +284,7 @@ export function AddToListSheet({ open, spot, selected, onToggle, onNewList, onCl
           );
         })}
         <div className="atl-new" onClick={onNewList}>
-          <div className="ic"><iconify-icon icon="solar:add-circle-bold"></iconify-icon></div>
+          <div className="ic"><iconify-icon icon="hugeicons:add-01"></iconify-icon></div>
           <div className="lbl">New list</div>
         </div>
       </div>

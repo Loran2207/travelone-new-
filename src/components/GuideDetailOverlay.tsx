@@ -124,7 +124,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       <RealMap routes={routes} markers={markers} focus={focus} padBottom={padBottom} center={[52.236, 21.009]} zoom={13} />
 
       <button className="glassbtn" style={{ position: "absolute", left: 20, top: 64, zIndex: 16 }} onClick={onClose} aria-label="Back">
-        <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
+        <iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon>
       </button>
 
       {manage ? (
@@ -145,7 +145,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
             </button>
           ) : (
             <button className="chrome-mytrips" onClick={() => shared.addMyTrip(trip)}>
-              <iconify-icon icon="solar:add-circle-bold"></iconify-icon> My Trips
+              <iconify-icon icon="hugeicons:add-01"></iconify-icon> My Trips
             </button>
           )}
         </div>
@@ -155,9 +155,9 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
         <Fragment>
           <div style={{ position: "absolute", inset: 0, zIndex: 37 }} onClick={() => setEditMenu(false)}></div>
           <div className="edit-menu" style={{ right: 20, top: 112 }}>
-            <button className="em-row" onClick={() => menuAction("addday")}><iconify-icon icon="solar:add-circle-bold"></iconify-icon> Add day to guide</button>
+            <button className="em-row" onClick={() => menuAction("addday")}><iconify-icon icon="hugeicons:add-01"></iconify-icon> Add day to guide</button>
             <button className="em-row" onClick={() => menuAction("addplace")}><iconify-icon icon="solar:map-point-bold"></iconify-icon> Add place to {menuDayLabel}</button>
-            <button className="em-row" onClick={() => menuAction("sequence")}><iconify-icon icon="hugeicons:route-02"></iconify-icon> Change sequence</button>
+            <button className="em-row" onClick={() => menuAction("sequence")}><iconify-icon icon="solar:routing-bold"></iconify-icon> Change sequence</button>
             <button className="em-row danger" onClick={() => menuAction("delete")}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon> Delete guide</button>
           </div>
         </Fragment>

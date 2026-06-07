@@ -230,7 +230,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
       ) : (
         <Fragment>
           <button className="glassbtn" style={{ position: "absolute", left: 20, top: 24, zIndex: 16 }} onClick={goBack} aria-label="Back">
-            <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
+            <iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon>
           </button>
           <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
             {view === "list" && (

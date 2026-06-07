@@ -13,7 +13,7 @@ export function FilterRow({ tab, onTab, onSearch }: { tab: string; onTab: (id: s
   );
   return (
     <div className="filterrow">
-      <button className="fchip icon-only" onClick={onSearch} aria-label="Search"><iconify-icon icon="solar:magnifer-bold"></iconify-icon></button>
+      <button className="fchip icon-only" onClick={onSearch} aria-label="Search"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
       {T("all", null, "All")}
       {T("lists", "solar:clipboard-list-bold", "Lists")}
       {T("trips", "solar:suitcase-lines-bold", "Trips")}
@@ -54,7 +54,7 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
         ))}
       </div>
       <div className="section-h">
-        <div className="h">Near you <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon></div>
+        <div className="h">Near you <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
         <div className="r">within 2 km</div>
       </div>
       <div className="rail" style={{ paddingBottom: 10 }}>
@@ -63,7 +63,7 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
       {nearTrips.length > 0 && (
         <Fragment>
           <div className="section-h">
-            <div className="h">Trips near you <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon></div>
+            <div className="h">Trips near you <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
             <div className="r">ready guides</div>
           </div>
           <div className="rail" style={{ paddingBottom: 12 }}>
@@ -85,7 +85,7 @@ export function ListsContent({ onOpenList, onOpenMySpots, onListMenu }: {
     <Fragment>
       <div className="meta-line">
         <div className="m">{LISTS.length} lists · {total} spots total</div>
-        <button className="sort-btn">Recent <iconify-icon icon="solar:alt-arrow-down-bold"></iconify-icon></button>
+        <button className="sort-btn">Recent <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></button>
       </div>
       {cards.map((l) => (
         <div key={l.id} className="lrow" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
@@ -118,7 +118,7 @@ export function TripsContent({ savedTrips, onOpenTrip, onFindTrips, onOpenList }
     return (
       <div style={{ padding: "30px 28px", textAlign: "center" }}>
         <div style={{ width: 64, height: 64, margin: "0 auto 16px", borderRadius: 20, background: "var(--t1-fill)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30, color: "var(--t1-fg-faint)" }}>
-          <iconify-icon icon="hugeicons:route-02"></iconify-icon>
+          <iconify-icon icon="solar:routing-bold"></iconify-icon>
         </div>
         <div style={{ fontWeight: 700, fontSize: 18, color: "var(--t1-ink)" }}>No trips yet</div>
         <div style={{ fontWeight: 500, fontSize: 14, color: "var(--t1-fg-muted)", marginTop: 6, lineHeight: "20px" }}>
@@ -213,7 +213,7 @@ export function SpotRow({ spot, onClick, dist, saved, onSave }: {
       </div>
       {onSave && (
         <button className={"sr-save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
-          <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-bold"}></iconify-icon>
+          <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-linear"}></iconify-icon>
         </button>
       )}
     </div>
@@ -230,7 +230,7 @@ export function NearTile({ spot, onClick, saved, onSave }: {
       <div className="img" style={{ backgroundImage: `url(${spot.img})` }}>
         {onSave && (
           <button className={"save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
-            <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:add-circle-bold"}></iconify-icon>
+            <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-linear"}></iconify-icon>
           </button>
         )}
       </div>
@@ -261,8 +261,8 @@ export function TripCard({ trip, onOpen, saved, onSave }: {
         <div className="tc-sub">{trip.subtitle}</div>
         <div className="tc-stats">
           <span><iconify-icon icon="solar:point-on-map-bold"></iconify-icon>{trip.stats.places} places</span>
-          <span><iconify-icon icon="hugeicons:sandals"></iconify-icon>{trip.stats.steps} steps</span>
-          <span><iconify-icon icon="hugeicons:route-02"></iconify-icon>{trip.stats.km} km</span>
+          <span><iconify-icon icon="solar:walking-bold"></iconify-icon>{trip.stats.steps} steps</span>
+          <span><iconify-icon icon="solar:routing-bold"></iconify-icon>{trip.stats.km} km</span>
         </div>
         <div className="tc-cats">
           {trip.cats.map((c) => <span key={c} className="tc-tag">{c}</span>)}
@@ -283,11 +283,11 @@ export function TripRow({ trip, onClick }: { trip: Trip; onClick: () => void }) 
         <div className="tr-name">{trip.name}</div>
         <div className="tr-meta">
           <span><iconify-icon icon="solar:point-on-map-bold"></iconify-icon>{trip.stats.places}</span>
-          <span><iconify-icon icon="hugeicons:route-02"></iconify-icon>{trip.stats.km} km</span>
+          <span><iconify-icon icon="solar:routing-bold"></iconify-icon>{trip.stats.km} km</span>
           <span>{placeMeta(trip.place).city}</span>
         </div>
       </div>
-      <div className="tr-go"><iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon></div>
+      <div className="tr-go"><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
     </div>
   );
 }

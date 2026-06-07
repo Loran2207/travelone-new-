@@ -8,7 +8,7 @@ iconify-icon, .iconify { display: inline-block; }
 /* glass round controls */
 .glassbtn { width: 44px; height: 44px; border-radius: 999px; border: none; cursor: pointer;
   background: rgba(255,255,255,.96); box-shadow: var(--t1-shadow-btn);
-  display: flex; align-items: center; justify-content: center; color: var(--t1-ink);
+  display: flex; align-items: center; justify-content: center; color: #5A5A62;
   font-size: 20px; backdrop-filter: blur(8px);
   transition: transform .12s ease; -webkit-tap-highlight-color: transparent; }
 .glassbtn:active { transform: scale(.9); }
