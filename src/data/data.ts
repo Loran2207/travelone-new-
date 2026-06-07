@@ -320,3 +320,22 @@ export function groupByCountry(spots: Spot[]): Record<string, CountryGroup> {
   });
   return byCountry;
 }
+
+
+// ---- spot detail helpers (gallery + contact for the rich SpotModal) ----
+export function galleryOf(s: Spot): string[] {
+  if (s.gallery && s.gallery.length) return s.gallery;
+  return [...new Set([s.img, I.castle, I.palace, I.park, I.city1])].slice(0, 5);
+}
+const SLUG = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+const SPOT_TLD: Record<string, string> = { Warsaw: "pl", Krakow: "pl", Gdansk: "pl" };
+export function spotContact(s: Spot): { address: string; website: string; phone: string } {
+  const pm = placeMeta(s.place);
+  let h = 0; for (const ch of s.name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const pad = (x: number, len: number) => String(x % Math.pow(10, len)).padStart(len, "0");
+  return {
+    address: s.address || `${s.name}, ${pm.city}`,
+    website: s.website || `${SLUG(s.name).slice(0, 22)}.${SPOT_TLD[s.place] || "com"}`,
+    phone: s.phone || `+48 ${pad(h, 2)} ${pad(h >> 5, 3)} ${pad(h >> 9, 2)} ${pad(h >> 13, 2)}`,
+  };
+}

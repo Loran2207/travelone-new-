@@ -1,9 +1,9 @@
 // TRAVEL1 — overlays: Search, New List, Spot detail, Add-to-list,
 // Action sheet, Trip builder, Create/Profile popovers.
 import { Fragment, useEffect, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
-import { CATS, I, IMG, LISTS, SPOTS, TRIPS, placeMeta, placesOf, spotsOf } from "../data/data";
+import { CATS, I, IMG, LISTS, SPOTS, TRIPS, catMeta, galleryOf, placeMeta, placesOf, prefEmoji, spotContact, spotsOf } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
-import { Flag } from "./chrome";
+import { Emoji, Flag } from "./chrome";
 import { ListThumb, SpotRow, TripRow } from "./Sheets";
 
 // ---- iOS keyboard ----
@@ -202,41 +202,58 @@ export function NewListModal({ open, onClose, onCreate }: {
   );
 }
 
-// ---- SPOT DETAIL modal ----
+// ---- SPOT DETAIL modal (rich, Figma-style) ----
 export function SpotModal({ spot, saved, onClose, onSave, onDirections }: {
   spot: Spot | null; saved: boolean; onClose: () => void; onSave: () => void; onDirections: () => void;
 }) {
   if (!spot) return null;
-  const cat = CATS[spot.cat] || {};
-  const pm = placeMeta(spot.place);
+  const c = spotContact(spot);
+  const gallery = galleryOf(spot);
+  const copy = (text: string) => { try { navigator.clipboard && navigator.clipboard.writeText(text); } catch { /* ignore */ } };
   return (
-    <div className="modal open" style={{ maxHeight: "84%", overflow: "hidden" }}>
-      <div className="sd-hero" style={{ backgroundImage: `url(${spot.img})` }}>
-        <div className="grab"></div>
-        <button className="sd-x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
-        <div className="sd-htitle">
-          <span className="cat-badge" style={{ background: "rgba(255,255,255,.92)", color: cat.color, marginBottom: 8 }}>
-            <iconify-icon icon={cat.icon}></iconify-icon>{spot.cat}
-          </span>
-          <div className="n">{spot.name}</div>
+    <div className="modal open sd-modal">
+      <div className="grab-zone"><div className="grabber"></div></div>
+      <div className="sd-top">
+        <button className="sd-x" onClick={onClose} aria-label="Close"><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
+        <div className="sd-eyebrow">{catMeta(spot.cat).type} <span className="dot">·</span> <iconify-icon icon="solar:star-bold"></iconify-icon> {spot.rating}</div>
+        <div className="sd-name">{spot.name}</div>
+        <span className="sd-cat"><Emoji e={prefEmoji(spot.cat)} size={15} />{spot.cat}</span>
+      </div>
+      <div className="sd-scroll">
+        <div className="sd-gallery">
+          {gallery.map((g, i) => <div key={i} className="sd-photo" style={{ backgroundImage: `url(${g})` }}></div>)}
+        </div>
+        <div className="sd-sec-h">About place</div>
+        <div className="sd-desc">{spot.desc}</div>
+        <div className="sd-info">
+          <button className="sd-irow" onClick={onDirections}>
+            <span className="ic"><iconify-icon icon="hugeicons:clock-01"></iconify-icon></span>
+            <span className="lbl">{spot.hours}</span>
+            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+          </button>
+          <div className="sd-irow">
+            <span className="ic"><iconify-icon icon="hugeicons:location-01"></iconify-icon></span>
+            <span className="lbl two"><span className="t">Location</span><span className="v">{c.address}</span></span>
+            <button className="copy" onClick={() => copy(c.address)} aria-label="Copy address"><iconify-icon icon="hugeicons:copy-01"></iconify-icon></button>
+          </div>
+          <a className="sd-irow" href={`https://${c.website}`} target="_blank" rel="noreferrer">
+            <span className="ic"><iconify-icon icon="hugeicons:globe-02"></iconify-icon></span>
+            <span className="lbl two"><span className="t">Website</span><span className="v">{c.website}</span></span>
+            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+          </a>
+          <a className="sd-irow" href={`tel:${c.phone.replace(/\s/g, "")}`}>
+            <span className="ic"><iconify-icon icon="hugeicons:call-02"></iconify-icon></span>
+            <span className="lbl two"><span className="t">Phone</span><span className="v">{c.phone}</span></span>
+            <iconify-icon icon="hugeicons:arrow-right-01" className="chev"></iconify-icon>
+          </a>
         </div>
       </div>
-      <div className="sd-body" style={{ overflowY: "auto" }}>
-        <div className="sd-stats">
-          <div className="sd-stat"><div className="v"><iconify-icon icon="hugeicons:star"></iconify-icon>{spot.rating}</div><div className="l">Rating</div></div>
-          <div className="sd-stat"><div className="v">{spot.price}</div><div className="l">Entry</div></div>
-          <div className="sd-stat"><div className="v">{spot.dist}</div><div className="l">Away</div></div>
-        </div>
-        <div className="sd-row"><iconify-icon icon="hugeicons:location-01"></iconify-icon><span className="k"><Flag e={pm.flag} size={14} /> {pm.city}, {pm.country}</span></div>
-        <div className="sd-row"><iconify-icon icon="hugeicons:clock-01"></iconify-icon><span className="k">{spot.hours}</span></div>
-        <div className="sd-desc">{spot.desc}</div>
-        <div className="sd-actions">
-          <button className={"sd-btn primary" + (saved ? " saved" : "")} onClick={onSave}>
-            <iconify-icon icon={saved ? "hugeicons:bookmark-check-02" : "hugeicons:bookmark-add-02"}></iconify-icon>
-            {saved ? "Saved · Edit lists" : "Add to list"}
-          </button>
-          <button className="sd-btn ghost" onClick={onDirections}><iconify-icon icon="hugeicons:navigation-03"></iconify-icon></button>
-        </div>
+      <div className="sd-foot">
+        <button className="sd-dir" onClick={onDirections}><iconify-icon icon="solar:compass-bold"></iconify-icon> Direction</button>
+        <button className={"sd-save" + (saved ? " on" : "")} onClick={onSave}>
+          <iconify-icon icon={saved ? "hugeicons:bookmark-check-02" : "hugeicons:bookmark-add-02"}></iconify-icon>
+          {saved ? "Saved · Edit" : "Add to list"}
+        </button>
       </div>
     </div>
   );

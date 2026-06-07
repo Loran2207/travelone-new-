@@ -420,3 +420,49 @@ iconify-icon, .iconify { display: inline-block; }
 .nl-col.on::after { content: ""; position: absolute; inset: -4px; border-radius: 999px; border: 2px solid var(--t1-ink); }
 .iconthumb { display: flex; align-items: center; justify-content: center; }
 .iconthumb iconify-icon { color: #fff; font-size: 22px; }
+
+/* ---- rich spot detail modal ---- */
+.sd-modal { max-height: 88%; }
+.sd-top { position: relative; padding: 16px 22px 8px; flex: none; }
+.sd-modal .sd-x { position: absolute; right: 18px; top: 14px; width: 36px; height: 36px; border-radius: 999px; border: none;
+  background: var(--t1-fill); color: var(--t1-fg-soft); display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; z-index: 3; }
+.sd-eyebrow { font-weight: 600; font-size: 13px; color: var(--t1-fg-muted); display: inline-flex; align-items: center; gap: 6px; }
+.sd-eyebrow iconify-icon { font-size: 14px; color: #F5A623; }
+.sd-eyebrow .dot { opacity: .5; }
+.sd-name { font-weight: 800; font-size: 26px; letter-spacing: -.5px; color: var(--t1-ink); margin: 5px 0 11px; padding-right: 44px; line-height: 1.08; }
+.sd-cat { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 999px;
+  background: var(--t1-fill); font-weight: 600; font-size: 14px; color: var(--t1-ink); }
+.sd-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 22px 6px; scrollbar-width: none; }
+.sd-scroll::-webkit-scrollbar { display: none; }
+.sd-gallery { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin: 0 -22px 20px; padding: 0 22px; }
+.sd-gallery::-webkit-scrollbar { display: none; }
+.sd-photo { flex: none; width: 148px; height: 148px; border-radius: 18px; background-size: cover; background-position: center; box-shadow: var(--t1-shadow-card); }
+.sd-photo:first-child { width: 200px; }
+.sd-sec-h { font-weight: 700; font-size: 18px; color: var(--t1-ink); margin-bottom: 8px; letter-spacing: -.3px; }
+.sd-info { margin-top: 14px; }
+.sd-irow { display: flex; align-items: center; gap: 13px; width: 100%; padding: 14px 0;
+  border: none; border-top: 1px solid var(--t1-border-faint); background: none; text-decoration: none;
+  cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+.sd-irow:active { opacity: .55; }
+.sd-irow .ic { width: 24px; flex: none; display: flex; }
+.sd-irow .ic iconify-icon { font-size: 20px; color: var(--t1-fg-soft); }
+.sd-irow .lbl { flex: 1; min-width: 0; font-weight: 600; font-size: 15px; color: var(--t1-ink); }
+.sd-irow .lbl.two { display: flex; flex-direction: column; gap: 1px; }
+.sd-irow .lbl.two .t { font-weight: 500; font-size: 12px; color: var(--t1-fg-muted); }
+.sd-irow .lbl.two .v { font-weight: 600; font-size: 15px; color: var(--t1-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sd-irow .chev { font-size: 18px; color: var(--t1-fg-faint); flex: none; }
+.sd-irow .copy { width: 34px; height: 34px; border-radius: 9px; border: none; background: var(--t1-fill); color: var(--t1-fg-soft);
+  display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; cursor: pointer; }
+.sd-foot { flex: none; display: flex; gap: 10px; padding: 12px 22px calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--t1-border-faint); }
+.sd-dir { flex: 1; height: 54px; border-radius: 999px; border: none; cursor: pointer; background: #6C4CF1; color: #fff;
+  font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 8px 24px rgba(108,76,241,.34); -webkit-tap-highlight-color: transparent; }
+.sd-dir:active, .sd-save:active { transform: scale(.98); }
+.sd-save { flex: 1; height: 54px; border-radius: 999px; border: none; cursor: pointer; background: var(--t1-ink); color: #fff;
+  font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  -webkit-tap-highlight-color: transparent; }
+.sd-save.on { background: var(--t1-orange); }
+.sd-dir iconify-icon, .sd-save iconify-icon { font-size: 20px; }
+.sd-cat .twemoji { width: 15px; height: 15px; }

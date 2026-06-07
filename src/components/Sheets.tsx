@@ -248,7 +248,7 @@ export function TripCard({ trip, onOpen, saved, onSave }: {
         <div className="tc-sub">{trip.subtitle}</div>
         <div className="tc-stats">
           <span><iconify-icon icon="hugeicons:location-04"></iconify-icon>{trip.stats.places} places</span>
-          <span><iconify-icon icon="hugeicons:footprint-01"></iconify-icon>{trip.stats.steps} steps</span>
+          <span><iconify-icon icon="hugeicons:sandals"></iconify-icon>{trip.stats.steps} steps</span>
           <span><iconify-icon icon="hugeicons:route-02"></iconify-icon>{trip.stats.km} km</span>
         </div>
         <div className="tc-cats">

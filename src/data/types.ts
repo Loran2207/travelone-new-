@@ -38,6 +38,10 @@ export interface Spot {
   y: number;
   short?: string;
   label?: boolean;
+  gallery?: string[];
+  address?: string;
+  website?: string;
+  phone?: string;
 }
 
 export interface ListDef {
