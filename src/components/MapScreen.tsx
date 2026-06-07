@@ -139,6 +139,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
       title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " spots" },
       actions: [
         { label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) },
+        { label: "Duplicate list", icon: "solar:copy-bold", onClick: () => { LISTS.push({ id: "l" + Date.now(), name: l.name + " copy", cover: l.cover, icon: l.icon, color: l.color }); showToast("“" + l.name + "” duplicated"); } },
         { label: "Rename list", icon: "solar:text-bold", onClick: () => showToast("Rename “" + l.name + "”") },
         { label: "Share list", icon: "solar:share-bold", onClick: () => { try { navigator.clipboard && navigator.clipboard.writeText("https://travel1.app/list/" + l.id); } catch { /* ignore */ } showToast("Link copied"); } },
         { label: "Delete list", icon: "solar:trash-bin-trash-bold", destructive: true, onClick: () => showToast("List deleted") },
@@ -233,10 +234,15 @@ export function MapScreen({ shared }: { shared: Shared }) {
             <iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon>
           </button>
           <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
-            {view === "list" && (
-              <button className="glassbtn" onClick={() => showToast("Edit list details")} aria-label="Edit">
-                <iconify-icon icon="solar:pen-2-bold"></iconify-icon>
-              </button>
+            {view === "list" && list && (
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <button className="glassbtn" onClick={() => listMenu(list.id)} aria-label="List options">
+                  <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                </button>
+                <button className="chrome-mytrips" onClick={() => setBuilderList(list)}>
+                  <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create trip
+                </button>
+              </div>
             )}
             <button className="glassbtn" onClick={() => { setRecenter((n) => n + 1); showToast("Centering on these spots"); }} aria-label="Re-center">
               <iconify-icon icon="solar:map-point-bold"></iconify-icon>

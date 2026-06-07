@@ -21,6 +21,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
   if (placeFilter !== "all") rows = rows.filter((s) => s.place === placeFilter);
   if (catFilter !== "All") rows = rows.filter((s) => s.cat === catFilter);
 
+  void onCreateTrip;
   return (
     <Fragment>
       <div className="ld-head">
@@ -39,12 +40,6 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
           <button className="ld-share" onClick={onShare} aria-label="Share list"><iconify-icon icon="solar:upload-minimalistic-bold"></iconify-icon></button>
           <div className="ld-spots">{all.length} {all.length === 1 ? "spot" : "spots"}</div>
         </div>
-      </div>
-
-      <div style={{ padding: "0 18px 14px" }}>
-        <button className="sd-btn primary" style={{ height: 48, fontSize: 15, width: "100%" }} onClick={onCreateTrip}>
-          <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create a trip from this list
-        </button>
       </div>
 
       {places.length > 1 && (
