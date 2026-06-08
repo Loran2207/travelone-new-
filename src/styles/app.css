@@ -458,3 +458,19 @@
 
 /* consistent top inset across screens (matches the map chrome ~24px + safe area) */
 .screen-title { padding-top: calc(env(safe-area-inset-top, 0px) + 28px); }
+
+/* search — your-collections cards (clean: thumb on top, text below) + richer suggestion chips */
+.sc-rail { flex-wrap: nowrap; padding-top: 4px; gap: 12px; }
+.sc-card { flex: none; width: 130px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .12s ease; }
+.sc-card:active { transform: scale(.97); }
+.sc-thumb { width: 130px; height: 118px; border-radius: 16px; overflow: hidden; background-size: cover; background-position: center;
+  box-shadow: var(--t1-shadow-card); display: flex; align-items: center; justify-content: center; }
+.sc-thumb .twemoji { width: 42px; height: 42px; }
+.sc-name { margin-top: 9px; font-weight: 700; font-size: 14.5px; color: var(--t1-ink); letter-spacing: -.2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sc-cnt { margin-top: 1px; font-weight: 500; font-size: 12.5px; color: var(--t1-fg-muted); }
+.sc-suggest { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 18px; }
+.sc-chip { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 15px; border-radius: 999px; border: none;
+  background: var(--t1-fill); font-family: var(--t1-font); font-weight: 600; font-size: 14px; color: var(--t1-ink);
+  cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.sc-chip .twemoji { width: 15px; height: 15px; }

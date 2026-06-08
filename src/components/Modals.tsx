@@ -55,7 +55,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
       <div className="search-top">
         <div className="search-field">
           <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search spots, lists & trips" autoFocus />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search places, lists & trips" autoFocus />
         </div>
         <button className="search-x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
       </div>
@@ -63,27 +63,27 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
         {!ql && (
           <Fragment>
             <div className="search-eyebrow">Your collections</div>
-            <div className="rail" style={{ flexWrap: "nowrap", paddingTop: 4 }}>
+            <div className="rail sc-rail">
               {lists.map((l) => (
-                <div key={l.id} style={{ flex: "none", width: 140, cursor: "pointer" }} onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
-                  <div style={{ width: 140, height: 140, borderRadius: 16, overflow: "hidden", boxShadow: "var(--t1-shadow-card)", position: "relative" }}>
+                <div key={l.id} className="sc-card" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
+                  <div className="sc-thumb" style={l.cover && !l.special
+                    ? { backgroundImage: `url(${l.cover})` }
+                    : { background: l.special ? "linear-gradient(150deg,#FFE7DC,#FFD7C4)" : tint(l.color || "#FE4A00", 0.82) }}>
                     {l.special
-                      ? <div style={{ width: "100%", height: "100%", background: "linear-gradient(150deg,#FF7A3D 0%,#FE4A00 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 46, color: "#fff" }}></iconify-icon></div>
+                      ? <iconify-icon icon="solar:map-point-bold" style={{ fontSize: 40, color: "var(--t1-orange)" }}></iconify-icon>
                       : (!l.cover && (l.emoji || l.icon))
-                        ? <div style={{ width: "100%", height: "100%", background: tint(l.color || "#FE4A00", 0.82), display: "flex", alignItems: "center", justifyContent: "center" }}>{l.emoji ? <Emoji e={l.emoji} size={46} /> : <iconify-icon icon={l.icon || "solar:map-point-bold"} style={{ color: l.color || "#FE4A00", fontSize: 42 }}></iconify-icon>}</div>
-                        : <div style={{ width: "100%", height: "100%", backgroundImage: `url(${l.cover})`, backgroundSize: "cover", backgroundPosition: "center" }}></div>}
-                    <div style={{ position: "absolute", left: 9, bottom: 9, right: 9 }}>
-                      <div style={{ color: "#fff", fontWeight: 700, fontSize: 16, textShadow: "0 2px 8px rgba(0,0,0,.5)" }}>{l.name}</div>
-                      <span style={{ display: "inline-flex", marginTop: 3, padding: "2px 9px", borderRadius: 999, background: "rgba(255,255,255,.22)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,.35)", color: "#fff", fontWeight: 600, fontSize: 11 }}>{l.count} spots</span>
-                    </div>
+                        ? (l.emoji ? <Emoji e={l.emoji} size={42} /> : <iconify-icon icon={l.icon || "solar:map-point-bold"} style={{ color: l.color || "#FE4A00", fontSize: 40 }}></iconify-icon>)
+                        : null}
                   </div>
+                  <div className="sc-name">{l.name}</div>
+                  <div className="sc-cnt">{l.count} {l.count === 1 ? "place" : "places"}</div>
                 </div>
               ))}
             </div>
             <div className="search-eyebrow">Try searching</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, padding: "0 18px" }}>
-              {["Royal Castle", "Museum", "Café", "Kraków", "Park"].map((t) => (
-                <button key={t} className="fchip" onClick={() => setQ(t)} style={{ background: "var(--t1-fill)" }}>{t}</button>
+            <div className="sc-suggest">
+              {([["Museum", "🖼️"], ["Café", "☕"], ["Park", "🌳"], ["Castle", "🏰"], ["Market", "🛍️"], ["Warsaw", "🇵🇱"], ["Kraków", "🇵🇱"]] as [string, string][]).map(([t, e]) => (
+                <button key={t} className="sc-chip" onClick={() => setQ(t)}><Emoji e={e} size={15} />{t}</button>
               ))}
             </div>
           </Fragment>
