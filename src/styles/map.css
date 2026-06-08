@@ -498,3 +498,8 @@ iconify-icon, .iconify { display: inline-block; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nt-meta { margin-top: 7px; display: flex; align-items: center; gap: 8px; }
 .nt-dist { font-weight: 500; font-size: 12px; color: var(--t1-fg-faint); flex: none; }
+
+/* easier-to-grab handle + My Places thumb matches the filter-chip grey */
+.grab-zone { padding: 11px 0 9px; }
+.grabber { width: 42px; height: 5px; }
+.pinbox { background: var(--t1-fill); }

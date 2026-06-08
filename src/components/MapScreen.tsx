@@ -1,6 +1,6 @@
 // TRAVEL1 — the Map tab: a real Leaflet map + draggable bottom sheet,
 // with list / city / spot detail flows layered on top.
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState, type UIEvent } from "react";
 import { I, IMG, LISTS, SPOTS, placeMeta, spotsOf } from "../data/data";
 import { CITY_CENTER, boundsOf, spotLatLng, type LatLng } from "../data/geo";
 import type { ListDef, Spot } from "../data/types";
@@ -146,6 +146,12 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const anyOverlay = modal !== null || spot !== null || addSpot !== null || builderList !== null;
 
   const openSpotById = (id: string) => { const s = SPOTS.find((x) => x.id === id); if (s) setSpot(s); };
+
+  // start scrolling the sheet content → it isn't about the map anymore, so grow the sheet to full
+  const onSheetScroll = (e: UIEvent<HTMLDivElement>) => {
+    if (sheet.dragging) return;
+    if (e.currentTarget.scrollTop > 6 && sheet.top > FULL) sheet.setTop(FULL);
+  };
 
   const addSpotsToList = (listId: string, ids: string[]) => {
     const l = LISTS.find((x) => x.id === listId); if (!l) return;
@@ -319,7 +325,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
             <div className="grabber"></div>
           </div>
           {fixedTop}
-          <div className="sheet-scroll" key={view + listId + tab + cityId}>{sheetBody}</div>
+          <div className="sheet-scroll" onScroll={onSheetScroll} key={view + listId + tab + cityId}>{sheetBody}</div>
         </div>
       )}
 
