@@ -429,3 +429,22 @@
 
 /* unified save icon = heart, red when saved */
 .gc-heart.on { color: var(--t1-red); }
+
+/* plan-a-trip (simple): ask how long, reuse the search duration wheel */
+.modal.tbs { display: flex; flex-direction: column; padding: 0; }
+.tbs-head { display: flex; align-items: center; gap: 12px; padding: 4px 18px 8px; flex: none; }
+.tbs-head .x { width: 36px; height: 36px; border-radius: 999px; border: none; background: var(--t1-fill); color: var(--t1-fg-soft);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tbs-head .t { flex: 1; text-align: center; font-weight: 700; font-size: 17px; color: var(--t1-ink); }
+.tbs-head .spacer { width: 36px; flex: none; }
+.tbs-body { flex: 1; padding: 0 20px; }
+.tbs-from { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 52px; padding: 0 16px;
+  border-radius: 14px; background: var(--t1-fill); margin-bottom: 14px; }
+.tbs-from .l { font-weight: 600; font-size: 14px; color: var(--t1-fg-muted); }
+.tbs-from .r { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; color: var(--t1-ink); min-width: 0; }
+.tbs-date { display: flex; align-items: center; gap: 10px; position: relative; margin-top: 14px; height: 52px; padding: 0 16px;
+  border-radius: 14px; background: var(--t1-fill); }
+.tbs-date iconify-icon { font-size: 20px; color: var(--t1-orange); }
+.tbs-date span { font-weight: 600; font-size: 15px; color: var(--t1-ink); }
+.tbs-date input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; border: none; cursor: pointer; }
+.tbs-hint { margin-top: 16px; text-align: center; font-weight: 500; font-size: 13.5px; color: var(--t1-fg-muted); }
