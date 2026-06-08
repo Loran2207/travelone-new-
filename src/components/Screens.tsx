@@ -127,26 +127,46 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
   );
 }
 
-// ---- MY TRIPS tab ----
+// ---- MY TRIPS tab (with a Saved / My Trips switch — merged from the old Saved tab) ----
 export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore, onMap }: {
   allTrips: Trip[]; myTrips: Set<string>; savedTrips: Set<string>; filter: string; sort?: string; onFilter: (f: string) => void;
   onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void; onMap: () => void;
 }) {
+  const [view, setView] = useState<"trips" | "saved">("trips");
   const sortTrips = (arr: Trip[]) => {
     if (sort === "name") return [...arr].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "places") return [...arr].sort((a, b) => b.stats.places - a.stats.places);
     return arr;
   };
   const mine = allTrips.filter((t) => myTrips.has(t.id));
-  const countries = [...new Map(mine.map((t) => [placeMeta(t.place).country, { country: placeMeta(t.place).country, flag: placeMeta(t.place).flag }])).values()];
-  const shown = filter === "all" ? mine : mine.filter((t) => placeMeta(t.place).country === filter);
+  const saved = allTrips.filter((t) => savedTrips.has(t.id));
+  const base = view === "trips" ? mine : saved;
+  const countries = [...new Map(base.map((t) => [placeMeta(t.place).country, { country: placeMeta(t.place).country, flag: placeMeta(t.place).flag }])).values()];
+  const shown = filter === "all" ? base : base.filter((t) => placeMeta(t.place).country === filter);
   return (
     <div className="screen screen-pad">
       <div className="screen-title"><h1>My Trips</h1></div>
-      {mine.length === 0 ? (
+      <div className="mt-seg">
+        <button className={view === "trips" ? "on" : ""} onClick={() => { setView("trips"); onFilter("all"); }}>
+          <iconify-icon icon="solar:suitcase-lines-bold"></iconify-icon>My Trips <span className="cnt">{mine.length}</span>
+        </button>
+        <button className={view === "saved" ? "on" : ""} onClick={() => { setView("saved"); onFilter("all"); }}>
+          <iconify-icon icon="solar:heart-bold"></iconify-icon>Saved <span className="cnt">{saved.length}</span>
+        </button>
+      </div>
+      {base.length === 0 ? (
         <div className="emptystate">
-          <div className="es-title">No trips planned yet</div>
-          <div className="es-sub">Open any guide and tap “+ My Trips”, or build one from a list on the map</div>
+          {view === "trips" ? (
+            <Fragment>
+              <div className="es-title">No trips planned yet</div>
+              <div className="es-sub">Open any guide and tap “+ My Trips”, or build one from a list on the map</div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div className="es-title">Nothing saved yet</div>
+              <div className="es-sub">Tap <iconify-icon icon="solar:heart-linear"></iconify-icon> on any guide to save it for later</div>
+            </Fragment>
+          )}
           <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
           <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-bold"></iconify-icon> Open the map</button>
         </div>

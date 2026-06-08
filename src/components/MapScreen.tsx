@@ -74,6 +74,15 @@ export function MapScreen({ shared }: { shared: Shared }) {
   useEffect(() => { sheet.setTop(defaultTop); setMsSelect(false); setMsSel(new Set()); /* eslint-disable-next-line */ }, [view, listId, cityId]);
   // entering the Map tab always lands on the map — never a leftover modal
   useEffect(() => { setModal(null); }, []);
+  useEffect(() => {
+    if (!shared.mapIntent) return;
+    const it = shared.mapIntent;
+    if (it === "newlist") setModal("newlist");
+    else if (it === "place") { setPlacing(true); showToast("Tap the map to drop a place"); }
+    else if (it === "search") setModal("search");
+    shared.clearMapIntent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shared.mapIntent]);
 
   // ---- navigation ----
   const closeOverlays = () => { setModal(null); setSpot(null); setAddSpot(null); setBuilderList(null); };

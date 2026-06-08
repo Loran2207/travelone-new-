@@ -18,4 +18,6 @@ export interface Shared {
   findTrip: (id: string) => Trip | undefined;
   openGuide: (id: string) => void;
   openWizard: (city?: { id: string } | null) => void;
+  mapIntent: string | null;
+  clearMapIntent: () => void;
 }

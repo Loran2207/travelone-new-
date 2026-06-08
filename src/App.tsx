@@ -5,8 +5,8 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { TRIPS, IMG } from "./data/data";
 import type { City, Trip } from "./data/types";
 import type { Shared } from "./lib/shared";
-import { BottomNav, type TabId } from "./components/chrome";
-import { ExploreScreen, MyTripsScreen, ResultsScreen, SavedScreen, type ResultsQuery } from "./components/Screens";
+import { BottomNav, QuickFab, type TabId } from "./components/chrome";
+import { ExploreScreen, MyTripsScreen, ResultsScreen, type ResultsQuery } from "./components/Screens";
 import { MapScreen } from "./components/MapScreen";
 import { GuideDetailOverlay } from "./components/GuideDetailOverlay";
 import { SearchGuidesWizard } from "./components/Wizard";
@@ -38,13 +38,13 @@ export function App() {
   const [wizardCity, setWizardCity] = useState<{ id: string } | null>(null);
   const [results, setResults] = useState<ResultsQuery | null>(null);
   const [guideId, setGuideId] = useState<string | null>(null);
+  const [mapIntent, setMapIntent] = useState<string | null>(null);
 
   // shared trip state
   const [savedTrips, setSavedTrips] = useState<Set<string>>(() => new Set(TRIPS.filter((t) => t.saved).map((t) => t.id)));
   const [myTrips, setMyTrips] = useState<Set<string>>(() => new Set());
   const [genTrips, setGenTrips] = useState<Trip[]>([]);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const [savedFilter, setSavedFilter] = useState("all");
   const [tripsFilter, setTripsFilter] = useState("all");
   const [listSort, setListSort] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
@@ -80,6 +80,7 @@ export function App() {
   const shared: Shared = {
     savedTrips, toggleSavedTrip, myTrips, addMyTrip, genTrips, addGenTrip, allTrips,
     completed, toggleStop, showToast, findTrip, openGuide, openWizard,
+    mapIntent, clearMapIntent: () => setMapIntent(null),
   };
   void toggleStop;
 
@@ -99,9 +100,6 @@ export function App() {
   } else if (tab === "explore") {
     screen = <ExploreScreen onSearch={() => openWizard()} onOpenCity={(c: City) => openWizard(c)}
       savedTrips={savedTrips} onOpenGuide={openGuide} onHeart={toggleSavedTrip} />;
-  } else if (tab === "saved") {
-    screen = <SavedScreen allTrips={allTrips} savedTrips={savedTrips} filter={savedFilter} onFilter={setSavedFilter} sort={LIST_SORTS[listSort].key}
-      onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} onMap={() => goTab("map")} />;
   } else {
     screen = <MyTripsScreen allTrips={allTrips} myTrips={myTrips} savedTrips={savedTrips} filter={tripsFilter} onFilter={setTripsFilter} sort={LIST_SORTS[listSort].key}
       onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} onMap={() => goTab("map")} />;
@@ -119,11 +117,19 @@ export function App() {
           <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: 62, zIndex: 40, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
         )}
         {/* saved / trips options button */}
-        {showChrome && (tab === "saved" || tab === "trips") && (
+        {showChrome && tab === "trips" && (
           <button className="glassbtn sm" style={{ position: "absolute", right: 20, top: 70, zIndex: 40 }}
             onClick={() => { const nx = (listSort + 1) % LIST_SORTS.length; setListSort(nx); showToast("Sorted by " + LIST_SORTS[nx].label); }} aria-label="Sort">
             <iconify-icon icon="solar:tuning-2-bold"></iconify-icon>
           </button>
+        )}
+
+        {/* quick-actions FAB */}
+        {showChrome && (
+          <QuickFab
+            onAddPlace={() => { setMapIntent("place"); goTab("map"); }}
+            onSearch={() => openWizard()}
+            onNewList={() => { setMapIntent("newlist"); goTab("map"); }} />
         )}
 
         {/* guide / trip detail overlay */}

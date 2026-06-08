@@ -1,5 +1,5 @@
 // TRAVEL1 — shared chrome: country flag + bottom tab bar.
-import type { CSSProperties } from "react";
+import { Fragment, useState, type CSSProperties } from "react";
 
 // Country flag emoji don't render on every platform — use Twemoji SVGs.
 export function flagUrl(e: string): string | null {
@@ -32,11 +32,10 @@ export function Emoji({ e, size = 16, style }: { e?: string; size?: number; styl
   );
 }
 
-export type TabId = "explore" | "saved" | "trips" | "map";
+export type TabId = "explore" | "trips" | "map";
 
 const NAV_ITEMS: { id: TabId; label: string; icon: string; dot?: boolean }[] = [
   { id: "explore", label: "Explore",  icon: "solar:compass-bold" },
-  { id: "saved",   label: "Saved",    icon: "solar:heart-bold" },
   { id: "trips",   label: "My Trips", icon: "solar:suitcase-lines-bold", dot: true },
   { id: "map",     label: "Map",      icon: "solar:map-bold" },
 ];
@@ -59,5 +58,30 @@ export function BottomNav({ tab, onTab }: { tab: string; onTab: (id: TabId) => v
         })}
       </div>
     </div>
+  );
+}
+
+// ---- quick-actions FAB (bottom-right, on Explore / My Trips) ----
+export function QuickFab({ onAddPlace, onSearch, onNewList }: {
+  onAddPlace: () => void; onSearch: () => void; onNewList: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const act = (fn: () => void) => { setOpen(false); fn(); };
+  return (
+    <Fragment>
+      {open && <div className="qf-scrim" onClick={() => setOpen(false)}></div>}
+      <div className="quickfab-wrap">
+        {open && (
+          <div className="qf-menu">
+            <button className="qf-item" onClick={() => act(onAddPlace)}><span className="qf-ic place"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>Add a place</button>
+            <button className="qf-item" onClick={() => act(onSearch)}><span className="qf-ic search"><iconify-icon icon="solar:magnifer-bold"></iconify-icon></span>Search guides</button>
+            <button className="qf-item" onClick={() => act(onNewList)}><span className="qf-ic list"><iconify-icon icon="solar:bookmark-bold"></iconify-icon></span>New list</button>
+          </div>
+        )}
+        <button className={"quickfab" + (open ? " open" : "")} onClick={() => setOpen((o) => !o)} aria-label="Quick actions">
+          <iconify-icon icon="hugeicons:add-01"></iconify-icon>
+        </button>
+      </div>
+    </Fragment>
   );
 }
