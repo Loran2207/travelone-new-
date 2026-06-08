@@ -150,9 +150,9 @@ export const SPOTS: Spot[] = [
 // ---- Lists. "My Spots" is the special catch-all collection. ----
 export const LISTS: ListDef[] = [
   { id: "myspots", name: "My Spots", special: true, pin: true },
-  { id: "warsaw",  name: "Warsaw Favourites", cover: I.castle, collab: true, note: "Built with Marta" },
-  { id: "krakow",  name: "Kraków",  cover: I.city1 },
-  { id: "gdansk",  name: "Gdańsk Weekend", cover: I.palace },
+  { id: "warsaw",  name: "Warsaw Favourites", cover: I.castle },
+  { id: "krakow",  name: "Kraków Highlights", emoji: "🏰", color: "#7C3AED" },
+  { id: "gdansk",  name: "Gdańsk Weekend", emoji: "⚓", color: "#0891B2" },
 ];
 
 // ---- Day route colors ----

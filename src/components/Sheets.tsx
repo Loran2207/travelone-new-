@@ -95,8 +95,7 @@ export function ListsContent({ onOpenList, onOpenMySpots, onListMenu }: {
             <div className="lr-name">{l.name}</div>
             <div className={"lr-sub" + (l.special ? " pinned" : "")}>
               {l.special && <iconify-icon icon="solar:bookmark-bold"></iconify-icon>}
-              {l.collab && <iconify-icon icon="solar:users-group-rounded-bold"></iconify-icon>}
-              {l.count} {l.count === 1 ? "spot" : "spots"}{l.note ? " · " + l.note : ""}
+              {l.count} {l.count === 1 ? "spot" : "spots"}
             </div>
           </div>
           {!l.special && (

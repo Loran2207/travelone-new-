@@ -101,10 +101,10 @@ export function App() {
       savedTrips={savedTrips} onOpenGuide={openGuide} onHeart={toggleSavedTrip} />;
   } else if (tab === "saved") {
     screen = <SavedScreen allTrips={allTrips} savedTrips={savedTrips} filter={savedFilter} onFilter={setSavedFilter} sort={LIST_SORTS[listSort].key}
-      onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} />;
+      onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} onMap={() => goTab("map")} />;
   } else {
     screen = <MyTripsScreen allTrips={allTrips} myTrips={myTrips} savedTrips={savedTrips} filter={tripsFilter} onFilter={setTripsFilter} sort={LIST_SORTS[listSort].key}
-      onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} />;
+      onOpenGuide={openGuide} onHeart={toggleSavedTrip} onExplore={() => goTab("explore")} onMap={() => goTab("map")} />;
   }
 
   const showChrome = tab !== "map" && !results;

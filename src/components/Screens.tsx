@@ -95,9 +95,9 @@ export function CountryChips({ countries, value, onChange }: {
 }
 
 // ---- SAVED tab ----
-export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore }: {
+export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore, onMap }: {
   allTrips: Trip[]; savedTrips: Set<string>; filter: string; sort?: string; onFilter: (f: string) => void;
-  onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void;
+  onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void; onMap: () => void;
 }) {
   const sortTrips = (arr: Trip[]) => {
     if (sort === "name") return [...arr].sort((a, b) => a.name.localeCompare(b.name));
@@ -115,6 +115,7 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
           <div className="es-title">Nothing saved yet</div>
           <div className="es-sub">Tap <iconify-icon icon="solar:heart-linear"></iconify-icon> on any guide to save it for later</div>
           <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
+          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-bold"></iconify-icon> Open the map</button>
         </div>
       ) : (
         <Fragment>
@@ -127,9 +128,9 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
 }
 
 // ---- MY TRIPS tab ----
-export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore }: {
+export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onFilter, onOpenGuide, onHeart, onExplore, onMap }: {
   allTrips: Trip[]; myTrips: Set<string>; savedTrips: Set<string>; filter: string; sort?: string; onFilter: (f: string) => void;
-  onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void;
+  onOpenGuide: (id: string) => void; onHeart: (t: Trip) => void; onExplore: () => void; onMap: () => void;
 }) {
   const sortTrips = (arr: Trip[]) => {
     if (sort === "name") return [...arr].sort((a, b) => a.name.localeCompare(b.name));
@@ -147,6 +148,7 @@ export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onF
           <div className="es-title">No trips planned yet</div>
           <div className="es-sub">Open any guide and tap “+ My Trips”, or build one from a list on the map</div>
           <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
+          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-bold"></iconify-icon> Open the map</button>
         </div>
       ) : (
         <Fragment>
