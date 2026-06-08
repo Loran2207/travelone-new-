@@ -481,3 +481,7 @@
   background:
     linear-gradient(180deg, rgba(20,18,26,.42) 0%, rgba(20,18,26,.10) 20%, rgba(16,14,22,.18) 44%, rgba(12,10,18,.62) 74%, rgba(8,7,12,1) 100%);
 }
+/* FAB matches the nav bar height, stays square (circle) */
+.quickfab { width: 74px; height: 74px; }
+.quickfab-wrap { bottom: calc(14px + env(safe-area-inset-bottom)); }
+.navwrap.compact { padding-right: 100px; }
