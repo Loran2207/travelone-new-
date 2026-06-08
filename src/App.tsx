@@ -114,11 +114,11 @@ export function App() {
 
         {/* explore avatar (display only — profile menu intentionally disabled) */}
         {showChrome && tab === "explore" && (
-          <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: 62, zIndex: 40, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
+          <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: "calc(env(safe-area-inset-top, 0px) + 24px)", zIndex: 40, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
         )}
         {/* saved / trips options button */}
         {showChrome && tab === "trips" && (
-          <button className="glassbtn sm" style={{ position: "absolute", right: 20, top: 70, zIndex: 40 }}
+          <button className="glassbtn sm" style={{ position: "absolute", right: 20, top: "calc(env(safe-area-inset-top, 0px) + 26px)", zIndex: 40 }}
             onClick={() => { const nx = (listSort + 1) % LIST_SORTS.length; setListSort(nx); showToast("Sorted by " + LIST_SORTS[nx].label); }} aria-label="Sort">
             <iconify-icon icon="solar:tuning-2-bold"></iconify-icon>
           </button>

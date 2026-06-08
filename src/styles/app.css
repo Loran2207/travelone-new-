@@ -455,3 +455,6 @@
 /* explore panel: same elevation/shadow as the map sheet + sits at a matching height */
 .hero { height: 468px; }
 .panel { margin-top: -60px; border-radius: 28px 28px 0 0; box-shadow: var(--t1-shadow-sheet), var(--t1-inset-warm); }
+
+/* consistent top inset across screens (matches the map chrome ~24px + safe area) */
+.screen-title { padding-top: calc(env(safe-area-inset-top, 0px) + 28px); }
