@@ -524,3 +524,6 @@ iconify-icon, .iconify { display: inline-block; }
 /* match the Explore city-card size so map + explore cards line up */
 .ntile { width: 156px; }
 .ntile .img { width: 156px; height: 150px; }
+/* nav bar + selected-tab highlight: maximum (pill) rounding */
+.navbar { border-radius: 999px; }
+.navtab { border-radius: 999px; }
