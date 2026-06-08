@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { CATS, LISTS, SPOTS, TRIPS, placeMeta, spotsOf, tint } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
+import { GuideCard } from "./Screens";
 
 export function FilterRow({ tab, onTab, onSearch }: { tab: string; onTab: (id: string) => void; onSearch: () => void }) {
   const T = (id: string, icon: string | null, label: string) => (
@@ -68,7 +69,7 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
             <div className="r link">Find more</div>
           </div>
           <div className="trip-stack">
-            {nearTrips.map((t) => <TripCard key={t.id} trip={t} onOpen={() => onOpenTrip(t.id)} saved={savedTrips.has(t.id)} onSave={() => onSaveTrip(t)} />)}
+            {nearTrips.map((t) => <GuideCard key={t.id} trip={t} onOpen={() => onOpenTrip(t.id)} saved={savedTrips.has(t.id)} onHeart={() => onSaveTrip(t)} />)}
           </div>
         </Fragment>
       )}
@@ -182,7 +183,7 @@ export function NearbyContent({ sub, onSub, onOpenSpot, onOpenTrip, savedSpots, 
             <div className="h">Ready-made guides</div>
             <div className="r">{guides.length} near you</div>
           </div>
-          {guides.map((t) => <TripCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenTrip(t.id)} onSave={() => onSaveTrip(t)} />)}
+          {guides.map((t) => <GuideCard key={t.id} trip={t} saved={savedTrips.has(t.id)} onOpen={() => onOpenTrip(t.id)} onHeart={() => onSaveTrip(t)} />)}
         </Fragment>
       )}
     </Fragment>

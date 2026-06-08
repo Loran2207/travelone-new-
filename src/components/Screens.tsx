@@ -29,7 +29,7 @@ export function GuideCard({ trip, saved, onOpen, onHeart }: {
             <iconify-icon icon={saved ? "solar:heart-bold" : "solar:heart-linear"}></iconify-icon>
           </button>
         )}
-        <span className="gc-place"><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 14, color: "var(--t1-orange)" }}></iconify-icon>{pm.city} <Flag e={pm.flag} size={13} /></span>
+        <span className="gc-place">{pm.city} <Flag e={pm.flag} size={13} /></span>
         <span className="gc-count"><iconify-icon icon="hugeicons:image-02"></iconify-icon>1/{trip.stats.places}</span>
       </div>
       <div className="gc-title">{trip.name}{trip.subtitle ? ": " + trip.subtitle : ""}</div>

@@ -410,3 +410,8 @@
 /* bottom fade-out under the tab bar (so you can't see exactly what's beneath it) */
 .bottom-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; z-index: 26; pointer-events: none;
   background: linear-gradient(to top, rgba(252,251,250,1) 0%, rgba(252,251,250,1) 32%, rgba(252,251,250,0) 100%); }
+
+/* trip-card heart: dark translucent + blur, matching the other cards */
+.gc-heart { background: rgba(0,0,0,.42); color: #fff; border-radius: 999px; box-shadow: none;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.gc-heart.on { color: var(--t1-red); background: rgba(0,0,0,.42); }
