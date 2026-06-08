@@ -406,3 +406,7 @@
 .es-cta2:active { transform: scale(.96); }
 /* FAB menu's own outside-click catcher must sit just below the FAB wrap (so menu items stay clickable), yet below modal scrim */
 .qf-scrim { z-index: 34; }
+
+/* bottom fade-out under the tab bar (so you can't see exactly what's beneath it) */
+.bottom-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; z-index: 26; pointer-events: none;
+  background: linear-gradient(to top, rgba(252,251,250,1) 0%, rgba(252,251,250,1) 32%, rgba(252,251,250,0) 100%); }

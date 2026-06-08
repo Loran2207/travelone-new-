@@ -143,6 +143,9 @@ export function App() {
           </Fragment>
         )}
 
+        {/* soft fade so content scrolling under the tab bar dissolves to white */}
+        {showNav && <div className="bottom-fade" aria-hidden></div>}
+
         {/* bottom nav */}
         {showNav && <BottomNav tab={tab} onTab={goTab} compact={showNav} />}
 

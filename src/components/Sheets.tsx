@@ -1,6 +1,6 @@
 // TRAVEL1 — bottom-sheet browse content: All · Lists · Trips · Nearby
 import { Fragment } from "react";
-import { CATS, LISTS, SPOTS, TRIPS, placeMeta, prefEmoji, spotsOf, tint } from "../data/data";
+import { CATS, LISTS, SPOTS, TRIPS, placeMeta, spotsOf, tint } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 
@@ -48,7 +48,6 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
             <div style={{ minWidth: 0, flex: 1 }}>
               <div className="lc-name" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{l.name}</div>
               <div className="lc-sub">
-                {l.special && <iconify-icon icon="solar:bookmark-bold" style={{ color: "#0A84FF", fontSize: 13 }}></iconify-icon>}
                 {l.count} {l.count === 1 ? "place" : "places"}
               </div>
             </div>
@@ -243,8 +242,12 @@ export function NearTile({ spot, onClick, saved, onSave }: {
         )}
       </div>
       <div className="nm">{spot.name}</div>
-      <div className="nt-cat" style={{ color: cat.color }}><Emoji e={prefEmoji(spot.cat)} size={12} />{spot.cat}</div>
-      <div className="mt">{placeMeta(spot.place).city} · {spot.dist}</div>
+      <div className="nt-meta">
+        <span className="cat-badge" style={{ background: cat.soft, color: cat.color }}>
+          <iconify-icon icon={cat.icon}></iconify-icon>{spot.cat}
+        </span>
+        <span className="nt-dist">{spot.dist}</span>
+      </div>
     </div>
   );
 }
