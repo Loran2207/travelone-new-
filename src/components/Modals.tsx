@@ -1,9 +1,10 @@
 // TRAVEL1 — overlays: Search, New List, Spot detail, Add-to-list,
 // Action sheet, Trip builder, Create/Profile popovers.
-import { Fragment, useEffect, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
-import { CATS, I, IMG, LISTS, SPOTS, TRIPS, catMeta, galleryOf, placeMeta, placesOf, prefEmoji, spotContact, spotsOf, tint } from "../data/data";
+import { Fragment, useEffect, useMemo, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
+import { buildTrip } from "../lib/buildTrip";
+import { CATS, I, IMG, LISTS, SPOTS, TRIPS, catMeta, galleryOf, placeMeta, prefEmoji, spotContact, spotsOf, tint } from "../data/data";
 import type { ListDef, Spot, Trip } from "../data/types";
-import { Emoji, Flag } from "./chrome";
+import { Emoji } from "./chrome";
 import { ListThumb, SpotRow, TripRow } from "./Sheets";
 
 // ---- iOS keyboard ----
@@ -329,37 +330,43 @@ export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null;
   );
 }
 
-// ---- TRIP BUILDER ----
-// ---- TRIP BUILDER (plan a trip from a list) ----
+interface SpeechRec { lang: string; interimResults: boolean; maxAlternatives: number; onresult: (e: { results: { [i: number]: { [j: number]: { transcript: string } } } }) => void; onerror: () => void; onend: () => void; start: () => void; }
+// ---- TRIP BUILDER (plan a trip — live preview, shuffle, voice) ----
 export function TripBuilder({ open, list, onClose, onGenerate }: {
   open: boolean; list: ListDef | null; onClose: () => void;
   onGenerate: (opts: { list: ListDef; days: number; mode: string; assign?: Record<string, number>; dateLabel?: string }) => void;
 }) {
-  const spots = list ? spotsOf(list.id) : [];
-  const [mode, setMode] = useState("flex");
   const [days, setDays] = useState(3);
-  const [plan, setPlan] = useState<"auto" | "manual">("auto");
-  const [assign, setAssign] = useState<Record<string, number>>({});
+  const [seed, setSeed] = useState(0);
+  const [exact, setExact] = useState(false);
   const [start, setStart] = useState("");
+  const [assign, setAssign] = useState<Record<string, number>>({});
+  const [listening, setListening] = useState(false);
+  const [heard, setHeard] = useState("");
+
   useEffect(() => {
     if (open && list) {
-      setMode("flex"); setPlan("auto"); setStart("");
-      setDays(Math.min(3, Math.max(1, Math.ceil(spotsOf(list.id).length / 3))));
+      setSeed(0); setExact(false); setStart(""); setHeard(""); setListening(false);
+      setDays(Math.min(4, Math.max(1, Math.ceil(spotsOf(list.id).length / 3))));
     }
   }, [open, list]);
-  // default round-robin assignment whenever days / list change
+
   useEffect(() => {
     if (!list) return;
+    const sp = spotsOf(list.id);
+    const order = sp.map((_, i) => i);
+    if (seed > 0) {
+      for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = order[i]; order[i] = order[j]; order[j] = t; }
+    }
     const a: Record<string, number> = {};
-    spotsOf(list.id).forEach((s, i) => { a[s.id] = (i % days) + 1; });
+    order.forEach((idx, pos) => { a[sp[idx].id] = (pos % days) + 1; });
     setAssign(a);
-  }, [days, list, open]);
-  if (!list) return null;
-  const city = placeMeta(placesOf(list.id)[0] || "Warsaw");
-  const setSpotDay = (id: string, d: number) => setAssign((p) => ({ ...p, [id]: d }));
+  }, [days, seed, list, open]);
+
+  const preview = useMemo(() => (list ? buildTrip(list, days, [], assign) : null), [list, days, assign]);
 
   const dateLabel = (() => {
-    if (mode !== "exact" || !start) return undefined;
+    if (!exact || !start) return undefined;
     const s = new Date(start + "T00:00:00");
     if (isNaN(s.getTime())) return undefined;
     const e = new Date(s); e.setDate(e.getDate() + Math.max(0, days - 1));
@@ -369,6 +376,29 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       : `${M[s.getMonth()]} ${s.getDate()} – ${M[e.getMonth()]} ${e.getDate()}`;
   })();
 
+  const startVoice = () => {
+    const w = window as unknown as { SpeechRecognition?: new () => SpeechRec; webkitSpeechRecognition?: new () => SpeechRec };
+    const Ctor = w.SpeechRecognition || w.webkitSpeechRecognition;
+    if (!Ctor) { setHeard("Voice input isn't supported on this browser."); return; }
+    const rec = new Ctor();
+    rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 1;
+    setListening(true); setHeard("");
+    rec.onresult = (ev) => {
+      const t = String(ev.results[0][0].transcript || "").toLowerCase();
+      setHeard("“" + t + "”");
+      const words: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+      const dm = t.match(/(\d+)\s*day/) || t.match(/\b(one|two|three|four|five)\b/);
+      if (dm) { const v = parseInt(dm[1], 10) || words[dm[1]]; if (v >= 1 && v <= 5) setDays(v); }
+      setSeed((s) => s + 1);
+    };
+    rec.onerror = () => setListening(false);
+    rec.onend = () => setListening(false);
+    try { rec.start(); } catch { setListening(false); }
+  };
+
+  if (!list) return null;
+  const DAYC = ["#2563EB", "#F59E0B", "#EC4D6B", "#7C5CFC", "#15A06B"];
+
   return (
     <div className={"modal" + (open ? " open" : "")} style={{ top: 60, height: "calc(100% - 60px)" }}>
       <div className="tb-head">
@@ -377,65 +407,54 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
         <div className="spacer"></div>
       </div>
       <div className="tb-scroll">
-        <div className="tb-summary">
-          <div className="l">From</div>
-          <div className="r"><iconify-icon icon="solar:bookmark-bold" style={{ color: "var(--t1-orange)" }}></iconify-icon>{list.name} · {spots.length} spots</div>
+        <div className="tb-row2">
+          <div className="h">How many days?</div>
+          <button className={"tb-datebtn" + (exact ? " on" : "")} onClick={() => setExact(!exact)}>
+            <iconify-icon icon="solar:calendar-bold"></iconify-icon>{exact && dateLabel ? dateLabel : "Dates"}
+          </button>
         </div>
-        <div className="tb-summary">
-          <div className="l">Where</div>
-          <div className="r"><Flag e={city.flag} size={14} /> {city.city}</div>
+        <div className="daypick">
+          {[1, 2, 3, 4, 5].map((d) => (
+            <button key={d} className={days === d ? "on" : ""} onClick={() => setDays(d)}>
+              <span className="n">{d}</span><span className="u">{d === 1 ? "day" : "days"}</span>
+            </button>
+          ))}
         </div>
+        {exact && (
+          <label className="tb-date">
+            <span>Start date</span>
+            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+          </label>
+        )}
 
-        <div className="tb-sec">
-          <div className="h">How long?</div>
-          <div className="seg">
-            <button className={mode === "flex" ? "on" : ""} onClick={() => setMode("flex")}>Flexible</button>
-            <button className={mode === "exact" ? "on" : ""} onClick={() => setMode("exact")}>Exact dates</button>
-          </div>
-          {mode === "exact" && (
-            <label className="tb-date">
-              <span>Start date{dateLabel ? " · " + dateLabel : ""}</span>
-              <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
-            </label>
-          )}
-          <div className="daypick">
-            {[1, 2, 3, 4, 5].map((d) => (
-              <button key={d} className={days === d ? "on" : ""} onClick={() => setDays(d)}>
-                <span className="n">{d}</span><span className="u">{d === 1 ? "day" : "days"}</span>
-              </button>
-            ))}
-          </div>
+        <div className="tb-preview-h">
+          <div className="h">Your plan · {spotsOf(list.id).length} spots</div>
+          <button className="tb-shuffle" onClick={() => setSeed((s) => s + 1)}><iconify-icon icon="solar:shuffle-bold"></iconify-icon> Shuffle</button>
         </div>
-
-        <div className="tb-sec" style={{ paddingTop: 0 }}>
-          <div className="h">Plan the days</div>
-          <div className="seg">
-            <button className={plan === "auto" ? "on" : ""} onClick={() => setPlan("auto")}>Auto-plan</button>
-            <button className={plan === "manual" ? "on" : ""} onClick={() => setPlan("manual")}>Arrange myself</button>
-          </div>
-          {plan === "auto" ? (
-            <div className="sub" style={{ marginTop: 12 }}>We'll spread your {spots.length} spots evenly across {days} {days === 1 ? "day" : "days"}.</div>
-          ) : (
-            <div className="tb-assign">
-              {spots.map((s) => (
-                <div key={s.id} className="tb-arow">
-                  <div className="tb-athumb" style={{ backgroundImage: `url(${s.img})` }}></div>
-                  <div className="tb-aname">{s.name}</div>
-                  <div className="tb-adays">
-                    {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
-                      <button key={d} className={"tb-dchip" + (assign[s.id] === d ? " on" : "")} onClick={() => setSpotDay(s.id, d)}>{d}</button>
-                    ))}
-                  </div>
-                </div>
-              ))}
+        <div className="tb-preview">
+          {preview && preview.days.map((d) => (
+            <div className="pv-day" key={d.n}>
+              <div className="pv-top">
+                <span className="dc-badge" style={{ background: DAYC[(d.n - 1) % DAYC.length] }}>Day {d.n}</span>
+                <span className="pv-stats">{d.stops.length} {d.stops.length === 1 ? "place" : "places"} · {d.km} km</span>
+              </div>
+              <div className="pv-thumbs">
+                {d.stops.slice(0, 4).map((s, i) => <div key={i} className="pv-thumb" style={{ backgroundImage: `url(${s.img})` }}></div>)}
+                {d.stops.length > 4 && <div className="pv-thumb more">+{d.stops.length - 4}</div>}
+              </div>
             </div>
-          )}
+          ))}
         </div>
-        <div style={{ height: 16 }}></div>
+
+        <button className={"tb-voice" + (listening ? " on" : "")} onClick={startVoice}>
+          <span className="mic"><iconify-icon icon="solar:microphone-bold"></iconify-icon></span>
+          <span className="vt">{listening ? "Listening…" : "Describe your trip by voice"}</span>
+        </button>
+        {heard && <div className="tb-heard">{heard}</div>}
+        <div style={{ height: 14 }}></div>
       </div>
       <div className="tb-foot">
-        <button className="clear" onClick={() => { setDays(2); setPlan("auto"); }}>Reset</button>
-        <button className="go" onClick={() => onGenerate({ list, days, mode, assign: plan === "manual" ? assign : undefined, dateLabel })}>
+        <button className="go full" onClick={() => onGenerate({ list, days, mode: exact ? "exact" : "flex", assign, dateLabel })}>
           <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create trip
         </button>
       </div>
