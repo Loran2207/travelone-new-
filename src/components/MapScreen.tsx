@@ -78,7 +78,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
     if (!shared.mapIntent) return;
     const it = shared.mapIntent;
     if (it === "newlist") setModal("newlist");
-    else if (it === "place") { setPlacing(true); showToast("Tap the map to drop a place"); }
+    else if (it === "place") setModal("search");
     else if (it === "search") setModal("search");
     shared.clearMapIntent();
     // eslint-disable-next-line react-hooks/exhaustive-deps

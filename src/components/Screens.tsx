@@ -115,7 +115,7 @@ export function SavedScreen({ allTrips, savedTrips, filter, sort, onFilter, onOp
           <div className="es-title">Nothing saved yet</div>
           <div className="es-sub">Tap <iconify-icon icon="solar:heart-linear"></iconify-icon> on any guide to save it for later</div>
           <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
-          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-bold"></iconify-icon> Open the map</button>
+          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-point-bold"></iconify-icon> Find places on the map</button>
         </div>
       ) : (
         <Fragment>
@@ -168,7 +168,7 @@ export function MyTripsScreen({ allTrips, myTrips, savedTrips, filter, sort, onF
             </Fragment>
           )}
           <button className="es-cta" onClick={onExplore}><iconify-icon icon="solar:magnifer-linear"></iconify-icon> Explore guides</button>
-          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-bold"></iconify-icon> Open the map</button>
+          <button className="es-cta2" onClick={onMap}><iconify-icon icon="solar:map-point-bold"></iconify-icon> Find places on the map</button>
         </div>
       ) : (
         <Fragment>

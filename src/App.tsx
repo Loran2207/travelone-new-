@@ -124,8 +124,8 @@ export function App() {
           </button>
         )}
 
-        {/* quick-actions FAB */}
-        {showChrome && (
+        {/* quick-actions FAB — always available on every nav tab */}
+        {showNav && (
           <QuickFab
             onAddPlace={() => { setMapIntent("place"); goTab("map"); }}
             onSearch={() => openWizard()}
@@ -144,7 +144,7 @@ export function App() {
         )}
 
         {/* bottom nav */}
-        {showNav && <BottomNav tab={tab} onTab={goTab} />}
+        {showNav && <BottomNav tab={tab} onTab={goTab} compact={showNav} />}
 
         <div className={"toast" + (toast ? " show" : "")}><iconify-icon icon="solar:check-circle-bold"></iconify-icon>{toast}</div>
       </div>

@@ -40,9 +40,9 @@ const NAV_ITEMS: { id: TabId; label: string; icon: string; dot?: boolean }[] = [
   { id: "map",     label: "Map",      icon: "solar:map-bold" },
 ];
 
-export function BottomNav({ tab, onTab }: { tab: string; onTab: (id: TabId) => void }) {
+export function BottomNav({ tab, onTab, compact }: { tab: string; onTab: (id: TabId) => void; compact?: boolean }) {
   return (
-    <div className="navwrap">
+    <div className={"navwrap" + (compact ? " compact" : "")}>
       <div className="navbar">
         {NAV_ITEMS.map((it) => {
           const on = tab === it.id;

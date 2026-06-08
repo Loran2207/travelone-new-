@@ -391,3 +391,18 @@
 .qf-ic.search { background: var(--t1-orange); }
 .qf-ic.list { background: #16A34A; }
 @keyframes qfin { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* FAB shares the tab-bar row; visible on every tab, tucks under modals (z below scrim) */
+.navwrap.compact { justify-content: flex-start; padding-right: 84px; }
+.quickfab-wrap { bottom: calc(16px + env(safe-area-inset-bottom)); right: 16px; z-index: 35; }
+.quickfab { width: 60px; height: 60px; }
+/* My Trips / Saved switch sits inside the content gutter like everything else */
+.mt-seg { margin: 6px 20px 16px; }
+/* secondary empty-state action (was unstyled) */
+.es-cta2 { margin-top: 14px; height: 44px; padding: 0 18px; border-radius: 999px; border: none; background: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--t1-font); font-weight: 700; font-size: 15px;
+  color: var(--t1-fg-soft); -webkit-tap-highlight-color: transparent; transition: transform .12s ease; }
+.es-cta2 iconify-icon { font-size: 18px; color: var(--t1-orange); }
+.es-cta2:active { transform: scale(.96); }
+/* FAB menu's own outside-click catcher must sit just below the FAB wrap (so menu items stay clickable), yet below modal scrim */
+.qf-scrim { z-index: 34; }
