@@ -53,6 +53,7 @@ export interface ListDef {
   icon?: string;
   emoji?: string;
   color?: string;
+  spotIds?: string[];
   collab?: boolean;
   note?: string;
 }

@@ -153,6 +153,8 @@ export const LISTS: ListDef[] = [
   { id: "warsaw",  name: "Warsaw Favourites", cover: I.castle },
   { id: "krakow",  name: "Kraków Highlights", emoji: "🏰", color: "#7C3AED" },
   { id: "gdansk",  name: "Gdańsk Weekend", emoji: "⚓", color: "#0891B2" },
+  { id: "coffee",  name: "Coffee & Cake", emoji: "☕", color: "#E07A00", spotIds: ["bristol", "koszyki", "kazimierz", "rynek"] },
+  { id: "unesco",  name: "UNESCO Gems", emoji: "🏛️", color: "#2563EB", spotIds: ["castle", "oldtown", "wawel", "rynek", "longmkt"] },
 ];
 
 // ---- Day route colors ----
@@ -291,6 +293,10 @@ export function citiesWithGuides(place: string): Trip[] {
 // ---- helpers ----
 export function spotsOf(listId: string): Spot[] {
   if (listId === "myspots") return SPOTS;
+  const l = LISTS.find((x) => x.id === listId);
+  if (l && l.spotIds && l.spotIds.length) {
+    return l.spotIds.map((id) => SPOTS.find((s) => s.id === id)).filter(Boolean) as Spot[];
+  }
   return SPOTS.filter((s) => s.list === listId);
 }
 export function placesOf(listId: string): string[] {
