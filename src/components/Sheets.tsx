@@ -216,7 +216,7 @@ export function SpotRow({ spot, onClick, dist, saved, onSave, onMenu, selectMode
       </div>
       {!selectMode && onSave && (
         <button className={"sr-save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
-          <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-linear"}></iconify-icon>
+          <iconify-icon icon={saved ? "solar:heart-bold" : "solar:heart-linear"}></iconify-icon>
         </button>
       )}
       {!selectMode && onMenu && (
@@ -238,7 +238,7 @@ export function NearTile({ spot, onClick, saved, onSave }: {
       <div className="img" style={{ backgroundImage: `url(${spot.img})` }}>
         {onSave && (
           <button className={"save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
-            <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-linear"}></iconify-icon>
+            <iconify-icon icon={saved ? "solar:heart-bold" : "solar:heart-linear"}></iconify-icon>
           </button>
         )}
       </div>

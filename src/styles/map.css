@@ -508,3 +508,7 @@ iconify-icon, .iconify { display: inline-block; }
 .ld-cover { width: 56px; height: 56px; }
 .ld-cover-glyph { display: flex; align-items: center; justify-content: center; box-shadow: none; }
 .ld-cover-glyph .twemoji { width: 30px; height: 30px; }
+
+/* spot save hearts: red when saved (replace the orange fill) */
+.spotrow .sr-save.on { background: var(--t1-fill); color: var(--t1-red); }
+.ntile .save.on { background: rgba(0,0,0,.42); color: var(--t1-red); }

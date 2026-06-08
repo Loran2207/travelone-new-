@@ -423,3 +423,9 @@
 /* My Places Select: a clear filled button, not a checkbox */
 .ms-selectbtn { background: var(--t1-fill); border-color: transparent; padding: 0 18px; }
 .ms-selectbtn.on { background: var(--t1-ink); color: #fff; }
+
+/* unified save: filled white bookmark when saved (on the dark translucent chip) */
+.gc-heart.on { color: #fff; }
+
+/* unified save icon = heart, red when saved */
+.gc-heart.on { color: var(--t1-red); }

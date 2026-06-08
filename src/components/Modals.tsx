@@ -253,7 +253,7 @@ export function SpotModal({ spot, saved, onClose, onSave, onDirections }: {
       <div className="sd-foot">
         <button className="sd-dir" onClick={onDirections}><iconify-icon icon="solar:compass-bold"></iconify-icon> Direction</button>
         <button className={"sd-save" + (saved ? " on" : "")} onClick={onSave}>
-          <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-bold"}></iconify-icon>
+          <iconify-icon icon={saved ? "solar:heart-bold" : "solar:heart-linear"}></iconify-icon>
           {saved ? "Saved · Edit" : "Add to list"}
         </button>
       </div>

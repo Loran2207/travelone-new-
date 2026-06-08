@@ -41,8 +41,8 @@ export function App() {
   const [mapIntent, setMapIntent] = useState<string | null>(null);
 
   // shared trip state
-  const [savedTrips, setSavedTrips] = useState<Set<string>>(() => new Set(TRIPS.filter((t) => t.saved).map((t) => t.id)));
-  const [myTrips, setMyTrips] = useState<Set<string>>(() => new Set());
+  const [myTrips, setMyTrips] = useState<Set<string>>(() => new Set(TRIPS.filter((t) => t.saved).map((t) => t.id)));
+  const savedTrips = myTrips; // one unified save mechanism — "saved" IS "My Trips"
   const [genTrips, setGenTrips] = useState<Trip[]>([]);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [tripsFilter, setTripsFilter] = useState("all");
@@ -62,7 +62,7 @@ export function App() {
 
   const toggleSavedTrip = (t: Trip | string) => {
     const id = typeof t === "string" ? t : t.id;
-    setSavedTrips((prev) => { const n = new Set(prev); if (n.has(id)) { n.delete(id); showToast("Removed from Saved"); } else { n.add(id); showToast("Saved"); } return n; });
+    setMyTrips((prev) => { const n = new Set(prev); if (n.has(id)) { n.delete(id); showToast("Removed from My Trips"); } else { n.add(id); showToast("Saved to My Trips"); } return n; });
   };
   const addMyTrip = (t: Trip | string) => {
     const id = typeof t === "string" ? t : t.id;
