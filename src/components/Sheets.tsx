@@ -190,12 +190,14 @@ export function NearbyContent({ sub, onSub, onOpenSpot, onOpenTrip, savedSpots, 
 }
 
 // ---- shared : spot row ----
-export function SpotRow({ spot, onClick, dist, saved, onSave }: {
+export function SpotRow({ spot, onClick, dist, saved, onSave, onMenu, selectMode, selected }: {
   spot: Spot; onClick: () => void; dist?: boolean; saved?: boolean; onSave?: () => void;
+  onMenu?: () => void; selectMode?: boolean; selected?: boolean;
 }) {
   const cat = CATS[spot.cat] || {};
   return (
-    <div className="spotrow" onClick={onClick}>
+    <div className={"spotrow" + (selected ? " sel" : "")} onClick={onClick}>
+      {selectMode && <div className={"sr-check" + (selected ? " on" : "")}><iconify-icon icon="hugeicons:tick-02"></iconify-icon></div>}
       <div className="sr-thumb" style={{ backgroundImage: `url(${spot.img})` }}></div>
       <div className="sr-body">
         <div className="sr-top">
@@ -211,9 +213,14 @@ export function SpotRow({ spot, onClick, dist, saved, onSave }: {
           <span><Flag e={placeMeta(spot.place).flag} size={13} /> {placeMeta(spot.place).city}</span>
         </div>
       </div>
-      {onSave && (
+      {!selectMode && onSave && (
         <button className={"sr-save" + (saved ? " on" : "")} onClick={(e) => { e.stopPropagation(); onSave(); }}>
           <iconify-icon icon={saved ? "solar:bookmark-bold" : "solar:bookmark-linear"}></iconify-icon>
+        </button>
+      )}
+      {!selectMode && onMenu && (
+        <button className="sr-menu" onClick={(e) => { e.stopPropagation(); onMenu(); }} aria-label="More">
+          <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
         </button>
       )}
     </div>

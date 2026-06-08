@@ -44,6 +44,11 @@ export function MapScreen({ shared }: { shared: Shared }) {
   });
   const [removed, setRemoved] = useState<Set<string>>(new Set());
   const [manage, setManage] = useState(false);
+  const [msSelect, setMsSelect] = useState(false);
+  const [msSel, setMsSel] = useState<Set<string>>(new Set());
+  const [pendingBatch, setPendingBatch] = useState<string[]>([]);
+  const exitMsSelect = () => { setMsSelect(false); setMsSel(new Set()); };
+  const toggleMsSel = (id: string) => setMsSel((p) => { const n = new Set(p); if (n.has(id)) n.delete(id); else n.add(id); return n; });
 
   // detail filters
   const [catFilter, setCatFilter] = useState("All");
@@ -66,7 +71,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
   // ---- sheet drag ----
   const defaultTop = view === "myspots" ? FULL : MID;
   const sheet = useSheet(DETENTS, defaultTop);
-  useEffect(() => { sheet.setTop(defaultTop); /* eslint-disable-next-line */ }, [view, listId, cityId]);
+  useEffect(() => { sheet.setTop(defaultTop); setMsSelect(false); setMsSel(new Set()); /* eslint-disable-next-line */ }, [view, listId, cityId]);
   // entering the Map tab always lands on the map — never a leftover modal
   useEffect(() => { setModal(null); }, []);
 
@@ -103,7 +108,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
 
   // ---- list management ----
   const removeSpotFromList = (s: Spot) => { setRemoved(new Set(removed).add(s.id)); showToast("“" + s.name + "” removed from list"); };
-  const createList = (data: { name: string; cover?: string; icon?: string; emoji?: string; color?: string }) => { LISTS.push({ id: "l" + Date.now(), name: data.name, cover: data.cover, icon: data.icon, emoji: data.emoji, color: data.color }); setModal(null); showToast("List “" + data.name + "” created"); };
+  const createList = (data: { name: string; cover?: string; icon?: string; emoji?: string; color?: string }) => { const id = "l" + Date.now(); LISTS.push({ id, name: data.name, cover: data.cover, icon: data.icon, emoji: data.emoji, color: data.color, spotIds: pendingBatch.length ? [...pendingBatch] : undefined }); const n = pendingBatch.length; setPendingBatch([]); exitMsSelect(); setModal(null); showToast(n ? n + (n === 1 ? " place added to “" : " places added to “") + data.name + "”" : "List “" + data.name + "” created"); };
 
   // ---- drop a spot ----
   const startPlacing = () => { setPlacing(true); showToast("Tap the map to drop a place"); };
@@ -132,6 +137,32 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const anyOverlay = modal !== null || spot !== null || addSpot !== null || builderList !== null;
 
   const openSpotById = (id: string) => { const s = SPOTS.find((x) => x.id === id); if (s) setSpot(s); };
+
+  const addSpotsToList = (listId: string, ids: string[]) => {
+    const l = LISTS.find((x) => x.id === listId); if (!l) return;
+    const cur = new Set(l.spotIds && l.spotIds.length ? l.spotIds : spotsOf(l.id).map((s) => s.id));
+    ids.forEach((id) => cur.add(id)); l.spotIds = [...cur];
+    showToast(ids.length + (ids.length === 1 ? " place added to “" : " places added to “") + l.name + "”"); exitMsSelect();
+  };
+  const batchAddToList = () => {
+    const ids = [...msSel]; if (!ids.length) return;
+    setActionSheet({
+      title: "Add " + ids.length + (ids.length === 1 ? " place to…" : " places to…"),
+      actions: [
+        { label: "New list", icon: "hugeicons:add-01", onClick: () => { setPendingBatch(ids); setModal("newlist"); } },
+        ...LISTS.filter((l) => !l.special).map((l) => ({ label: l.name, icon: "solar:bookmark-bold", onClick: () => addSpotsToList(l.id, ids) })),
+      ],
+    });
+  };
+  const spotMenu = (s: Spot) => {
+    setActionSheet({
+      title: s.name, preview: { img: s.img, name: s.name, eyebrow: placeMeta(s.place).city },
+      actions: [
+        { label: "Show on the map", icon: "solar:map-point-bold", onClick: () => openSpotById(s.id) },
+        { label: "Add to a list", icon: "solar:bookmark-bold", onClick: () => setAddSpot(s) },
+      ],
+    });
+  };
 
   // ---- list options action sheet ----
   const listMenu = (id: string) => {
@@ -209,7 +240,9 @@ export function MapScreen({ shared }: { shared: Shared }) {
       onSearch={() => setModal("search")} />;
   } else if (view === "myspots") {
     sheetBody = <MySpotsDetail spots={mySpotsAll} countryFilter={countryFilter} onCountryFilter={setCountryFilter}
-      onSearch={() => setModal("search")} onOpenCity={openCity} onOpenSpot={openSpotById} />;
+      onSearch={() => setModal("search")} onOpenCity={openCity} onOpenSpot={openSpotById}
+      selectMode={msSelect} selected={msSel} onEnterSelect={() => setMsSelect(true)} onExitSelect={exitMsSelect}
+      onToggleSelect={toggleMsSel} onSpotMenu={spotMenu} onBatchAddToList={batchAddToList} />;
   } else if (view === "city") {
     sheetBody = <CityDetail place={cityId!} spots={citySpots} catFilter={catFilter} onCatFilter={setCatFilter}
       onSearch={() => setModal("search")} onOpenSpot={openSpotById} onAddSpot={startPlacing} />;

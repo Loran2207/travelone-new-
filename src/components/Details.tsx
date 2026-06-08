@@ -1,5 +1,5 @@
 // TRAVEL1 — detail screens: List detail, My Spots, City, Trip timeline
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { CATS, DAY_COLORS, catMeta, groupByCountry, placeMeta, prefEmoji } from "../data/data";
 import type { Day, ListDef, Spot, Stop, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
@@ -88,11 +88,14 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
 }
 
 // ---- MY SPOTS DETAIL ----
-export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch, onOpenCity, onOpenSpot }: {
+export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch, onOpenCity, onOpenSpot,
+  selectMode, selected, onEnterSelect, onExitSelect, onToggleSelect, onSpotMenu, onBatchAddToList }: {
   spots: Spot[]; countryFilter: string; onCountryFilter: (c: string) => void; onSearch: () => void;
   onOpenCity: (place: string) => void; onOpenSpot?: (id: string) => void;
+  selectMode?: boolean; selected?: Set<string>; onEnterSelect?: () => void; onExitSelect?: () => void;
+  onToggleSelect?: (id: string) => void; onSpotMenu?: (s: Spot) => void; onBatchAddToList?: () => void;
 }) {
-  const [mode, setMode] = useState<"spots" | "cities">("spots");
+  const sel = selected || new Set<string>();
   const grouped = groupByCountry(spots);
   const countries = Object.keys(grouped);
   const shown = countryFilter === "all" ? countries : countries.filter((c) => c === countryFilter);
@@ -100,19 +103,17 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
 
   return (
     <Fragment>
-      <div style={{ padding: "2px 18px 2px" }}>
-        <div className="ld-title" style={{ fontSize: 27 }}>My Places</div>
-        <div className="m" style={{ marginTop: 5, fontWeight: 500, fontSize: 13.5, color: "var(--t1-fg-muted)" }}>
-          {countries.length} {countries.length === 1 ? "country" : "countries"} · {totalCities} {totalCities === 1 ? "city" : "cities"} · {spots.length} spots
+      <div className="ms-top">
+        <div>
+          <div className="ld-title" style={{ fontSize: 27 }}>My Places</div>
+          <div className="m" style={{ marginTop: 5, fontWeight: 500, fontSize: 13.5, color: "var(--t1-fg-muted)" }}>
+            {selectMode
+              ? (sel.size + (sel.size === 1 ? " place selected" : " places selected"))
+              : `${countries.length} ${countries.length === 1 ? "country" : "countries"} · ${totalCities} ${totalCities === 1 ? "city" : "cities"} · ${spots.length} places`}
+          </div>
         </div>
-      </div>
-
-      <div className="ms-seg">
-        <button className={mode === "spots" ? "on" : ""} onClick={() => setMode("spots")}>
-          <iconify-icon icon="solar:map-point-wave-bold"></iconify-icon>Spots
-        </button>
-        <button className={mode === "cities" ? "on" : ""} onClick={() => setMode("cities")}>
-          <iconify-icon icon="solar:city-bold"></iconify-icon>Cities
+        <button className={"ms-selectbtn" + (selectMode ? " on" : "")} onClick={() => (selectMode ? onExitSelect && onExitSelect() : onEnterSelect && onEnterSelect())}>
+          {selectMode ? "Done" : <Fragment><iconify-icon icon="solar:check-square-bold"></iconify-icon>Select</Fragment>}
         </button>
       </div>
 
@@ -126,57 +127,41 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
         ))}
       </div>
 
-      {mode === "spots" ? (
-        shown.map((country) => {
-          const cities = grouped[country].cities;
-          return (
-            <div key={country}>
-              {Object.keys(cities).map((ck) => {
-                const pm = placeMeta(ck);
-                const cs = cities[ck];
-                return (
-                  <div key={ck}>
-                    <div className="section-h">
-                      <div className="h" onClick={() => onOpenCity(ck)}><Flag e={pm.flag} size={15} /> {pm.city} <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
-                      <div className="r">{cs.length} {cs.length === 1 ? "place" : "places"}</div>
-                    </div>
-                    {cs.map((s) => <SpotRow key={s.id} spot={s} dist onClick={() => onOpenSpot && onOpenSpot(s.id)} />)}
+      {shown.map((country) => {
+        const cities = grouped[country].cities;
+        return (
+          <div key={country}>
+            {Object.keys(cities).map((ck) => {
+              const pm = placeMeta(ck);
+              const cs = cities[ck];
+              return (
+                <div key={ck}>
+                  <div className="section-h">
+                    <div className="h" onClick={() => !selectMode && onOpenCity(ck)}><Flag e={pm.flag} size={15} /> {pm.city} {!selectMode && <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>}</div>
+                    <div className="r">{cs.length} {cs.length === 1 ? "place" : "places"}</div>
                   </div>
-                );
-              })}
-            </div>
-          );
-        })
-      ) : (
-        shown.map((country) => {
-          const cities = grouped[country].cities;
-          const cityKeys = Object.keys(cities);
-          const cnt = cityKeys.reduce((a, k) => a + cities[k].length, 0);
-          return (
-            <div key={country}>
-              <div className="section-h">
-                <div className="h" onClick={() => onCountryFilter(country)}><Flag e={grouped[country].flag} size={15} /> {country} <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
-                <div className="r">{cityKeys.length} {cityKeys.length === 1 ? "city" : "cities"} · {cnt} places</div>
-              </div>
-              <div className="placegrid">
-                {cityKeys.map((ck) => {
-                  const pm = placeMeta(ck);
-                  const cs = cities[ck];
-                  return (
-                    <div key={ck} className="placecard" style={{ backgroundImage: `url(${pm.cover})` }} onClick={() => onOpenCity(ck)}>
-                      <div className="pc-body">
-                        <div className="pc-name">{pm.city}</div>
-                        <span className="pc-cnt"><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 11, marginRight: 4 }}></iconify-icon>{cs.length} {cs.length === 1 ? "place" : "places"}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })
+                  {cs.map((s) => (
+                    <SpotRow key={s.id} spot={s} dist
+                      selectMode={selectMode} selected={sel.has(s.id)}
+                      onMenu={onSpotMenu ? () => onSpotMenu(s) : undefined}
+                      onClick={() => (selectMode ? (onToggleSelect && onToggleSelect(s.id)) : (onOpenSpot && onOpenSpot(s.id)))} />
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+      <div style={{ height: selectMode ? 150 : 24 }}></div>
+
+      {selectMode && (
+        <div className="ms-actionbar">
+          <span className="cnt">{sel.size} selected</span>
+          <button disabled={sel.size === 0} onClick={() => onBatchAddToList && onBatchAddToList()}>
+            <iconify-icon icon="solar:bookmark-bold"></iconify-icon> Add to list
+          </button>
+        </div>
       )}
-      <div style={{ height: 24 }}></div>
     </Fragment>
   );
 }

@@ -303,3 +303,27 @@
   display: flex; align-items: center; justify-content: center; gap: 7px; -webkit-tap-highlight-color: transparent; transition: all .14s; }
 .ms-seg button iconify-icon { font-size: 18px; }
 .ms-seg button.on { background: #fff; color: var(--t1-ink); box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+
+/* my-places: select-mode top bar, row checkbox, per-row menu, batch action bar */
+.ms-top { display: flex; align-items: flex-start; justify-content: space-between; padding: 2px 18px 2px; gap: 12px; }
+.ms-selectbtn { flex: none; height: 36px; padding: 0 15px; border-radius: 999px; border: 1.5px solid var(--t1-border);
+  background: #fff; cursor: pointer; font-family: var(--t1-font); font-weight: 700; font-size: 13.5px; color: var(--t1-ink);
+  display: flex; align-items: center; gap: 6px; -webkit-tap-highlight-color: transparent; }
+.ms-selectbtn iconify-icon { font-size: 17px; color: var(--t1-orange); }
+.ms-selectbtn.on { background: var(--t1-ink); color: #fff; border-color: var(--t1-ink); }
+.sr-check { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--t1-border);
+  background: #fff; display: flex; align-items: center; justify-content: center; color: transparent; align-self: center; transition: all .12s; }
+.sr-check iconify-icon { font-size: 15px; }
+.spotrow.sel .sr-check { background: var(--t1-orange); border-color: var(--t1-orange); color: #fff; }
+.spotrow.sel { background: var(--t1-fill); border-radius: 16px; }
+.sr-menu { flex: none; align-self: center; width: 34px; height: 34px; border: none; background: none; cursor: pointer;
+  color: var(--t1-fg-muted); display: flex; align-items: center; justify-content: center; font-size: 20px; -webkit-tap-highlight-color: transparent; }
+.ms-actionbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 96px; z-index: 45;
+  display: flex; align-items: center; gap: 12px; background: var(--t1-ink); color: #fff;
+  padding: 8px 8px 8px 18px; border-radius: 999px; box-shadow: 0 12px 34px rgba(0,0,0,.30); }
+.ms-actionbar .cnt { font-weight: 700; font-size: 14px; white-space: nowrap; }
+.ms-actionbar button { border: none; cursor: pointer; font-family: var(--t1-font); font-weight: 700; font-size: 14px;
+  background: var(--t1-orange); color: #fff; height: 42px; padding: 0 20px; border-radius: 999px;
+  display: flex; align-items: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
+.ms-actionbar button:disabled { opacity: .45; }
+.ms-actionbar button iconify-icon { font-size: 18px; }
