@@ -295,3 +295,11 @@
 .tb-voice .vt { font-weight: 700; font-size: 15px; color: var(--t1-ink); }
 .tb-heard { margin: 8px 22px 0; font-weight: 500; font-size: 14px; color: var(--t1-fg-muted); }
 .tb-foot .go.full { flex: 1; max-width: none; }
+
+/* my-spots: spots / cities segmented toggle */
+.ms-seg { display: flex; gap: 6px; margin: 12px 18px 2px; background: var(--t1-fill); border-radius: 999px; padding: 4px; }
+.ms-seg button { flex: 1; height: 40px; border: none; border-radius: 999px; background: none; cursor: pointer;
+  font-family: var(--t1-font); font-weight: 600; font-size: 14px; color: var(--t1-fg-soft);
+  display: flex; align-items: center; justify-content: center; gap: 7px; -webkit-tap-highlight-color: transparent; transition: all .14s; }
+.ms-seg button iconify-icon { font-size: 18px; }
+.ms-seg button.on { background: #fff; color: var(--t1-ink); box-shadow: 0 2px 8px rgba(0,0,0,.1); }

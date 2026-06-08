@@ -180,6 +180,19 @@ export function MapScreen({ shared }: { shared: Shared }) {
       }));
       focus = { bounds: boundsOf(src.map((s) => spotLatLng(s))), _n: recenter };
     }
+    // a focused spot (its detail sheet is open) flies the map to its pin and
+    // ensures that pin is rendered + highlighted, from any view.
+    if (spot) {
+      const here = spotLatLng(spot);
+      if (!markers.some((m) => m.key === spot.id)) {
+        markers = [...markers, {
+          key: spot.id, latlng: here,
+          html: pinHtml({ cat: spot.cat, label: spot.short || spot.name, active: true }),
+          onClick: () => setSpot(spot),
+        }];
+      }
+      focus = { center: here, zoom: 15, _n: recenter };
+    }
     return { markers, meDot, focus };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view, listId, cityId, removed, spot, recenter, locateN, userLoc]);
