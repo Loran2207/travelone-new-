@@ -451,3 +451,7 @@
 
 /* bottom fade: dark (dissolve into black under the tab bar) */
 .bottom-fade { background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.30) 34%, rgba(0,0,0,0) 100%); }
+
+/* explore panel: same elevation/shadow as the map sheet + sits at a matching height */
+.hero { height: 468px; }
+.panel { margin-top: -60px; border-radius: 28px 28px 0 0; box-shadow: var(--t1-shadow-sheet), var(--t1-inset-warm); }

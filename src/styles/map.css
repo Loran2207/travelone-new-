@@ -520,3 +520,7 @@ iconify-icon, .iconify { display: inline-block; }
   letter-spacing: -.2px; -webkit-tap-highlight-color: transparent; }
 .weather2 iconify-icon { font-size: 21px; color: #F5A623; }
 .weather2 .wx-city { font-weight: 600; font-size: 13.5px; color: var(--t1-fg-muted); }
+
+/* match the Explore city-card size so map + explore cards line up */
+.ntile { width: 156px; }
+.ntile .img { width: 156px; height: 150px; }
