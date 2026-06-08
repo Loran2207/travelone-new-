@@ -28,7 +28,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
         <div className="ld-cover" style={{ backgroundImage: `url(${list.cover})` }}></div>
         <div className="ld-mid">
           <div className="ld-title">{list.name}</div>
-          <div className="ld-spots-sub">{all.length} {all.length === 1 ? "spot" : "spots"}</div>
+          <div className="ld-spots-sub">{all.length} {all.length === 1 ? "place" : "places"}</div>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
       </div>
 
       <div className="meta-line" style={{ paddingTop: 0 }}>
-        <div className="m">{rows.length} {rows.length === 1 ? "spot" : "spots"}{placeFilter !== "all" || catFilter !== "All" ? " · filtered" : ""}</div>
+        <div className="m">{rows.length} {rows.length === 1 ? "place" : "places"}{placeFilter !== "all" || catFilter !== "All" ? " · filtered" : ""}</div>
       </div>
 
       {rows.map((s) => (
@@ -82,7 +82,7 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
           )}
         </div>
       ))}
-      {rows.length === 0 && <div className="empty-hint" style={{ paddingTop: 20 }}>No spots match these filters.</div>}
+      {rows.length === 0 && <div className="empty-hint" style={{ paddingTop: 20 }}>No places match these filters.</div>}
     </Fragment>
   );
 }
@@ -101,7 +101,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
   return (
     <Fragment>
       <div style={{ padding: "2px 18px 2px" }}>
-        <div className="ld-title" style={{ fontSize: 27 }}>My Spots</div>
+        <div className="ld-title" style={{ fontSize: 27 }}>My Places</div>
         <div className="m" style={{ marginTop: 5, fontWeight: 500, fontSize: 13.5, color: "var(--t1-fg-muted)" }}>
           {countries.length} {countries.length === 1 ? "country" : "countries"} · {totalCities} {totalCities === 1 ? "city" : "cities"} · {spots.length} spots
         </div>
@@ -117,7 +117,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
       </div>
 
       <div className="filterrow">
-        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Spots"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
+        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Places"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
         <button className={"fchip" + (countryFilter === "all" ? " on" : "")} onClick={() => onCountryFilter("all")}>All</button>
         {countries.map((c) => (
           <button key={c} className={"fchip" + (countryFilter === c ? " on" : "")} onClick={() => onCountryFilter(countryFilter === c ? "all" : c)}>
@@ -138,7 +138,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
                   <div key={ck}>
                     <div className="section-h">
                       <div className="h" onClick={() => onOpenCity(ck)}><Flag e={pm.flag} size={15} /> {pm.city} <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
-                      <div className="r">{cs.length} {cs.length === 1 ? "spot" : "spots"}</div>
+                      <div className="r">{cs.length} {cs.length === 1 ? "place" : "places"}</div>
                     </div>
                     {cs.map((s) => <SpotRow key={s.id} spot={s} dist onClick={() => onOpenSpot && onOpenSpot(s.id)} />)}
                   </div>
@@ -156,7 +156,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
             <div key={country}>
               <div className="section-h">
                 <div className="h" onClick={() => onCountryFilter(country)}><Flag e={grouped[country].flag} size={15} /> {country} <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
-                <div className="r">{cityKeys.length} {cityKeys.length === 1 ? "city" : "cities"} · {cnt} spots</div>
+                <div className="r">{cityKeys.length} {cityKeys.length === 1 ? "city" : "cities"} · {cnt} places</div>
               </div>
               <div className="placegrid">
                 {cityKeys.map((ck) => {
@@ -166,7 +166,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
                     <div key={ck} className="placecard" style={{ backgroundImage: `url(${pm.cover})` }} onClick={() => onOpenCity(ck)}>
                       <div className="pc-body">
                         <div className="pc-name">{pm.city}</div>
-                        <span className="pc-cnt"><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 11, marginRight: 4 }}></iconify-icon>{cs.length} {cs.length === 1 ? "spot" : "spots"}</span>
+                        <span className="pc-cnt"><iconify-icon icon="solar:map-point-bold" style={{ fontSize: 11, marginRight: 4 }}></iconify-icon>{cs.length} {cs.length === 1 ? "place" : "places"}</span>
                       </div>
                     </div>
                   );
@@ -203,7 +203,7 @@ export function CityDetail({ place, spots, catFilter, onCatFilter, onSearch, onO
         </div>
         <div className="ld-right">
           <button className="ld-share" onClick={onSearch} aria-label="Search city"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
-          <div className="ld-spots">{spots.length} {spots.length === 1 ? "spot" : "spots"}</div>
+          <div className="ld-spots">{spots.length} {spots.length === 1 ? "place" : "places"}</div>
         </div>
       </div>
 
@@ -220,7 +220,7 @@ export function CityDetail({ place, spots, catFilter, onCatFilter, onSearch, onO
       {cats.length > 1 && catFilter === "All" ? (
         cats.map((c) => (
           <div key={c}>
-            <div className="section-h"><div className="h">{c}</div><div className="r">{spots.filter((s) => s.cat === c).length} spots</div></div>
+            <div className="section-h"><div className="h">{c}</div><div className="r">{spots.filter((s) => s.cat === c).length} places</div></div>
             {spots.filter((s) => s.cat === c).map((s) => <SpotRow key={s.id} spot={s} onClick={() => onOpenSpot(s.id)} />)}
           </div>
         ))

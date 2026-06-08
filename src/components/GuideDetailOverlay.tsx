@@ -184,7 +184,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       {!sheetModalOpen && <BottomNav tab={tab === "map" ? "map" : tab} onTab={(id) => onTab && onTab(id)} />}
 
       {spot && <SpotModal spot={spot as Spot} saved={false} onClose={() => setSpot(null)}
-        onSave={() => { setSpot(null); shared.showToast("Saved to My Spots"); }}
+        onSave={() => { setSpot(null); shared.showToast("Saved to My Places"); }}
         onDirections={() => shared.showToast("Opening directions to " + spot.name)} />}
 
       {addOpen && <AddPlaceSheet open={addOpen} onClose={() => setAddOpen(false)} onAdd={addPlace} />}

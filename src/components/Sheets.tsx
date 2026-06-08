@@ -48,7 +48,7 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
               <div className="lc-name" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{l.name}</div>
               <div className="lc-sub">
                 {l.special && <iconify-icon icon="solar:bookmark-bold" style={{ color: "#0A84FF", fontSize: 13 }}></iconify-icon>}
-                {l.count} {l.count === 1 ? "spot" : "spots"}
+                {l.count} {l.count === 1 ? "place" : "places"}
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@ export function ListsContent({ onOpenList, onOpenMySpots, onListMenu }: {
             <div className="lr-name">{l.name}</div>
             <div className={"lr-sub" + (l.special ? " pinned" : "")}>
               {l.special && <iconify-icon icon="solar:bookmark-bold"></iconify-icon>}
-              {l.count} {l.count === 1 ? "spot" : "spots"}
+              {l.count} {l.count === 1 ? "place" : "places"}
             </div>
           </div>
           {!l.special && (
@@ -162,7 +162,7 @@ export function NearbyContent({ sub, onSub, onOpenSpot, onOpenTrip, savedSpots, 
     <Fragment>
       <div className="subrow">
         <button className={"subchip bare" + (sub === "all" ? " on" : "")} onClick={() => onSub("all")}>All</button>
-        <button className={"subchip" + (sub === "spots" ? " on" : "")} onClick={() => onSub("spots")}>Spots <span className="cnt">{near.length}</span></button>
+        <button className={"subchip" + (sub === "spots" ? " on" : "")} onClick={() => onSub("spots")}>Places <span className="cnt">{near.length}</span></button>
         <button className={"subchip" + (sub === "guides" ? " on" : "")} onClick={() => onSub("guides")}>Guides <span className="cnt">{guides.length}</span></button>
       </div>
 

@@ -92,7 +92,7 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
         {ql && lists.length > 0 && <Fragment><div className="search-eyebrow">Lists</div>{lists.map((l) => (
           <div key={l.id} className="atl-row" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
             <ListThumb list={l} cls="atl-thumb" />
-            <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} spots</div></div>
+            <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} places</div></div>
             <iconify-icon icon="solar:alt-arrow-right-linear" style={{ fontSize: 19, color: "var(--t1-fg-faint)" }}></iconify-icon>
           </div>
         ))}</Fragment>}
@@ -428,7 +428,7 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
         )}
 
         <div className="tb-preview-h">
-          <div className="h">Your plan · {spotsOf(list.id).length} spots</div>
+          <div className="h">Your plan · {spotsOf(list.id).length} places</div>
           <button className="tb-shuffle" onClick={() => setSeed((s) => s + 1)}><iconify-icon icon="solar:shuffle-bold"></iconify-icon> Shuffle</button>
         </div>
         <div className="tb-preview">

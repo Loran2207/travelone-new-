@@ -106,7 +106,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const createList = (data: { name: string; cover?: string; icon?: string; emoji?: string; color?: string }) => { LISTS.push({ id: "l" + Date.now(), name: data.name, cover: data.cover, icon: data.icon, emoji: data.emoji, color: data.color }); setModal(null); showToast("List “" + data.name + "” created"); };
 
   // ---- drop a spot ----
-  const startPlacing = () => { setPlacing(true); showToast("Tap the map to drop a spot"); };
+  const startPlacing = () => { setPlacing(true); showToast("Tap the map to drop a place"); };
   const onMapTap = (_latlng: LatLng) => {
     if (!placing) return;
     setPlacing(false);
