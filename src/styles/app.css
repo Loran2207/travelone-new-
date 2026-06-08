@@ -474,3 +474,5 @@
   background: var(--t1-fill); font-family: var(--t1-font); font-weight: 600; font-size: 14px; color: var(--t1-ink);
   cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .sc-chip .twemoji { width: 15px; height: 15px; }
+/* revert: bottom fade back to white */
+.bottom-fade { background: linear-gradient(to top, rgba(252,251,250,1) 0%, rgba(252,251,250,1) 32%, rgba(252,251,250,0) 100%); }
