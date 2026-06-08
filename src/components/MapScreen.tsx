@@ -165,12 +165,18 @@ export function MapScreen({ shared }: { shared: Shared }) {
   };
 
   // ---- list options action sheet ----
-  const listMenu = (id: string) => {
+  const listMenu = (id: string, inDetail = false) => {
     const l = LISTS.find((x) => x.id === id)!;
+    const lead = inDetail
+      ? [
+          { label: "Add a place", icon: "hugeicons:add-01", onClick: () => startPlacing() },
+          { label: manage ? "Done editing" : "Manage places", icon: "solar:pen-2-bold", onClick: () => setManage((m) => !m) },
+        ]
+      : [{ label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) }];
     setActionSheet({
-      title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " spots" },
+      title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " places" },
       actions: [
-        { label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) },
+        ...lead,
         { label: "Duplicate list", icon: "solar:copy-bold", onClick: () => { LISTS.push({ id: "l" + Date.now(), name: l.name + " copy", cover: l.cover, icon: l.icon, color: l.color }); showToast("“" + l.name + "” duplicated"); } },
         { label: "Rename list", icon: "solar:text-bold", onClick: () => showToast("Rename “" + l.name + "”") },
         { label: "Share list", icon: "solar:share-bold", onClick: () => { try { navigator.clipboard && navigator.clipboard.writeText("https://travel1.app/list/" + l.id); } catch { /* ignore */ } showToast("Link copied"); } },
@@ -283,9 +289,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
           <div style={{ position: "absolute", right: 20, top: 24, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end", zIndex: 15 }}>
             {view === "list" && list && (
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <button className="glassbtn sm" onClick={() => startPlacing()} aria-label="Add spot"><iconify-icon icon="hugeicons:add-01"></iconify-icon></button>
-                <button className={"glassbtn sm" + (manage ? " active" : "")} onClick={() => setManage(!manage)} aria-label="Manage"><iconify-icon icon="solar:pen-2-bold"></iconify-icon></button>
-                <button className="glassbtn sm" onClick={() => listMenu(list.id)} aria-label="More"><iconify-icon icon="solar:menu-dots-bold"></iconify-icon></button>
+                <button className={"glassbtn sm" + (manage ? " active" : "")} onClick={() => listMenu(list.id, true)} aria-label="List options"><iconify-icon icon="solar:menu-dots-bold"></iconify-icon></button>
                 <button className="chrome-mytrips" onClick={() => setBuilderList(list)}>
                   <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Create trip
                 </button>
