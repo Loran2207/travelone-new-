@@ -256,7 +256,8 @@ export function MapScreen({ shared }: { shared: Shared }) {
     fixedTop = <FilterRow tab={tab} onTab={setTab} onSearch={() => setModal("search")} />;
     if (tab === "all") sheetBody = <AllContent onOpenList={openList} onOpenMySpots={openMySpots} onOpenSpot={openSpotById}
       savedSpots={savedSpots} onSaveSpot={(s) => setAddSpot(s)}
-      trips={shared.allTrips} savedTrips={savedTrips} onOpenTrip={shared.openGuide} onSaveTrip={(t) => shared.toggleSavedTrip(t)} />;
+      trips={shared.allTrips} savedTrips={savedTrips} onOpenTrip={shared.openGuide} onSaveTrip={(t) => shared.toggleSavedTrip(t)}
+      onFindTrips={(place) => shared.openWizard(place ? { id: place } : null)} />;
     else if (tab === "lists") sheetBody = <ListsContent onOpenList={openList} onOpenMySpots={openMySpots} onListMenu={listMenu} />;
     else if (tab === "trips") sheetBody = <TripsContent savedTrips={savedTrips} onOpenTrip={shared.openGuide}
       onFindTrips={() => shared.openWizard()} onOpenList={openList} />;

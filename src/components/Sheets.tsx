@@ -30,10 +30,11 @@ export function ListThumb({ list, cls = "lc-thumb" }: { list: ListDef; cls?: str
 }
 
 // ---- ALL tab : overview (collections rail + near you) ----
-export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, onSaveSpot, trips, savedTrips, onOpenTrip, onSaveTrip }: {
+export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, onSaveSpot, trips, savedTrips, onOpenTrip, onSaveTrip, onFindTrips }: {
   onOpenList: (id: string) => void; onOpenMySpots: () => void; onOpenSpot: (id: string) => void;
   savedSpots: Set<string>; onSaveSpot: (s: Spot) => void;
   trips: Trip[]; savedTrips: Set<string>; onOpenTrip: (id: string) => void; onSaveTrip: (t: Trip) => void;
+  onFindTrips?: (place?: string) => void;
 }) {
   const cards = LISTS.map((l) => ({ ...l, count: spotsOf(l.id).length }));
   const near = [SPOTS[1], SPOTS[3], SPOTS[5], SPOTS[7]];
@@ -63,11 +64,11 @@ export function AllContent({ onOpenList, onOpenMySpots, onOpenSpot, savedSpots, 
       </div>
       {nearTrips.length > 0 && (
         <Fragment>
-          <div className="section-h">
+          <div className="section-h tappable" onClick={() => onFindTrips && onFindTrips(nearTrips[0].place)}>
             <div className="h">Trips near you <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></div>
-            <div className="r">ready guides</div>
+            <div className="r link">Find more</div>
           </div>
-          <div className="rail" style={{ paddingBottom: 12 }}>
+          <div className="trip-stack">
             {nearTrips.map((t) => <TripCard key={t.id} trip={t} onOpen={() => onOpenTrip(t.id)} saved={savedTrips.has(t.id)} onSave={() => onSaveTrip(t)} />)}
           </div>
         </Fragment>

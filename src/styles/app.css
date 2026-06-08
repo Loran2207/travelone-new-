@@ -327,3 +327,8 @@
   display: flex; align-items: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
 .ms-actionbar button:disabled { opacity: .45; }
 .ms-actionbar button iconify-icon { font-size: 18px; }
+
+/* trips-near-you: full-width stack + tappable section header */
+.trip-stack { display: flex; flex-direction: column; }
+.section-h.tappable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.section-h .r.link { color: var(--t1-orange); font-weight: 700; }
