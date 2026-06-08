@@ -189,7 +189,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
         ]
       : [{ label: "Create a trip", icon: "solar:magic-stick-3-bold", onClick: () => setBuilderList(l) }];
     setActionSheet({
-      title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " places" },
+      title: l.name, preview: { img: l.cover || "", name: l.name, eyebrow: spotsOf(l.id).length + " places", emoji: l.emoji, icon: l.icon, color: l.color },
       actions: [
         ...lead,
         { label: "Duplicate list", icon: "solar:copy-bold", onClick: () => { LISTS.push({ id: "l" + Date.now(), name: l.name + " copy", cover: l.cover, icon: l.icon, color: l.color }); showToast("“" + l.name + "” duplicated"); } },

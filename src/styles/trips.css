@@ -305,3 +305,8 @@
   cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .day-empty-add:active { transform: scale(.99); }
 .day-empty-add iconify-icon { font-size: 19px; }
+
+/* action sheet: neutral (black) item labels + emoji/icon thumb fallback */
+.as-btn { color: var(--t1-ink); }
+.as-preview .th.th-glyph { display: flex; align-items: center; justify-content: center; }
+.as-preview .th.th-glyph .twemoji { width: 26px; height: 26px; }

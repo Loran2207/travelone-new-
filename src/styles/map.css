@@ -503,3 +503,8 @@ iconify-icon, .iconify { display: inline-block; }
 .grab-zone { padding: 11px 0 9px; }
 .grabber { width: 42px; height: 5px; }
 .pinbox { background: var(--t1-fill); }
+
+/* list-detail cover: a touch smaller + emoji/icon fallback when no photo */
+.ld-cover { width: 56px; height: 56px; }
+.ld-cover-glyph { display: flex; align-items: center; justify-content: center; box-shadow: none; }
+.ld-cover-glyph .twemoji { width: 30px; height: 30px; }

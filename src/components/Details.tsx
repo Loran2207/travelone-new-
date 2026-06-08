@@ -1,6 +1,6 @@
 // TRAVEL1 — detail screens: List detail, My Spots, City, Trip timeline
 import { Fragment } from "react";
-import { CATS, DAY_COLORS, catMeta, groupByCountry, placeMeta, prefEmoji } from "../data/data";
+import { CATS, DAY_COLORS, catMeta, groupByCountry, placeMeta, prefEmoji, tint } from "../data/data";
 import type { Day, ListDef, Spot, Stop, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 import { SpotRow } from "./Sheets";
@@ -25,7 +25,15 @@ export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
   return (
     <Fragment>
       <div className="ld-head">
-        <div className="ld-cover" style={{ backgroundImage: `url(${list.cover})` }}></div>
+        {list.cover ? (
+          <div className="ld-cover" style={{ backgroundImage: `url(${list.cover})` }}></div>
+        ) : (
+          <div className="ld-cover ld-cover-glyph" style={{ background: tint(list.color || "#FE4A00", 0.82) }}>
+            {list.emoji
+              ? <Emoji e={list.emoji} size={30} />
+              : <iconify-icon icon={list.icon || "solar:bookmark-bold"} style={{ color: list.color || "#FE4A00", fontSize: 30 }}></iconify-icon>}
+          </div>
+        )}
         <div className="ld-mid">
           <div className="ld-title">{list.name}</div>
           <div className="ld-spots-sub">{all.length} {all.length === 1 ? "place" : "places"}</div>

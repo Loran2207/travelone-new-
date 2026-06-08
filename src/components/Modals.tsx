@@ -298,7 +298,7 @@ export function AddToListSheet({ open, spot, selected, onToggle, onNewList, onCl
 // ---- ACTION SHEET (iOS) ----
 export interface ActionSheetSpec {
   title?: string;
-  preview?: { img: string; name: string; cat?: string; eyebrow?: string } | null;
+  preview?: { img: string; name: string; cat?: string; eyebrow?: string; emoji?: string; icon?: string; color?: string } | null;
   actions: { label: string; icon?: string; destructive?: boolean; onClick?: () => void }[];
 }
 export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null; onClose: () => void }) {
@@ -307,10 +307,16 @@ export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null;
   return (
     <div className={"actionsheet open"}>
       <div className="as-card">
-        {title && <div className="as-title">{title}</div>}
+        {title && !preview && <div className="as-title">{title}</div>}
         {preview && (
           <div className="as-preview">
-            <div className="th" style={{ backgroundImage: `url(${preview.img})` }}></div>
+            {preview.img
+              ? <div className="th" style={{ backgroundImage: `url(${preview.img})` }}></div>
+              : <div className="th th-glyph" style={{ background: tint(preview.color || "#FE4A00", 0.82) }}>
+                  {preview.emoji
+                    ? <Emoji e={preview.emoji} size={26} />
+                    : <iconify-icon icon={preview.icon || "solar:bookmark-bold"} style={{ color: preview.color || "#FE4A00", fontSize: 26 }}></iconify-icon>}
+                </div>}
             <div style={{ minWidth: 0 }}>
               {preview.eyebrow && <div className="eyebrow">{preview.eyebrow}</div>}
               <div className="nm">{preview.name}</div>
