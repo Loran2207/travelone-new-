@@ -121,7 +121,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
           </div>
         </div>
         <button className={"ms-selectbtn" + (selectMode ? " on" : "")} onClick={() => (selectMode ? onExitSelect && onExitSelect() : onEnterSelect && onEnterSelect())}>
-          {selectMode ? "Done" : <Fragment><iconify-icon icon="solar:check-square-bold"></iconify-icon>Select</Fragment>}
+          {selectMode ? "Cancel" : "Select"}
         </button>
       </div>
 

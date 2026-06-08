@@ -415,3 +415,11 @@
 .gc-heart { background: rgba(0,0,0,.42); color: #fff; border-radius: 999px; box-shadow: none;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .gc-heart.on { color: var(--t1-red); background: rgba(0,0,0,.42); }
+
+/* plan-a-trip voice: light-grey, floating (sticky) at the top of the plan */
+.tb2 .tb-voice { position: sticky; top: 6px; z-index: 4; margin: 6px 22px 10px; width: calc(100% - 44px);
+  background: var(--t1-fill); box-shadow: 0 8px 22px rgba(0,0,0,.10); }
+.tb2 .tb-voice.on { background: #FFF1EA; }
+/* My Places Select: a clear filled button, not a checkbox */
+.ms-selectbtn { background: var(--t1-fill); border-color: transparent; padding: 0 18px; }
+.ms-selectbtn.on { background: var(--t1-ink); color: #fff; }

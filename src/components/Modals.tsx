@@ -387,7 +387,6 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       : `${M[s.getMonth()]} ${s.getDate()} – ${M[e.getMonth()]} ${e.getDate()}`;
   })();
 
-  // live map: numbered route nodes + a dashed line per day, focused on the active day
   const { markers, routes, focus } = useMemo(() => {
     const markers: MapMarker[] = [];
     const routes: MapRoute[] = [];
@@ -440,7 +439,6 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
       <div className="tb2-map">
         {open && <RealMap markers={markers} routes={routes} focus={focus} padBottom={0} center={[52.236, 21.009]} zoom={12} />}
         <button className="glassbtn tb2-back" onClick={onClose} aria-label="Close"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button>
-        <div className="tb2-maptag"><iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> Plan a trip</div>
       </div>
 
       <div className="tb2-cap"><div className="grabber"></div></div>
@@ -472,11 +470,6 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
           </button>
         </div>
 
-        {preview && (
-          <TripDetail trip={preview} activeDay={activeDay} onDay={setActiveDay}
-            onDirections={() => {}} onOpenStop={() => {}} manage={false} editable={false} dateLabel={dateLabel} />
-        )}
-
         <button className={"tb-voice" + (listening ? " on" : "")} onClick={startVoice}>
           <span className="mic"><iconify-icon icon="solar:microphone-bold"></iconify-icon></span>
           <span className="vt">
@@ -485,6 +478,11 @@ export function TripBuilder({ open, list, onClose, onGenerate }: {
           </span>
         </button>
         {heard && <div className="tb-heard">{heard}{applied && <span className="tb-applied">{applied}</span>}</div>}
+
+        {preview && (
+          <TripDetail trip={preview} activeDay={activeDay} onDay={setActiveDay}
+            onDirections={() => {}} onOpenStop={() => {}} manage={false} editable={false} dateLabel={dateLabel} />
+        )}
         <div style={{ height: 16 }}></div>
       </div>
 
