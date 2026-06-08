@@ -476,3 +476,8 @@
 .sc-chip .twemoji { width: 15px; height: 15px; }
 /* revert: bottom fade back to white */
 .bottom-fade { background: linear-gradient(to top, rgba(252,251,250,1) 0%, rgba(252,251,250,1) 32%, rgba(252,251,250,0) 100%); }
+/* hero photo: fade the BOTTOM of the photo to dark (prettier under the search button + into the panel) */
+.hero-photo::after {
+  background:
+    linear-gradient(180deg, rgba(20,18,26,.42) 0%, rgba(20,18,26,.10) 20%, rgba(16,14,22,.18) 44%, rgba(12,10,18,.62) 74%, rgba(8,7,12,1) 100%);
+}
