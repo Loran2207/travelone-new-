@@ -290,10 +290,10 @@ export function MapScreen({ shared }: { shared: Shared }) {
       {!isDetail ? (
         <Fragment>
           <div className="avatar-btn" aria-hidden style={{ position: "absolute", left: 20, top: 24, zIndex: 16, backgroundImage: `url(${IMG}avatar.png)`, cursor: "default" }}></div>
-          <button className="weather" style={{ position: "absolute", right: 20, top: 24, zIndex: 15 }} onClick={() => showToast("Warsaw · 16° · Cloudy")}>
-            <iconify-icon icon="solar:cloud-bold"></iconify-icon>16°
+          <button className="weather2" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", top: 26, zIndex: 15 }} onClick={() => showToast("Warsaw · 16° · Cloudy")}>
+            <iconify-icon icon="solar:cloud-sun-2-bold"></iconify-icon>16° <span className="wx-city">Warsaw</span>
           </button>
-          <button className="glassbtn" style={{ position: "absolute", right: 20, top: 78, zIndex: 15 }} onClick={locateMe} aria-label="My location">
+          <button className="glassbtn" style={{ position: "absolute", right: 20, top: 24, zIndex: 16 }} onClick={locateMe} aria-label="My location">
             <iconify-icon icon="solar:gps-bold"></iconify-icon>
           </button>
         </Fragment>

@@ -512,3 +512,11 @@ iconify-icon, .iconify { display: inline-block; }
 /* spot save hearts: red when saved (replace the orange fill) */
 .spotrow .sr-save.on { background: var(--t1-fill); color: var(--t1-red); }
 .ntile .save.on { background: rgba(0,0,0,.42); color: var(--t1-red); }
+
+/* weather: clean glass pill, centred at the top */
+.weather2 { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 16px 0 12px; border: none; cursor: pointer;
+  border-radius: 999px; background: rgba(255,255,255,.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 18px rgba(0,0,0,.13); font-family: var(--t1-font); font-weight: 800; font-size: 15px; color: var(--t1-ink);
+  letter-spacing: -.2px; -webkit-tap-highlight-color: transparent; }
+.weather2 iconify-icon { font-size: 21px; color: #F5A623; }
+.weather2 .wx-city { font-weight: 600; font-size: 13.5px; color: var(--t1-fg-muted); }

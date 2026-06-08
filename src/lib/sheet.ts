@@ -4,7 +4,7 @@
 import { useRef, useState, type PointerEvent } from "react";
 
 // Map-screen sheet detents (top offset in px): full / mid / peek.
-export const FULL = 104, MID = 396, PEEK = 566;
+export const FULL = 122, MID = 396, PEEK = 566;
 export const DETENTS = [FULL, MID, PEEK];
 
 // Trip-detail overlay detents.
@@ -30,15 +30,19 @@ export function useSheet(detents: number[], initial: number): UseSheet {
   const hi = Math.max(...detents);
   const [top, setTop] = useState(initial);
   const [dragging, setDragging] = useState(false);
-  const drag = useRef({ startY: 0, startTop: initial });
+  const drag = useRef({ startY: 0, startTop: initial, moved: false });
+  const sorted = [...detents].sort((a, b) => a - b);
+  const raise = sorted[0];
+  const lower = sorted[1] ?? sorted[0];
 
   const onPointerDown = (e: PointerEvent) => {
-    drag.current = { startY: e.clientY, startTop: top };
+    drag.current = { startY: e.clientY, startTop: top, moved: false };
     setDragging(true);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
   const onPointerMove = (e: PointerEvent) => {
     if (!dragging) return;
+    if (Math.abs(e.clientY - drag.current.startY) > 4) drag.current.moved = true;
     let t = drag.current.startTop + (e.clientY - drag.current.startY);
     t = Math.max(lo, Math.min(hi, t));
     setTop(t);
@@ -46,6 +50,11 @@ export function useSheet(detents: number[], initial: number): UseSheet {
   const onPointerUp = () => {
     if (!dragging) return;
     setDragging(false);
+    if (!drag.current.moved) {
+      // a tap on the handle toggles between raised (full) and the next detent down
+      setTop(top > raise + 20 ? raise : lower);
+      return;
+    }
     let best = detents[0], dd = Infinity;
     for (const d of detents) {
       const x = Math.abs(d - top);

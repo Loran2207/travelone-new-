@@ -113,7 +113,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
     <Fragment>
       <div className="ms-top">
         <div>
-          <div className="ld-title" style={{ fontSize: 27 }}>My Places</div>
+          <div className="ld-title" style={{ fontSize: 27 }}>My Saved</div>
           <div className="m" style={{ marginTop: 5, fontWeight: 500, fontSize: 13.5, color: "var(--t1-fg-muted)" }}>
             {selectMode
               ? (sel.size + (sel.size === 1 ? " place selected" : " places selected"))
@@ -126,7 +126,7 @@ export function MySpotsDetail({ spots, countryFilter, onCountryFilter, onSearch,
       </div>
 
       <div className="filterrow">
-        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Places"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
+        <button className="fchip icon-only" onClick={onSearch} aria-label="Search My Saved"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
         <button className={"fchip" + (countryFilter === "all" ? " on" : "")} onClick={() => onCountryFilter("all")}>All</button>
         {countries.map((c) => (
           <button key={c} className={"fchip" + (countryFilter === c ? " on" : "")} onClick={() => onCountryFilter(countryFilter === c ? "all" : c)}>

@@ -86,7 +86,7 @@ export function ListsContent({ onOpenList, onOpenMySpots, onListMenu }: {
   return (
     <Fragment>
       <div className="meta-line">
-        <div className="m">{LISTS.length} lists · {total} spots total</div>
+        <div className="m">{LISTS.length} lists · {total} places total</div>
         <button className="sort-btn">Recent <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></button>
       </div>
       {cards.map((l) => (
@@ -94,8 +94,7 @@ export function ListsContent({ onOpenList, onOpenMySpots, onListMenu }: {
           <ListThumb list={l} cls="lr-thumb" />
           <div className="lr-body">
             <div className="lr-name">{l.name}</div>
-            <div className={"lr-sub" + (l.special ? " pinned" : "")}>
-              {l.special && <iconify-icon icon="solar:bookmark-bold"></iconify-icon>}
+            <div className="lr-sub">
               {l.count} {l.count === 1 ? "place" : "places"}
             </div>
           </div>
