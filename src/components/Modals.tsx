@@ -268,7 +268,13 @@ export function AddToListSheet({ open, spot, selected, onToggle, onNewList, onCl
     <div className={"modal" + (open ? " open" : "")}>
       <div className="grab-zone"><div className="grabber"></div></div>
       <div className="atl-head">
-        <div className="t">Add to list<span className="s">{spot.name}</span></div>
+        <div className="atl-spot">
+          <div className="atl-spot-thumb" style={{ backgroundImage: `url(${spot.img})` }}></div>
+          <div className="atl-spot-txt">
+            <div className="t">Add to list</div>
+            <div className="s">{spot.name}</div>
+          </div>
+        </div>
         <button className="x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
       </div>
       <div className="atl-list">
@@ -277,7 +283,7 @@ export function AddToListSheet({ open, spot, selected, onToggle, onNewList, onCl
           return (
             <div key={l.id} className="atl-row" onClick={() => onToggle(l.id)}>
               <ListThumb list={l} cls="atl-thumb" />
-              <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} spots{l.collab ? " · shared" : ""}</div></div>
+              <div className="atl-body"><div className="atl-name">{l.name}</div><div className="atl-cnt">{l.count} {l.count === 1 ? "place" : "places"}{l.collab ? " · shared" : ""}</div></div>
               <div className={"atl-tick" + (on ? " on" : "")}><iconify-icon icon="hugeicons:tick-02"></iconify-icon></div>
             </div>
           );

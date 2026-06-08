@@ -310,3 +310,13 @@
 .as-btn { color: var(--t1-ink); }
 .as-preview .th.th-glyph { display: flex; align-items: center; justify-content: center; }
 .as-preview .th.th-glyph .twemoji { width: 26px; height: 26px; }
+
+/* add-to-list header: balanced with a spot thumbnail */
+.atl-head { justify-content: space-between; align-items: center; padding: 16px 18px 10px; }
+.atl-head .atl-spot { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.atl-head .atl-spot-thumb { width: 46px; height: 46px; border-radius: 12px; flex: none; background-size: cover; background-position: center; box-shadow: var(--t1-shadow-card); }
+.atl-head .atl-spot-txt { min-width: 0; text-align: left; }
+.atl-head .atl-spot-txt .t { font-weight: 700; font-size: 18px; color: var(--t1-ink); letter-spacing: -.3px; }
+.atl-head .atl-spot-txt .s { display: block; text-align: left; font-weight: 500; font-size: 13px; color: var(--t1-fg-muted);
+  margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+.atl-head .x { top: 16px; }
