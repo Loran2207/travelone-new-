@@ -20,4 +20,5 @@ export interface Shared {
   openWizard: (city?: { id: string } | null) => void;
   mapIntent: string | null;
   clearMapIntent: () => void;
+  requestMapIntent: (intent: string) => void;
 }

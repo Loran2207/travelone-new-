@@ -7,7 +7,7 @@ import { boundsOf, stopLatLng, type LatLng } from "../data/geo";
 import type { Day, Spot, Stop, Trip } from "../data/types";
 import { G_DETENTS, G_MID, useSheet } from "../lib/sheet";
 import type { Shared } from "../lib/shared";
-import { BottomNav, type TabId } from "./chrome";
+import { BottomNav, QuickFab, type TabId } from "./chrome";
 import { TripDetail } from "./Details";
 import { ActionSheet, SpotModal, type ActionSheetSpec } from "./Modals";
 import { AddPlaceSheet, matchPlace } from "./Screens";
@@ -28,7 +28,6 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
   const [editMenu, setEditMenu] = useState(false);
   const [delConfirm, setDelConfirm] = useState(false);
 
-  const saved = shared.savedTrips.has(trip.id);
   const inMyTrips = shared.myTrips.has(trip.id);
   const openStop = (st: Stop) => { const s = SPOTS.find((x) => x.id === st.id) || st; setSpot(s); };
 
@@ -134,11 +133,6 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
         </div>
       ) : (
         <div className="td-chrome">
-          {!inMyTrips && (
-            <button className="glassbtn" onClick={() => shared.toggleSavedTrip(trip)} aria-label="Save" style={{ color: saved ? "var(--t1-red)" : "var(--t1-ink)" }}>
-              <iconify-icon icon={saved ? "solar:heart-bold" : "solar:heart-linear"}></iconify-icon>
-            </button>
-          )}
           {inMyTrips ? (
             <button className={"glassbtn" + (editMenu ? " active" : "")} onClick={() => (editMenu ? setEditMenu(false) : openMenu())} aria-label="Edit">
               <iconify-icon icon="solar:pen-2-bold"></iconify-icon>
@@ -181,7 +175,13 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
         </div>
       )}
 
-      {!sheetModalOpen && <BottomNav tab={tab === "map" ? "map" : tab} onTab={(id) => onTab && onTab(id)} />}
+      {!sheetModalOpen && <BottomNav tab={tab === "map" ? "map" : tab} onTab={(id) => onTab && onTab(id)} compact />}
+      {!sheetModalOpen && (
+        <QuickFab
+          onAddPlace={() => { shared.requestMapIntent("place"); onTab && onTab("map"); }}
+          onSearch={() => shared.openWizard()}
+          onNewList={() => { shared.requestMapIntent("newlist"); onTab && onTab("map"); }} />
+      )}
 
       {spot && <SpotModal spot={spot as Spot} saved={false} onClose={() => setSpot(null)}
         onSave={() => { setSpot(null); shared.showToast("Saved"); }}

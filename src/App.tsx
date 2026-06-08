@@ -80,7 +80,7 @@ export function App() {
   const shared: Shared = {
     savedTrips, toggleSavedTrip, myTrips, addMyTrip, genTrips, addGenTrip, allTrips,
     completed, toggleStop, showToast, findTrip, openGuide, openWizard,
-    mapIntent, clearMapIntent: () => setMapIntent(null),
+    mapIntent, clearMapIntent: () => setMapIntent(null), requestMapIntent: (i: string) => setMapIntent(i),
   };
   void toggleStop;
 
