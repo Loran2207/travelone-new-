@@ -11,7 +11,7 @@ import { RealMap, pinHtml, type MapMarker, type MapFocusTarget } from "./RealMap
 import { AllContent, FilterRow, ListsContent, NearbyContent, TripsContent } from "./Sheets";
 import { CityDetail, ListDetail, MySpotsDetail } from "./Details";
 import {
-  ActionSheet, AddToListSheet, NewListModal, SearchModal, SpotModal, TripBuilder,
+  ActionSheet, AddToListSheet, NewListModal, PasteLinkModal, SearchModal, SpotModal, TripBuilder,
   type ActionSheetSpec,
 } from "./Modals";
 
@@ -79,6 +79,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
     const it = shared.mapIntent;
     if (it === "newlist") setModal("newlist");
     else if (it === "place") setModal("search");
+    else if (it === "addlink") setModal("addlink");
     else if (it === "search") setModal("search");
     shared.clearMapIntent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,6 +147,22 @@ export function MapScreen({ shared }: { shared: Shared }) {
   const anyOverlay = modal !== null || spot !== null || addSpot !== null || builderList !== null;
 
   const openSpotById = (id: string) => { const s = SPOTS.find((x) => x.id === id); if (s) setSpot(s); };
+
+  const addFromLink = (url: string) => {
+    let name = "New place";
+    try {
+      const u = new URL(url);
+      const m = u.pathname.match(/\/place\/([^/@]+)/);
+      if (m) name = decodeURIComponent(m[1].replace(/\+/g, " ")).trim();
+      else { const q = u.searchParams.get("q"); if (q) name = q.replace(/\+/g, " ").trim(); }
+    } catch { /* keep fallback */ }
+    const s: Spot = {
+      id: "link-" + Date.now(), name, cat: "Landmark", place: "Warsaw", list: "myspots",
+      img: I.castle, rating: "—", price: "—", hours: "Added from a link", dist: "saved",
+      desc: "Saved from a link. Tap save to add it to a list.", x: 50, y: 40, website: url,
+    };
+    setModal(null); setSpot(s); showToast("Found “" + name + "”");
+  };
 
   // start scrolling the sheet content → it isn't about the map anymore, so grow the sheet to full
   const onSheetScroll = (e: UIEvent<HTMLDivElement>) => {
@@ -334,6 +351,7 @@ export function MapScreen({ shared }: { shared: Shared }) {
       <SearchModal open={modal === "search"} onClose={() => setModal(null)} allTrips={shared.allTrips}
         onOpenList={openList} onOpenMySpots={openMySpots} onOpenSpot={(id) => { setModal(null); openSpotById(id); }} onOpenTrip={(id) => { setModal(null); shared.openGuide(id); }} />
       <NewListModal open={modal === "newlist"} onClose={() => setModal(null)} onCreate={createList} />
+      <PasteLinkModal open={modal === "addlink"} onClose={() => setModal(null)} onAdd={addFromLink} />
       {spot && <SpotModal spot={spot} saved={savedSpots.has(spot.id)} onClose={() => setSpot(null)}
         onSave={() => setAddSpot(spot)} onDirections={() => showToast("Opening directions to " + spot.name)} />}
       <AddToListSheet open={addSpot !== null} spot={addSpot} selected={addSpot ? (membership[addSpot.id] || new Set()) : new Set()}

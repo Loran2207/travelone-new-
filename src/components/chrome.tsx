@@ -62,8 +62,8 @@ export function BottomNav({ tab, onTab, compact }: { tab: string; onTab: (id: Ta
 }
 
 // ---- quick-actions FAB (bottom-right, on Explore / My Trips) ----
-export function QuickFab({ onAddPlace, onSearch, onNewList }: {
-  onAddPlace: () => void; onSearch: () => void; onNewList: () => void;
+export function QuickFab({ onAddPlace, onFindPlace, onSearch, onNewList }: {
+  onAddPlace: () => void; onFindPlace: () => void; onSearch: () => void; onNewList: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const act = (fn: () => void) => { setOpen(false); fn(); };
@@ -73,7 +73,8 @@ export function QuickFab({ onAddPlace, onSearch, onNewList }: {
       <div className="quickfab-wrap">
         {open && (
           <div className="qf-menu">
-            <button className="qf-item" onClick={() => act(onAddPlace)}><span className="qf-ic place"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>Add a place</button>
+            <button className="qf-item" onClick={() => act(onAddPlace)}><span className="qf-ic link"><iconify-icon icon="solar:link-circle-bold"></iconify-icon></span>Add a place</button>
+            <button className="qf-item" onClick={() => act(onFindPlace)}><span className="qf-ic place"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>Find a place</button>
             <button className="qf-item" onClick={() => act(onSearch)}><span className="qf-ic search"><iconify-icon icon="solar:magnifer-bold"></iconify-icon></span>Search guides</button>
             <button className="qf-item" onClick={() => act(onNewList)}><span className="qf-ic list"><iconify-icon icon="solar:bookmark-bold"></iconify-icon></span>New list</button>
           </div>

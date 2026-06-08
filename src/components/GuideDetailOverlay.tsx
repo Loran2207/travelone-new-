@@ -178,7 +178,8 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       {!sheetModalOpen && <BottomNav tab={tab === "map" ? "map" : tab} onTab={(id) => onTab && onTab(id)} compact />}
       {!sheetModalOpen && (
         <QuickFab
-          onAddPlace={() => { shared.requestMapIntent("place"); onTab && onTab("map"); }}
+          onAddPlace={() => { shared.requestMapIntent("addlink"); onTab && onTab("map"); }}
+          onFindPlace={() => { shared.requestMapIntent("place"); onTab && onTab("map"); }}
           onSearch={() => shared.openWizard()}
           onNewList={() => { shared.requestMapIntent("newlist"); onTab && onTab("map"); }} />
       )}

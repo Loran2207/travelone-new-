@@ -342,6 +342,41 @@ export function ActionSheet({ sheet, onClose }: { sheet: ActionSheetSpec | null;
   );
 }
 
+// ---- PASTE-A-LINK modal (add a place from a Google Maps / any URL) ----
+export function PasteLinkModal({ open, onClose, onAdd }: {
+  open: boolean; onClose: () => void; onAdd: (url: string) => void;
+}) {
+  const [url, setUrl] = useState("");
+  useEffect(() => { if (open) setUrl(""); }, [open]);
+  const valid = /^https?:\/\/\S+/i.test(url.trim());
+  return (
+    <div className={"modal" + (open ? " open" : "")} style={{ minHeight: 360 }}>
+      <div className="grab-zone"><div className="grabber"></div></div>
+      <div className="pl-head">
+        <button className="x" onClick={onClose}><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>
+        <div className="t">Add a place</div>
+        <div className="spacer"></div>
+      </div>
+      <div className="pl-body">
+        <div className="pl-ic"><iconify-icon icon="solar:link-circle-bold"></iconify-icon></div>
+        <div className="pl-title">Paste a link</div>
+        <div className="pl-sub">Drop a Google Maps link (or any place URL) and we'll pull the place in for you.</div>
+        <div className="pl-field">
+          <iconify-icon icon="solar:link-bold"></iconify-icon>
+          <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://maps.google.com/…" autoFocus />
+          {url && <button className="pl-clear" onClick={() => setUrl("")} aria-label="Clear"><iconify-icon icon="hugeicons:cancel-01"></iconify-icon></button>}
+        </div>
+        <div className="pl-hint"><iconify-icon icon="solar:info-circle-bold"></iconify-icon>In Google Maps, tap Share → Copy link, then paste it here.</div>
+      </div>
+      <div className="tb-foot">
+        <button className="go full" disabled={!valid} onClick={() => onAdd(url.trim())}>
+          <iconify-icon icon="hugeicons:add-01"></iconify-icon> Add place
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ---- TRIP BUILDER (plan a trip — ask how long, then open the trip) ----
 export function TripBuilder({ open, list, onClose, onGenerate }: {
   open: boolean; list: ListDef | null; onClose: () => void;

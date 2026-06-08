@@ -127,7 +127,8 @@ export function App() {
         {/* quick-actions FAB — always available on every nav tab */}
         {showNav && (
           <QuickFab
-            onAddPlace={() => { setMapIntent("place"); goTab("map"); }}
+            onAddPlace={() => { setMapIntent("addlink"); goTab("map"); }}
+            onFindPlace={() => { setMapIntent("place"); goTab("map"); }}
             onSearch={() => openWizard()}
             onNewList={() => { setMapIntent("newlist"); goTab("map"); }} />
         )}
