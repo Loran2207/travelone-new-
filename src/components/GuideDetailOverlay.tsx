@@ -122,7 +122,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
     <div className="guide-overlay" style={{ position: "absolute", inset: 0, zIndex: 36, background: "#fff", overflow: "hidden" }}>
       <RealMap routes={routes} markers={markers} focus={focus} padBottom={padBottom} center={[52.236, 21.009]} zoom={13} />
 
-      <button className="glassbtn" style={{ position: "absolute", left: 20, top: 64, zIndex: 16 }} onClick={onClose} aria-label="Back">
+      <button className="glassbtn" style={{ position: "absolute", left: 20, top: "calc(env(safe-area-inset-top, 0px) + 24px)", zIndex: 16 }} onClick={onClose} aria-label="Back">
         <iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon>
       </button>
 
@@ -148,7 +148,7 @@ export function GuideDetailOverlay({ trip, shared, onClose, tab, onTab }: {
       {editMenu && (
         <Fragment>
           <div style={{ position: "absolute", inset: 0, zIndex: 37 }} onClick={() => setEditMenu(false)}></div>
-          <div className="edit-menu" style={{ right: 20, top: 112 }}>
+          <div className="edit-menu" style={{ right: 20, top: "calc(env(safe-area-inset-top, 0px) + 72px)" }}>
             <button className="em-row" onClick={() => menuAction("addday")}><iconify-icon icon="hugeicons:add-01"></iconify-icon> Add day to guide</button>
             <button className="em-row" onClick={() => menuAction("addplace")}><iconify-icon icon="solar:map-point-bold"></iconify-icon> Add place to {menuDayLabel}</button>
             <button className="em-row" onClick={() => menuAction("sequence")}><iconify-icon icon="solar:routing-bold"></iconify-icon> Change sequence</button>

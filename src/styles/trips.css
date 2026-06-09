@@ -103,7 +103,7 @@
 .tl-nav:active, .tl-select:active { transform: scale(.9); }
 .tl-select { background: #fff; border: 2px solid var(--t1-border); color: transparent; font-size: 15px; }
 .tl-select.on { background: var(--t1-orange); border-color: var(--t1-orange); color: #fff; }
-.tl-walk { position: relative; display: flex; align-items: center; justify-content: center; padding: 10px 0; margin-left: 42px; }
+.tl-walk { position: relative; display: flex; align-items: center; justify-content: flex-start; padding: 10px 0; margin-left: 42px; }
 .walk-dir { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
 .walk-dir:active { transform: translateY(-50%) scale(.9); }
 .walk-pill { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px 0 13px; border-radius: 32px;
@@ -157,7 +157,7 @@
 .em-row.danger iconify-icon { color: #DC2626; }
 
 /* trip detail — top-right chrome (over map) */
-.td-chrome { position: absolute; right: 20px; top: 64px; z-index: 16; display: flex; align-items: center; gap: 10px; }
+.td-chrome { position: absolute; right: 20px; top: calc(env(safe-area-inset-top, 0px) + 24px); z-index: 16; display: flex; align-items: center; gap: 10px; }
 .glassbtn.active { background: var(--t1-ink-2); color: #fff; }
 .chrome-mytrips { height: 44px; padding: 0 18px 0 16px; border-radius: 999px; border: none; cursor: pointer; background: var(--t1-orange); color: #fff;
   font-family: var(--t1-font); font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 7px;

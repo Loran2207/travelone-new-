@@ -67,6 +67,13 @@ function MapController({ focus, padBottom = 0 }: { focus?: MapFocusTarget | null
   const map = useMap();
   useEffect(() => {
     map.invalidateSize();
+    // The overlay/sheet can settle its height a frame or two late; re-measure
+    // a few times and on any resize so the tile pane covers the top edge.
+    const t1 = setTimeout(() => map.invalidateSize(), 120);
+    const t2 = setTimeout(() => map.invalidateSize(), 360);
+    const ro = new ResizeObserver(() => map.invalidateSize());
+    ro.observe(map.getContainer());
+    return () => { clearTimeout(t1); clearTimeout(t2); ro.disconnect(); };
   }, [map]);
   useEffect(() => {
     if (!focus) return;

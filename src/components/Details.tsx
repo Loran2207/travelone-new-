@@ -1,11 +1,18 @@
 // TRAVEL1 — detail screens: List detail, My Spots, City, Trip timeline
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { CATS, DAY_COLORS, catMeta, groupByCountry, placeMeta, prefEmoji, tint } from "../data/data";
 import type { Day, ListDef, Spot, Stop, Trip } from "../data/types";
 import { Emoji, Flag } from "./chrome";
 import { SpotRow } from "./Sheets";
 
 type DaySel = number | "all";
+
+// tap the leg pill to switch how you travel between two stops
+const LEG_MODES = [
+  { key: "walk", icon: "solar:walking-bold", mpm: 78 },   // ~4.7 km/h
+  { key: "bus", icon: "solar:bus-bold", mpm: 250 },       // ~15 km/h
+  { key: "car", icon: "solar:wheel-bold", mpm: 500 },     // ~30 km/h
+];
 
 // ---- LIST DETAIL ----
 export function ListDetail({ list, spots, onOpenSpot, onShare, onCreateTrip,
@@ -234,10 +241,12 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
 }) {
   const rmv = removed || new Set<string>();
   const sel = selected || new Set<string>();
+  const [legMode, setLegMode] = useState<Record<string, number>>({});
+  const cycleMode = (k: string) => setLegMode((prev) => ({ ...prev, [k]: ((prev[k] || 0) + 1) % LEG_MODES.length }));
   const fmtK = (m: number) => { const s = Math.round(m * 1.31); return s >= 1000 ? (s / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(s); };
   const dayKm = (d: Day) => d.stops.reduce((a, s) => a + (s.toNext || 0), 0);
-  const fmtWalk = (m: number) => {
-    const min = Math.max(1, Math.round(m / 78));
+  const fmtLeg = (m: number, mpm: number) => {
+    const min = Math.max(1, Math.round(m / mpm));
     const t = min >= 60 ? Math.floor(min / 60) + "h " + (min % 60) + "m" : min + "m";
     const dist = m >= 1000 ? (m / 1000).toFixed(1) + " km" : m + " m";
     return t + " · " + dist;
@@ -354,8 +363,8 @@ export function TripDetail({ trip, activeDay, onDay, onDirections, onOpenStop,
                       </div>
                       {!last && (
                         <div className="tl-walk">
-                          <button className="walk-pill" onClick={() => onDirections(s)}>
-                            <iconify-icon icon="solar:walking-bold"></iconify-icon>{fmtWalk(s.toNext || 600)}
+                          <button className="walk-pill" onClick={() => cycleMode(key)} aria-label="Change travel mode">
+                            <iconify-icon icon={LEG_MODES[legMode[key] || 0].icon}></iconify-icon>{fmtLeg(s.toNext || 600, LEG_MODES[legMode[key] || 0].mpm)}
                             <iconify-icon icon="solar:transfer-horizontal-bold" className="chev"></iconify-icon>
                           </button>
                           {!manage && (
