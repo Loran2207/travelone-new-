@@ -68,9 +68,9 @@ export function SearchModal({ open, onClose, onOpenList, onOpenMySpots, onOpenSp
                 <div key={l.id} className="sc-card" onClick={() => (l.special ? onOpenMySpots() : onOpenList(l.id))}>
                   <div className="sc-thumb" style={l.cover && !l.special
                     ? { backgroundImage: `url(${l.cover})` }
-                    : { background: l.special ? "linear-gradient(150deg,#FFE7DC,#FFD7C4)" : tint(l.color || "#FE4A00", 0.82) }}>
+                    : { background: l.special ? "var(--t1-fill)" : tint(l.color || "#FE4A00", 0.82) }}>
                     {l.special
-                      ? <iconify-icon icon="solar:map-point-bold" style={{ fontSize: 40, color: "var(--t1-orange)" }}></iconify-icon>
+                      ? <span className="sc-savedmark"><iconify-icon icon="solar:map-point-bold"></iconify-icon></span>
                       : (!l.cover && (l.emoji || l.icon))
                         ? (l.emoji ? <Emoji e={l.emoji} size={42} /> : <iconify-icon icon={l.icon || "solar:map-point-bold"} style={{ color: l.color || "#FE4A00", fontSize: 40 }}></iconify-icon>)
                         : null}

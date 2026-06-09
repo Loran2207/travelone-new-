@@ -264,8 +264,8 @@ iconify-icon, .iconify { display: inline-block; }
   cursor: pointer; flex: none; -webkit-tap-highlight-color: transparent; }
 .search-results { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 4px 0 10px; }
 .search-results::-webkit-scrollbar { display: none; }
-.search-eyebrow { font-weight: 600; font-size: 12px; letter-spacing: .3px; text-transform: uppercase;
-  color: var(--t1-fg-faint); padding: 14px 18px 8px; }
+.search-eyebrow { font-weight: 700; font-size: 13px; letter-spacing: -.1px; text-transform: none;
+  color: var(--t1-fg-soft); padding: 16px 18px 9px; }
 
 /* iOS-style keyboard */
 .kb { background: #D1D4DB; padding: 8px 4px 6px; flex: none; user-select: none; }
